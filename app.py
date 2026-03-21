@@ -142,8 +142,8 @@ def main():
     st.divider()
 
     # ── 섹션 2: 이상 기후 탐지 ────────────────────────────
-    st.header("🚨 오늘 날씨, 얼마나 이상한가요?")
-    st.caption("최근 90일 문정역 날씨 데이터를 기반으로, AI가 평소와 크게 다른 날을 찾아냅니다. 보라색 점이 많을수록 요즘 날씨가 심상치 않다는 뜻이에요.")
+    st.header("🚨 근데 오늘 좀 이상한 날씨 아닌가요?")
+    st.caption("박보닥씨의 최근 90일 출근길 날씨를 AI가 분석했어요. 보라색 점이 많을수록 요즘 날씨가 심상치 않아요.")
 
     with st.spinner("과거 데이터 분석 중..."):
         hist_df = get_historical(MUNJEONG["lat"], MUNJEONG["lon"], days=90)
@@ -164,15 +164,15 @@ def main():
 
     anomaly_count = analyzed['is_anomaly'].sum()
     if anomaly_count > 0:
-        st.warning(f"최근 90일간 이상 기후 {anomaly_count}건 탐지됨")
+        st.warning(f"최근 90일간 {anomaly_count}번의 이상한 날씨가 있었어요. 오늘 출근길, 조심하세요!")
     else:
-        st.success("최근 90일간 이상 기후 없음")
+        st.success("최근 90일간 날씨는 평온했어요. 오늘도 무난한 하루 될 것 같아요 😊")
 
     st.divider()
 
     # ── 섹션 3: 날씨 × 지하철 상관관계 ────────────────────
-    st.header("📊 날씨가 사람들의 이동에 영향을 줄까요?")
-    st.caption("기온과 서울 지하철 이용객 수를 비교해봤어요. 추울수록 지하철을 더 탈까요, 아니면 따뜻할 때 더 많이 돌아다닐까요?")
+    st.header("🚇 이 날씨에 지하철 얼마나 붐빌까요?")
+    st.caption("날씨와 문정역 지하철 이용객 수를 분석했어요. 오늘 같은 날씨, 지하철이 더 붐빌까요?")
 
     with st.spinner("상관관계 분석 중..."):
         subway_df = get_subway()
