@@ -38,7 +38,7 @@ def test_preserves_original_columns():
 
 def test_detects_obvious_outliers():
     """명백한 이상치(기온 99도 등) 10개를 포함시키면 탐지해야 함."""
-    normal = _normal_df(90)
+    normal = _normal_df(190)
     outliers = pd.DataFrame({
         'temperature': [99.0] * 10,
         'precipitation': [500.0] * 10,
