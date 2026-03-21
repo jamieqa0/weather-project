@@ -121,30 +121,23 @@ def main():
     inject_css()
     render_hero()
 
-    # ── 섹션 1: 양극단 날씨 비교 ──────────────────────────
-    st.header("📍 지구 양 끝 날씨")
-    col1, col2 = st.columns(2)
+    # ── 섹션 1: 오늘 날씨 ─────────────────────────────────
+    st.header("☀️ 박보닥씨, 오늘 문정역 날씨예요")
 
     with st.spinner("날씨 불러오는 중..."):
         mj = get_current(MUNJEONG["lat"], MUNJEONG["lon"])
         mv = get_current(MONTEVIDEO["lat"], MONTEVIDEO["lon"])
 
-    with col1:
-        st.subheader(MUNJEONG["name"])
-        st.metric("기온", f"{mj['temperature']}°C")
-        st.metric("강수량", f"{mj['precipitation']} mm")
-        st.metric("습도", f"{mj['humidity']}%")
-        st.metric("풍속", f"{mj['wind_speed']} m/s")
-        st.info(weather_label(mj['weather_code']))
-        st.markdown(f"> {generate_comment(mj['temperature'], mj['precipitation'], mj['weather_code'])}")
+    st.subheader(MUNJEONG["name"])
+    st.metric("기온", f"{mj['temperature']}°C")
+    st.metric("강수량", f"{mj['precipitation']} mm")
+    st.metric("습도", f"{mj['humidity']}%")
+    st.metric("풍속", f"{mj['wind_speed']} m/s")
+    st.info(weather_label(mj['weather_code']))
+    st.markdown(f"> {generate_comment(mj['temperature'], mj['precipitation'], mj['weather_code'])}")
 
-    with col2:
-        st.subheader(MONTEVIDEO["name"])
-        st.metric("기온", f"{mv['temperature']}°C")
-        st.metric("강수량", f"{mv['precipitation']} mm")
-        st.metric("습도", f"{mv['humidity']}%")
-        st.metric("풍속", f"{mv['wind_speed']} m/s")
-        st.info(weather_label(mv['weather_code']))
+    with st.expander("🌏 지구 반대편은?"):
+        st.caption(f"몬테비데오 (우루과이) · {mv['temperature']}°C · {weather_label(mv['weather_code'])}")
 
     st.divider()
 
