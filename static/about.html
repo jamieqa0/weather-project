@@ -129,6 +129,28 @@
     .tl-badge--deploy   { background:rgba(90,248,251,.08);  border:1px solid rgba(90,248,251,.3);  color:#5af8fb; }
     .tl-badge--other    { background:rgba(118,117,121,.08); border:1px solid rgba(118,117,121,.3); color:#767579; }
     .tl-msg { font-size:.85rem; color:rgba(243,240,244,.8); line-height:1.5; }
+    /* Test accordion */
+    .test-accordion { margin-top:.75rem; }
+    .test-accordion summary {
+      cursor:pointer; font-size:.75rem; color:#5af8fb;
+      font-family:'Space Grotesk',monospace; list-style:none;
+      display:flex; align-items:center; gap:.35rem; user-select:none;
+    }
+    .test-accordion summary::-webkit-details-marker { display:none; }
+    .acc-arrow { transition:transform .2s; display:inline-block; font-size:.6rem; }
+    .test-accordion[open] .acc-arrow { transform:rotate(90deg); }
+    .test-group { margin-top:.75rem; }
+    .test-group-title {
+      font-size:.68rem; font-family:'Space Grotesk',monospace; color:#767579;
+      margin-bottom:.3rem; text-transform:uppercase; letter-spacing:.05em;
+    }
+    .test-item {
+      font-size:.72rem; color:rgba(243,240,244,.65);
+      font-family:'Space Grotesk',monospace;
+      padding:.12rem 0; display:flex; gap:.5rem; align-items:baseline;
+    }
+    .test-dot { color:#5af8fb; flex-shrink:0; }
+    .test-desc { color:#767579; }
   </style>
 </head>
 
@@ -147,9 +169,9 @@
         class="glass px-6 py-3 rounded-full font-headline text-sm font-medium text-secondary hover:bg-secondary/10 transition">
         💻 GitHub
       </a>
-      <a href="http://localhost:8501" target="_blank"
+      <a href="/" target="_self"
         class="bg-primary/10 border border-primary/30 px-6 py-3 rounded-full font-headline text-sm font-medium text-primary hover:bg-primary/20 transition">
-        🚀 대시보드 실행
+        🏠 메인 대시보드로 돌아가기
       </a>
     </div>
     <hr class="gradient-line max-w-md mx-auto mt-16" />
@@ -159,7 +181,7 @@
   <section class="py-16 px-6">
     <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="glass rounded-xl p-6 text-center">
-        <p class="text-4xl font-headline font-bold text-secondary glow-cyan">54</p>
+        <p class="text-4xl font-headline font-bold text-secondary glow-cyan">70</p>
         <p class="text-muted text-sm mt-1">테스트 통과</p>
       </div>
       <div class="glass rounded-xl p-6 text-center">
@@ -330,6 +352,88 @@
             <h4 class="font-headline font-semibold text-on-surface mb-1">61개 테스트 통과</h4>
             <p class="text-sm text-muted">감성 멘트 · CSV 저장/로드 · API 수집 · 이상 탐지 · 상관분석 · 상관계수 해석 · 시간 포맷 · 1년 전 날씨 조회 모든
               모듈을 단위 테스트로 검증했습니다.</p>
+            <details class="test-accordion">
+              <summary><span class="acc-arrow">▶</span> 61개 테스트 목록 펼치기</summary>
+              <div class="test-group">
+                <p class="test-group-title">test_anomaly.py — 이상 탐지 (6)</p>
+                <div class="test-item"><span class="test-dot">·</span><span>test_returns_dataframe <span class="test-desc">— 결과가 DataFrame 타입인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_has_is_anomaly_column <span class="test-desc">— is_anomaly 컬럼 존재 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_is_anomaly_is_bool <span class="test-desc">— is_anomaly 값이 bool 타입인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_preserves_original_columns <span class="test-desc">— 원본 컬럼 보존 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_detects_obvious_outliers <span class="test-desc">— 극단적 이상치를 실제로 탐지하는지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_anomaly_ratio_approx_contamination <span class="test-desc">— 이상치 비율이 contamination=0.05에 근사하는지</span></span></div>
+              </div>
+              <div class="test-group">
+                <p class="test-group-title">test_collector.py — API 수집 (18)</p>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_current_weather_keys <span class="test-desc">— 현재 날씨 응답에 필수 키가 있는지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_current_weather_values <span class="test-desc">— 현재 날씨 값이 올바른 타입인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_current_weather_calls_correct_url <span class="test-desc">— 올바른 Open-Meteo URL 호출 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_historical_weather_returns_dataframe <span class="test-desc">— 과거 날씨가 DataFrame 반환 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_historical_weather_date_column_is_string <span class="test-desc">— date 컬럼이 YYYY-MM-DD 문자열인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_data_fallback_no_key <span class="test-desc">— API 키 없을 때 샘플 CSV로 폴백 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_data_fallback_columns <span class="test-desc">— 폴백 데이터 컬럼 형식 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_day_returns_munjeong_record <span class="test-desc">— 단일 날짜에서 문정역 데이터 반환</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_day_sums_gton_and_gtoff <span class="test-desc">— 승차·하차 인원 합산 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_day_filters_munjeong_only <span class="test-desc">— 문정역 외 역 데이터 필터링 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_day_returns_none_on_no_data <span class="test-desc">— 데이터 없을 때 None 반환 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_day_date_format <span class="test-desc">— 날짜 형식이 YYYY-MM-DD인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_data_with_api_key_returns_dataframe <span class="test-desc">— API 키 있을 때 DataFrame 반환</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_subway_data_with_api_key_calls_fetch_day <span class="test-desc">— fetch_day가 91회 병렬 호출되는지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_weather_on_date_returns_dict <span class="test-desc">— 날짜별 날씨가 dict 반환 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_weather_on_date_has_required_keys <span class="test-desc">— 필수 키(temp, rain 등) 존재 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_weather_on_date_values <span class="test-desc">— 반환 값의 타입 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_fetch_weather_on_date_calls_archive_url_with_date <span class="test-desc">— 아카이브 URL에 날짜 포함 여부</span></span></div>
+              </div>
+              <div class="test-group">
+                <p class="test-group-title">test_correlation.py — 상관분석 (5)</p>
+                <div class="test-item"><span class="test-dot">·</span><span>test_returns_dict <span class="test-desc">— 결과가 dict 타입인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_has_pearson_and_spearman <span class="test-desc">— pearson·spearman 키 존재 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_correlation_range <span class="test-desc">— 상관계수가 -1~1 범위인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_has_n_samples <span class="test-desc">— 샘플 수(n) 포함 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_strong_positive_correlation <span class="test-desc">— 강한 양의 상관 데이터에서 0.9 이상 나오는지</span></span></div>
+              </div>
+              <div class="test-group">
+                <p class="test-group-title">test_generator.py — 감성 멘트 (5)</p>
+                <div class="test-item"><span class="test-dot">·</span><span>test_returns_string <span class="test-desc">— 결과가 문자열인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_cold_weather <span class="test-desc">— 0°C 이하 추운 날씨 멘트 생성</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_heavy_rain <span class="test-desc">— 강수량 20mm 이상 폭우 멘트 생성</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_hot_weather <span class="test-desc">— 35°C 이상 폭염 멘트 생성</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_clear_weather <span class="test-desc">— 맑은 날씨 멘트 생성</span></span></div>
+              </div>
+              <div class="test-group">
+                <p class="test-group-title">test_interpretation.py — 해석 &amp; 포맷 (23)</p>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_none_returns_no_data <span class="test-desc">— None 입력 시 "데이터 없음" 반환</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_near_zero_is_no_correlation <span class="test-desc">— 0에 가까운 값은 "상관없음" 해석</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_negative_near_zero_is_no_correlation <span class="test-desc">— 음수 근사 0도 동일</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_weak_negative <span class="test-desc">— -0.3 미만 → 약한 음의 상관</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_weak_positive <span class="test-desc">— 0.3 미만 → 약한 양의 상관</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_medium_negative <span class="test-desc">— -0.7 미만 → 중간 음의 상관</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_medium_positive <span class="test-desc">— 0.7 미만 → 중간 양의 상관</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_strong_negative <span class="test-desc">— -0.7 이상 → 강한 음의 상관</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_strong_positive <span class="test-desc">— 0.7 이상 → 강한 양의 상관</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_boundary_01 <span class="test-desc">— 경계값 0.1 처리 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_boundary_03 <span class="test-desc">— 경계값 0.3 처리 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_boundary_07 <span class="test-desc">— 경계값 0.7 처리 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_interpret_correlation_returns_string <span class="test-desc">— 반환값이 문자열인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_format_last_updated_returns_string <span class="test-desc">— 시간 포맷이 문자열인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_format_last_updated_am <span class="test-desc">— 오전 시간 포맷 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_format_last_updated_pm <span class="test-desc">— 오후 시간 포맷 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_format_last_updated_noon <span class="test-desc">— 정오(12:00) 포맷 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_format_last_updated_midnight <span class="test-desc">— 자정(0:00) 포맷 검증</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_format_last_updated_contains_suffix <span class="test-desc">— "기준" 접미사 포함 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_get_anomaly_algorithm_info_returns_string <span class="test-desc">— 알고리즘 정보가 문자열인지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_get_anomaly_algorithm_info_contains_algorithm_name <span class="test-desc">— 알고리즘 이름 포함 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_get_anomaly_algorithm_info_contains_contamination <span class="test-desc">— contamination 값 포함 여부</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_get_anomaly_algorithm_info_contains_random_state <span class="test-desc">— random_state 값 포함 여부</span></span></div>
+              </div>
+              <div class="test-group">
+                <p class="test-group-title">test_storage.py — 저장/로드 (4)</p>
+                <div class="test-item"><span class="test-dot">·</span><span>test_save_creates_file <span class="test-desc">— 저장 후 파일이 생성되는지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_roundtrip <span class="test-desc">— 저장 후 로드하면 원본과 동일한지</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_load_missing_file_raises <span class="test-desc">— 없는 파일 로드 시 예외 발생</span></span></div>
+                <div class="test-item"><span class="test-dot">·</span><span>test_save_creates_parent_dirs <span class="test-desc">— 중간 디렉토리 자동 생성 여부</span></span></div>
+              </div>
+            </details>
             <div style="margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.35rem;">
               <span class="skill-badge">superpowers:test-driven-development</span>
               <span class="skill-badge">superpowers:verification-before-completion</span>
@@ -417,7 +521,7 @@
           <div class="pb-8">
             <p class="text-xs text-muted mb-1 font-body">Improvement</p>
             <h4 class="font-headline font-semibold text-on-surface mb-1">코드 리뷰 &amp; 리팩토링</h4>
-            <p class="text-sm text-muted">불필요 파일 3개 삭제, <code style="color:#5af8fb">app.py</code> dead import 제거, Open-Meteo API <code style="color:#5af8fb">timeout=10</code> 추가, 구현 과정 스킬 배지 UI 추가, 테스트 61개 통과.</p>
+            <p class="text-sm text-muted">불필요 파일 3개 삭제, <code style="color:#5af8fb">app.py</code> dead import 제거, Open-Meteo API <code style="color:#5af8fb">timeout=10</code> 추가, 구현 과정 스킬 배지 UI 추가, 테스트 61개 통과. (이후 타임라인 빌더 추가로 총 70개)</p>
             <div style="margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.35rem;">
               <span class="skill-badge">superpowers:requesting-code-review</span>
               <span class="skill-badge">superpowers:receiving-code-review</span>
@@ -547,10 +651,10 @@
   <!-- ── 푸터 ──────────────────────────────────────────────── -->
   <footer class="border-t border-outline/30 py-8 px-6 text-center text-muted text-xs">
     <div class="mb-4">
-      <a href="http://localhost:8501" target="_blank"
+      <a href="/" target="_self"
         class="inline-block glass px-6 py-3 rounded-full font-headline text-sm font-semibold text-primary hover:bg-primary/10 transition"
         style="text-decoration:none">
-        ✨ AI 기후탐정 대시보드 체험하기
+        🏠 메인 대시보드로 돌아가기
       </a>
     </div>
     <p>기후탐정 · <span style="color:#cc97ff;">Job-Stealer</span> 사내 스터디 · 2026</p>
