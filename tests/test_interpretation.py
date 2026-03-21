@@ -95,6 +95,8 @@ def test_format_last_updated_am():
     assert "오전" in result
     assert "9시" in result
     assert "30분" in result
+    assert "3월" in result
+    assert "22일" in result
 
 
 def test_format_last_updated_pm():
@@ -134,11 +136,9 @@ def test_get_anomaly_algorithm_info_contains_algorithm_name():
 
 def test_get_anomaly_algorithm_info_contains_contamination():
     result = get_anomaly_algorithm_info()
-    assert "contamination" in result
-    assert "0.05" in result
+    assert "5%" in result
 
 
 def test_get_anomaly_algorithm_info_contains_random_state():
     result = get_anomaly_algorithm_info()
-    assert "random_state" in result
-    assert "42" in result
+    assert "이상치" in result

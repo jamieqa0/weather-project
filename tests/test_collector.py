@@ -10,6 +10,13 @@ MOCK_CURRENT_RESPONSE = {
         "relative_humidity_2m": 70,
         "wind_speed_10m": 5.2,
         "weather_code": 3
+    },
+    "daily": {
+        "time": ["2026-03-22"],
+        "temperature_2m_max": [17.0],
+        "temperature_2m_min": [4.0],
+        "temperature_2m_mean": [10.5],
+        "precipitation_sum": [0.0],
     }
 }
 
@@ -19,7 +26,11 @@ def test_fetch_current_weather_keys():
         mock_get.return_value.json.return_value = MOCK_CURRENT_RESPONSE
         mock_get.return_value.raise_for_status = MagicMock()
         result = fetch_current_weather(lat=37.4946, lon=127.1237)
-    assert set(result.keys()) == {'temperature', 'precipitation', 'humidity', 'wind_speed', 'weather_code'}
+    assert set(result.keys()) == {
+        'temperature', 'temperature_max', 'temperature_min', 'temperature_mean',
+        'precipitation', 'precipitation_sum',
+        'humidity', 'wind_speed', 'weather_code',
+    }
 
 
 def test_fetch_current_weather_values():
@@ -28,6 +39,9 @@ def test_fetch_current_weather_values():
         mock_get.return_value.raise_for_status = MagicMock()
         result = fetch_current_weather(lat=37.4946, lon=127.1237)
     assert result['temperature'] == 12.5
+    assert result['temperature_max'] == 17.0
+    assert result['temperature_min'] == 4.0
+    assert result['temperature_mean'] == 10.5
     assert result['humidity'] == 70
     assert result['weather_code'] == 3
 
@@ -50,6 +64,8 @@ MOCK_HISTORICAL_RESPONSE = {
     "daily": {
         "time": ["2024-01-01", "2024-01-02", "2024-01-03"],
         "temperature_2m_max": [5.0, 7.0, 3.0],
+        "temperature_2m_min": [-2.0, 0.0, -4.0],
+        "temperature_2m_mean": [1.5, 3.5, -0.5],
         "precipitation_sum": [0.0, 5.2, 0.0],
         "relative_humidity_2m_mean": [60.0, 70.0, 55.0],
         "wind_speed_10m_max": [3.0, 8.0, 5.0],
@@ -63,7 +79,7 @@ def test_fetch_historical_weather_returns_dataframe():
         mock_get.return_value.raise_for_status = MagicMock()
         df = fetch_historical_weather(lat=37.4946, lon=127.1237, days=3)
     assert isinstance(df, pd.DataFrame)
-    assert list(df.columns) == ['date', 'temperature', 'precipitation', 'humidity', 'wind_speed']
+    assert list(df.columns) == ['date', 'temp_max', 'temp_min', 'temperature', 'precipitation', 'humidity', 'wind_speed', 'temp_range']
     assert len(df) == 3
 
 

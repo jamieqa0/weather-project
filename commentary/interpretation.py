@@ -27,7 +27,7 @@ def interpret_correlation(pearson: float | None) -> str:
 
 
 def format_last_updated(dt: datetime) -> str:
-    """datetime을 '오전/오후 H시 M분 기준' 형식으로 반환."""
+    """datetime을 'M월 D일 오전/오후 H시 M분 기준' 형식으로 반환."""
     if dt.hour == 0:
         hour, meridiem = 12, "오전"
     elif dt.hour < 12:
@@ -36,9 +36,9 @@ def format_last_updated(dt: datetime) -> str:
         hour, meridiem = 12, "오후"
     else:
         hour, meridiem = dt.hour - 12, "오후"
-    return f"{meridiem} {hour}시 {dt.minute}분 기준"
+    return f"{dt.month}월 {dt.day}일 {meridiem} {hour}시 {dt.minute}분 기준"
 
 
 def get_anomaly_algorithm_info() -> str:
     """이상치 탐지에 사용된 알고리즘 및 파라미터 정보 반환."""
-    return "Isolation Forest (contamination=0.05, random_state=42)"
+    return "🤖 Isolation Forest · 이상치 비율 5% · 전체 데이터 중 상위 5%의 극단적인 날을 이상 기후로 분류해요"

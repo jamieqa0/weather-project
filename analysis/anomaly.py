@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-FEATURES = ['temperature', 'precipitation', 'humidity', 'wind_speed']
+FEATURES = ['temp_max', 'temp_min', 'temperature', 'temp_range', 'precipitation', 'humidity', 'wind_speed']
 CONTAMINATION = 0.05
 
 

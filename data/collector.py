@@ -14,17 +14,25 @@ SUBWAY_STATION = "문정"
 
 
 def fetch_current_weather(lat: float, lon: float) -> dict:
-    """Open-Meteo API로 현재 날씨 조회. 키 없이 사용 가능."""
+    """Open-Meteo API로 현재 날씨 + 오늘 일 최고·최저·평균기온 조회. 키 없이 사용 가능."""
     url = (
         f"{BASE_URL}?latitude={lat}&longitude={lon}"
         "&current=temperature_2m,precipitation,relative_humidity_2m,wind_speed_10m,weather_code"
+        "&daily=temperature_2m_max,temperature_2m_min,temperature_2m_mean,precipitation_sum"
+        "&timezone=Asia%2FSeoul"
     )
     response = requests.get(url, timeout=10)
     response.raise_for_status()
-    current = response.json()["current"]
+    data = response.json()
+    current = data["current"]
+    daily = data["daily"]
     return {
         "temperature": current["temperature_2m"],
+        "temperature_max": daily["temperature_2m_max"][0],
+        "temperature_min": daily["temperature_2m_min"][0],
+        "temperature_mean": daily["temperature_2m_mean"][0],
         "precipitation": current["precipitation"],
+        "precipitation_sum": daily["precipitation_sum"][0],
         "humidity": current["relative_humidity_2m"],
         "wind_speed": current["wind_speed_10m"],
         "weather_code": current["weather_code"],
@@ -38,18 +46,23 @@ def fetch_historical_weather(lat: float, lon: float, days: int = 90) -> pd.DataF
     url = (
         f"{ARCHIVE_URL}?latitude={lat}&longitude={lon}"
         f"&start_date={start}&end_date={end}"
-        "&daily=temperature_2m_max,precipitation_sum,relative_humidity_2m_mean,wind_speed_10m_max"
+        "&daily=temperature_2m_max,temperature_2m_min,temperature_2m_mean,"
+        "precipitation_sum,relative_humidity_2m_mean,wind_speed_10m_max"
     )
     response = requests.get(url, timeout=10)
     response.raise_for_status()
     daily = response.json()["daily"]
-    return pd.DataFrame({
-        "date": daily["time"],
-        "temperature": daily["temperature_2m_max"],
+    df = pd.DataFrame({
+        "date":        daily["time"],
+        "temp_max":    daily["temperature_2m_max"],
+        "temp_min":    daily["temperature_2m_min"],
+        "temperature": daily["temperature_2m_mean"],
         "precipitation": daily["precipitation_sum"],
-        "humidity": daily["relative_humidity_2m_mean"],
-        "wind_speed": daily["wind_speed_10m_max"],
+        "humidity":    daily["relative_humidity_2m_mean"],
+        "wind_speed":  daily["wind_speed_10m_max"],
     })
+    df["temp_range"] = df["temp_max"] - df["temp_min"]
+    return df
 
 
 def fetch_weather_on_date(lat: float, lon: float, target_date: date) -> dict:
@@ -94,19 +107,19 @@ def _fetch_subway_day(api_key: str, date_str: str) -> dict | None:
 def fetch_subway_data(api_key: str | None = None) -> pd.DataFrame:
     """서울 지하철 문정역 일별 이용객 수 조회.
     api_key 없으면 샘플 데이터 반환.
-    날짜별 병렬 조회(10 workers)로 최근 90일 데이터 수집.
+    날짜별 병렬 조회(20 workers)로 최근 1년 데이터 수집.
     """
     if api_key is None:
         return pd.read_csv(SAMPLE_SUBWAY_PATH, encoding='utf-8-sig')
 
-    # API 데이터 lag 약 3~7일 고려, 90일치 조회
+    # API 데이터 lag 약 3~7일 고려, 1년치 조회
     dates = [
         (date.today() - timedelta(days=i)).strftime("%Y%m%d")
-        for i in range(5, 96)  # 5~95일 전 (91일 범위)
+        for i in range(5, 371)  # 5~370일 전 (366일 범위)
     ]
 
     records = []
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=20) as executor:
         futures = [executor.submit(_fetch_subway_day, api_key, d) for d in dates]
         for future in as_completed(futures):
             result = future.result()
