@@ -1,0 +1,50 @@
+[
+  {
+    "timestamp": "2026-03-22T14:00:00",
+    "emoji": "💬",
+    "message": "사내 스터디 날씨 프로젝트 주제 탐색 시작",
+    "category": "planning"
+  },
+  {
+    "timestamp": "2026-03-22T14:30:00",
+    "emoji": "🧠",
+    "message": "브레인스토밍 — 문정역 ↔ 몬테비데오 날씨 비교 + 이상 탐지 + 상관관계 아이디어 확정",
+    "category": "planning"
+  },
+  {
+    "timestamp": "2026-03-22T15:00:00",
+    "emoji": "📐",
+    "message": "설계 문서 작성 완료 (Eridian Horizon 디자인 시스템 채택)",
+    "category": "design"
+  },
+  {
+    "timestamp": "2026-03-22T15:30:00",
+    "emoji": "📋",
+    "message": "TDD 기반 구현 계획 작성 완료 (Task 11개)",
+    "category": "planning"
+  },
+  {
+    "timestamp": "2026-03-22T16:00:00",
+    "emoji": "🚀",
+    "message": "프로젝트 초기화 — git init, 폴더 구조, 샘플 데이터 생성",
+    "category": "dev"
+  },
+  {
+    "timestamp": "2026-03-22T16:30:00",
+    "emoji": "✅",
+    "message": "TDD 구현 완료 — 27개 테스트 통과 (감성 멘트, CSV, API 수집, 이상 탐지, 상관분석)",
+    "category": "dev"
+  },
+  {
+    "timestamp": "2026-03-22T17:00:00",
+    "emoji": "🌌",
+    "message": "Streamlit 대시보드 완성 — 히어로/푸터 포함",
+    "category": "dev"
+  },
+  {
+    "timestamp": "2026-03-22T17:30:00",
+    "emoji": "📦",
+    "message": "GitHub 배포 완료 (jamieqa0/weather-project)",
+    "category": "deploy"
+  }
+]
