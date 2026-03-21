@@ -1,0 +1,52 @@
+/* Eridian Horizon — Streamlit 주입용 커스텀 CSS */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #0e0e11;
+  --surface: #19191d;
+  --surface-high: #1f1f23;
+  --primary: #ffe792;
+  --secondary: #5af8fb;
+  --tertiary: #cc97ff;
+  --error: #ff7351;
+  --on-surface: #f3f0f4;
+  --outline: #48474b;
+}
+
+/* 전체 배경 */
+.stApp { background-color: var(--bg) !important; }
+
+/* 헤더 */
+h1, h2, h3 {
+  font-family: 'Space Grotesk', sans-serif !important;
+  color: var(--primary) !important;
+  text-shadow: 0 0 12px rgba(255, 231, 146, 0.4);
+}
+
+/* 본문 텍스트 */
+p, span, div { font-family: 'Manrope', sans-serif !important; color: var(--on-surface); }
+
+/* 메트릭 값 */
+[data-testid="stMetricValue"] {
+  color: var(--secondary) !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  text-shadow: 0 0 8px rgba(90, 248, 251, 0.4);
+}
+
+/* 카드 (glass panel) */
+[data-testid="stMetricContainer"],
+[data-testid="stVerticalBlock"] > div {
+  background: rgba(31, 31, 35, 0.4) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(72, 71, 75, 0.2);
+  border-radius: 8px;
+}
+
+/* 이상치 강조색 */
+.anomaly-text { color: var(--tertiary); text-shadow: 0 0 8px rgba(204, 151, 255, 0.5); }
+
+/* 사이드바 */
+[data-testid="stSidebar"] { background-color: var(--surface) !important; }
+
+/* 구분선 */
+hr { border-color: var(--outline) !important; }
