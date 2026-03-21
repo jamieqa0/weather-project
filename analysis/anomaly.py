@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.ensemble import IsolationForest
 
 FEATURES = ['temperature', 'precipitation', 'humidity', 'wind_speed']
-CONTAMINATION = 0.10
+CONTAMINATION = 0.05
 
 
 def detect_anomalies(df: pd.DataFrame) -> pd.DataFrame:
