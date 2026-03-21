@@ -1,0 +1,25 @@
+import os
+import streamlit as st
+import streamlit.components.v1 as components
+from timeline.builder import build_timeline_html
+
+st.set_page_config(layout="wide", page_title="기후탐정 소개", page_icon="🌌")
+
+# 사이드바 숨기기 + 패딩 제거 (풀페이지 HTML 경험)
+st.markdown("""
+<style>
+  [data-testid="stSidebar"] { display: none; }
+  [data-testid="collapsedControl"] { display: none; }
+  .block-container { padding: 0 !important; max-width: 100% !important; }
+  header { display: none; }
+</style>
+""", unsafe_allow_html=True)
+
+html_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static", "about.html")
+with open(html_path, encoding="utf-8") as f:
+    html_content = f.read()
+
+log_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "timeline", "log.json")
+html_content = html_content.replace('<!-- TIMELINE_PLACEHOLDER -->', build_timeline_html(log_path))
+
+components.html(html_content, height=5500, scrolling=True)
