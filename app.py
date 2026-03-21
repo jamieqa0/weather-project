@@ -86,11 +86,34 @@ def render_footer():
         margin-top: 3rem;
         border-top: 1px solid rgba(72,71,75,0.3);
         color: #767579;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
+        line-height: 1.8;
     ">
-        <p style="margin: 0;">기후탐정 · 사내 스터디 프로젝트</p>
-        <p style="margin: 0.3rem 0 0; color: #48474b;">
-            데이터: Open-Meteo API · 서울 열린데이터광장 샘플 · Eridian Horizon 디자인 시스템
+        <p style="margin: 0 0 0.8rem; font-size: 0.95rem; color: #acaaae;">기후탐정 · 사내 스터디 프로젝트</p>
+        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 0.6rem;">
+            <a href="https://open-meteo.com" target="_blank"
+               style="color: #5af8fb; text-decoration: none;">
+                🌤 Open-Meteo API
+            </a>
+            <a href="https://data.seoul.go.kr" target="_blank"
+               style="color: #5af8fb; text-decoration: none;">
+                🚇 서울 열린데이터광장
+            </a>
+            <a href="https://stitch.withgoogle.com/projects/10551746938995651396" target="_blank"
+               style="color: #5af8fb; text-decoration: none;">
+                🎨 디자인 시스템 (Google Stitch)
+            </a>
+            <a href="https://github.com/jamieqa0/weather-project" target="_blank"
+               style="color: #5af8fb; text-decoration: none;">
+                💻 GitHub
+            </a>
+            <span style="color: #48474b; cursor: default;"
+               title="Claude와의 대화 타임라인 — 준비 중">
+                🤖 Claude 협업 타임라인 (준비 중)
+            </span>
+        </div>
+        <p style="margin: 0; color: #48474b; font-size: 0.75rem;">
+            Built with Python · Streamlit · Plotly · scikit-learn
         </p>
     </div>
     """, unsafe_allow_html=True)
