@@ -1,0 +1,44 @@
+<h2>몬테비데오 미니 카드, 어떤 스타일?</h2>
+<p class="subtitle">섹션 1 하단에 붙는 "지구 반대편" 카드예요. 아주 작게 표시됩니다.</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 1.2rem; background: #19191d; border-radius: 8px; font-family: monospace;">
+      <div style="display: flex; align-items: center; gap: 0.8rem; color: #acaaae; font-size: 0.82rem;">
+        <span style="font-size: 1.2rem;">🌏</span>
+        <span style="color: #767579;">지구 반대편 몬테비데오</span>
+        <span style="margin-left: auto; color: #5af8fb; font-size: 1rem;">22°C ⛅</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A: 한 줄 인라인</h3>
+      <p>아이콘 + 도시명 + 기온·날씨를 한 줄로. 가장 작고 심플.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 1.2rem; background: #19191d; border-radius: 8px;">
+      <div style="border: 1px solid rgba(90,248,251,0.15); border-radius: 8px; padding: 0.8rem 1rem; display: inline-block; min-width: 200px;">
+        <div style="font-size: 0.7rem; color: #767579; margin-bottom: 0.4rem;">🌏 지구 반대편 지금</div>
+        <div style="color: #f3f0f4; font-size: 0.9rem;">몬테비데오 · 22°C · 구름 조금</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B: 작은 박스 카드</h3>
+      <p>테두리 있는 작은 카드. 구분감 있음.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 1.2rem; background: #19191d; border-radius: 8px;">
+      <details style="color: #767579; font-size: 0.82rem;">
+        <summary style="cursor: pointer; color: #acaaae;">🌏 지구 반대편은? (클릭)</summary>
+        <div style="margin-top: 0.5rem; color: #f3f0f4;">몬테비데오 · 22°C · 구름 조금 · 습도 65%</div>
+      </details>
+    </div>
+    <div class="card-body">
+      <h3>C: 접이식 (기본 숨김)</h3>
+      <p>클릭하면 펼쳐짐. 기본은 완전히 숨겨져 있어서 제일 작음.</p>
+    </div>
+  </div>
+</div>
