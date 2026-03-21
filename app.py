@@ -64,15 +64,13 @@ def render_hero():
         border-bottom: 1px solid rgba(72,71,75,0.3);
         margin-bottom: 2rem;
     ">
-        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌌</div>
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🚇</div>
         <h1 style="font-size: 2.8rem; margin: 0; letter-spacing: -0.02em;">기후탐정</h1>
         <p style="color: #acaaae; font-size: 1.05rem; margin-top: 0.6rem;">
-            지구 양 끝 날씨 비교 · 이상 기후 탐지 · 도시 데이터 상관분석
+            박보닥씨의 오늘 출근길을 분석했어요
         </p>
         <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.2rem; font-size: 0.85rem; color: #767579;">
-            <span>📍 문정역, 서울</span>
-            <span style="color: #48474b;">↔</span>
-            <span>📍 몬테비데오, 우루과이</span>
+            <span>📍 문정역, 서울 출근 날씨 리포트</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
