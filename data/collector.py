@@ -26,13 +26,20 @@ def fetch_current_weather(lat: float, lon: float) -> dict:
     data = response.json()
     current = data["current"]
     daily = data["daily"]
+
+    # daily 배열이 비어있을 경우 current 값으로 기본값 설정
+    temp_max = daily["temperature_2m_max"][0] if daily.get("temperature_2m_max") else current["temperature_2m"]
+    temp_min = daily["temperature_2m_min"][0] if daily.get("temperature_2m_min") else current["temperature_2m"]
+    temp_mean = daily["temperature_2m_mean"][0] if daily.get("temperature_2m_mean") else current["temperature_2m"]
+    precip_sum = daily["precipitation_sum"][0] if daily.get("precipitation_sum") else current["precipitation"]
+
     return {
         "temperature": current["temperature_2m"],
-        "temperature_max": daily["temperature_2m_max"][0],
-        "temperature_min": daily["temperature_2m_min"][0],
-        "temperature_mean": daily["temperature_2m_mean"][0],
+        "temperature_max": temp_max,
+        "temperature_min": temp_min,
+        "temperature_mean": temp_mean,
         "precipitation": current["precipitation"],
-        "precipitation_sum": daily["precipitation_sum"][0],
+        "precipitation_sum": precip_sum,
         "humidity": current["relative_humidity_2m"],
         "wind_speed": current["wind_speed_10m"],
         "weather_code": current["weather_code"],
