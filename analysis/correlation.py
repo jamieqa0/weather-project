@@ -13,6 +13,9 @@ def compute_correlation(weather_df: pd.DataFrame, subway_df: pd.DataFrame) -> di
     # 평일만 (월=0 ~ 금=4)
     merged = merged[merged['date'].dt.weekday < 5]
 
+    if len(merged) < 2:
+        return {'pearson': None, 'spearman': None, 'n_samples': 0}
+
     x = merged['temperature'].values
     y = merged['passengers'].values
 

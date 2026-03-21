@@ -123,23 +123,28 @@ def main():
         corr = compute_correlation(hist_df, subway_df)
 
     col3, col4, col5 = st.columns(3)
-    col3.metric("Pearson 상관계수", f"{corr['pearson']:.4f}")
-    col4.metric("Spearman 상관계수", f"{corr['spearman']:.4f}")
+    pearson_str = f"{corr['pearson']:.4f}" if corr['pearson'] is not None else "데이터 없음"
+    spearman_str = f"{corr['spearman']:.4f}" if corr['spearman'] is not None else "데이터 없음"
+    col3.metric("Pearson 상관계수", pearson_str)
+    col4.metric("Spearman 상관계수", spearman_str)
     col5.metric("분석 표본 수 (평일)", f"{corr['n_samples']}일")
 
     merged = pd.merge(hist_df, subway_df, on='date')
-    fig2 = px.scatter(
-        merged, x='temperature', y='passengers',
-        trendline='ols',
-        title='기온 vs 지하철 이용객 수 (평일)',
-        labels={'temperature': '기온 (°C)', 'passengers': '이용객 수'},
-        color_discrete_sequence=['#5af8fb'],
-    )
-    fig2.update_layout(
-        paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
-        font_color='#f3f0f4', title_font_color='#ffe792',
-    )
-    st.plotly_chart(fig2, use_container_width=True)
+    if len(merged) >= 2:
+        fig2 = px.scatter(
+            merged, x='temperature', y='passengers',
+            trendline='ols',
+            title='기온 vs 지하철 이용객 수 (평일)',
+            labels={'temperature': '기온 (°C)', 'passengers': '이용객 수'},
+            color_discrete_sequence=['#5af8fb'],
+        )
+        fig2.update_layout(
+            paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
+            font_color='#f3f0f4', title_font_color='#ffe792',
+        )
+        st.plotly_chart(fig2, use_container_width=True)
+    else:
+        st.info("날씨 데이터와 지하철 데이터의 날짜가 겹치지 않아 차트를 표시할 수 없습니다.")
 
 
 if __name__ == "__main__":
