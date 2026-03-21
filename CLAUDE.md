@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-# 앱 실행
+# 앱 실행 (로컬)
 python -m streamlit run app.py
 
 # 전체 테스트
@@ -18,6 +18,11 @@ python -m pytest tests/test_anomaly.py::test_detects_obvious_outliers -v
 python log.py "메시지" --emoji 🎉 --category dev
 python log.py --list
 ```
+
+**배포 (Streamlit Cloud)**:
+- Secrets 설정 후 `git push` → 자동 배포
+- 배포 전 테스트: 로컬에서 `python -m streamlit run app.py` 실행 후 정상 작동 확인
+- 앱 logs 확인: "Manage app" → Logs 탭
 
 ## 아키텍처
 
@@ -48,7 +53,7 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - **이상 탐지**: `contamination=0.05`, `random_state=42` — 변경 시 `tests/test_anomaly.py`의 샘플 크기(200개) 기준도 함께 검토. Isolation Forest는 7가지 기상 특성(`temp_max`, `temp_min`, `temperature`, `temp_range`, `precipitation`, `humidity`, `wind_speed`)을 사용
 - **상관분석**: 기온과 강수량 모두 분석. 평일 데이터만 사용 (요일 효과 통제). `weather_df`와 `subway_df`의 `date` 컬럼이 같은 형식(`YYYY-MM-DD` 문자열)이어야 merge가 동작함. Streamlit `@st.cache_data` Arrow 직렬화로 인해 문자열 날짜가 datetime64로 변환될 수 있음 — 명시적 `.astype(str)` 변환 필수
 - **지하철 API 범위**: `SEOUL_API_KEY` 있으면 366일(5~370일 전) 병렬 조회 (`max_workers=20`), 없으면 `data/sample/subway.csv` 사용 (2023~2026 평일 데이터)
-- **날씨 API**: Open-Meteo 현재(`current`) + 일일(`daily`) 데이터. 일일 데이터에서 `temperature_2m_min`, `temperature_2m_mean` 함께 조회
+- **날씨 API**: Open-Meteo 현재(`current`) + 일일(`daily`) 데이터. 일일 데이터에서 `temperature_2m_min`, `temperature_2m_mean` 함께 조회. daily 배열이 비어있거나 키가 없으면 current 값으로 기본값 설정 (Streamlit Cloud 호환성)
 - **CSS 인코딩**: `assets/style.css`를 읽을 때 반드시 `encoding='utf-8'` 명시 (Windows cp949 충돌 방지)
 - **Streamlit 캐싱**: 날씨/지하철 API는 `ttl=3600`, 1년 전 날씨는 `ttl=86400`
 
@@ -74,10 +79,19 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 
 ## 환경 변수
 
-`.env` 파일:
+**로컬 개발** (`.env` 파일):
 ```
 SEOUL_API_KEY=...  # 없으면 샘플 데이터로 자동 폴백
 ```
+
+**Streamlit Cloud 배포**:
+1. 앱 우측 하단 "Manage app" 클릭
+2. Settings → Secrets 탭
+3. TOML 형식으로 입력:
+```toml
+SEOUL_API_KEY = "YOUR_API_KEY"
+```
+저장 후 앱 자동 재시작됨.
 
 ## 문서
 
