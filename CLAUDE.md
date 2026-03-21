@@ -8,11 +8,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # 앱 실행 (로컬)
 python -m streamlit run app.py
 
-# 전체 테스트
-python -m pytest tests/ -v
+# 전체 테스트 + 커버리지
+python -m pytest tests/ -v --cov=. --cov-report=term-missing
 
 # 단일 테스트
 python -m pytest tests/test_anomaly.py::test_detects_obvious_outliers -v
+
+# 특정 모듈 커버리지만 확인
+python -m pytest tests/ --cov=data.collector --cov-report=term-missing
 
 # 타임라인 마일스톤 기록
 python log.py "메시지" --emoji 🎉 --category dev
@@ -23,6 +26,32 @@ python log.py --list
 - Secrets 설정 후 `git push` → 자동 배포
 - 배포 전 테스트: 로컬에서 `python -m streamlit run app.py` 실행 후 정상 작동 확인
 - 앱 logs 확인: "Manage app" → Logs 탭
+
+## 테스트 (Test-Driven Development)
+
+### 커버리지 상태
+- **현재**: 100% (92 테스트, 142개 statement 전부 커버)
+- **목표**: 100% 달성 ✅
+- **상세 계획**: `docs/test-improvements.md` 참고
+
+### 테스트 구조
+```
+Phase 1: commentary/generator.py (81% → 100%) ✅
+  - 9개 테스트 추가: 비(61,63,65,80,81,82), 눈(73,75), 온도 범위(0~5°C)
+
+Phase 2: analysis/correlation.py (94% → 100%) ✅
+  - 4개 테스트 추가: 샘플 부족, 겹치지 않는 날짜
+
+Phase 3: data/collector.py (95% → 100%) ✅
+  - 4개 테스트 추가: API 타임아웃, JSON 파싱 에러, 키 누락, 빈 daily 배열
+
+Phase 4: 데이터 정합성 검증 ✅
+  - 5개 테스트 추가: 타입 검증, 범위 검증, 날짜 형식, NaN 없음, merge 일관성
+```
+
+### 주의사항
+- **Pearson 경고**: `test_strong_positive_correlation`에서 강수량 상수 시 경고 발생 — 커버리지에 영향 없음
+- **새 코드 추가 시**: 테스트 커버리지 100% 유지해야 함 (미커버 라인 생기면 프로세스에 따라 테스트 추가)
 
 ## 아키텍처
 
@@ -95,6 +124,7 @@ SEOUL_API_KEY = "YOUR_API_KEY"
 
 ## 문서
 
+- `docs/test-improvements.md` — 테스트 개선 계획 및 진행 상황 (Phase 1-5, 커버리지 분석)
 - `docs/superpowers/specs/` — 설계 문서
 - `docs/superpowers/plans/` — 구현 계획
 - `docs/review-improvements.md` — 코드 리뷰 반영 내역

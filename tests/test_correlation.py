@@ -63,3 +63,54 @@ def test_strong_positive_correlation():
     result = compute_correlation(weather, subway)
     assert result['pearson'] > 0.9
     assert result['spearman'] > 0.9
+
+
+# Phase 2: 추가 커버리지 테스트
+
+def test_insufficient_samples():
+    """병합 후 샘플 수 < 2일 때 early return (라인 17)"""
+    weather = pd.DataFrame({
+        'date': ['2023-01-02'],
+        'temperature': [15.0],
+        'precipitation': [0.0],
+    })
+    subway = pd.DataFrame({
+        'date': ['2023-01-02'],
+        'passengers': [25000],
+    })
+    result = compute_correlation(weather, subway)
+    assert result['pearson'] is None
+    assert result['spearman'] is None
+    assert result['n_samples'] == 0
+
+
+def test_no_matching_dates():
+    """날짜가 겹치지 않을 때 empty merge → early return"""
+    weather = pd.DataFrame({
+        'date': ['2023-01-02', '2023-01-03'],
+        'temperature': [15.0, 16.0],
+        'precipitation': [0.0, 1.0],
+    })
+    subway = pd.DataFrame({
+        'date': ['2024-01-02', '2024-01-03'],
+        'passengers': [25000, 26000],
+    })
+    result = compute_correlation(weather, subway)
+    assert result['pearson'] is None
+    assert result['n_samples'] == 0
+
+
+def test_has_precipitation_correlation():
+    """강수량 상관계수 키가 모두 포함되는지 확인"""
+    w, s = _make_data()
+    result = compute_correlation(w, s)
+    assert 'precipitation_pearson' in result
+    assert 'precipitation_spearman' in result
+
+
+def test_precipitation_correlation_range():
+    """강수량 상관계수도 -1 ~ 1 범위여야 함"""
+    w, s = _make_data()
+    result = compute_correlation(w, s)
+    assert -1.0 <= result['precipitation_pearson'] <= 1.0
+    assert -1.0 <= result['precipitation_spearman'] <= 1.0
