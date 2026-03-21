@@ -46,5 +46,11 @@
     "emoji": "📦",
     "message": "GitHub 배포 완료 (jamieqa0/weather-project)",
     "category": "deploy"
+  },
+  {
+    "timestamp": "2026-03-22T18:00:00",
+    "emoji": "🧩",
+    "message": "Claude Superpowers 스킬 활용 목록 — superpowers:brainstorming (주제 탐색·아이디어 확정) → superpowers:writing-plans (TDD 구현 계획 11개 태스크) → superpowers:test-driven-development (Red-Green-Refactor 사이클) → superpowers:subagent-driven-development (독립 태스크 병렬 실행) → superpowers:requesting-code-review + superpowers:receiving-code-review (크롬 플러그인 코드 리뷰 반영) → superpowers:systematic-debugging (흰화면·인코딩 원인 추적) → init (CLAUDE.md 자동 생성)",
+    "category": "other"
   }
 ]

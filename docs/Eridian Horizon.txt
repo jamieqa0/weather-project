@@ -1,0 +1,2495 @@
+<!-- Design System -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Deep-Space Radar | Interstellar Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-container": "#00696b",
+                "surface-container-high": "#1f1f23",
+                "primary-fixed": "#ffd709",
+                "secondary-fixed-dim": "#46eaed",
+                "tertiary-fixed": "#ce9aff",
+                "on-primary": "#655400",
+                "secondary": "#5af8fb",
+                "on-primary-container": "#5b4b00",
+                "on-error-container": "#ffd2c8",
+                "on-secondary-container": "#d9ffff",
+                "tertiary-fixed-dim": "#c588fe",
+                "on-secondary-fixed": "#004748",
+                "surface-container-low": "#131316",
+                "error": "#ff7351",
+                "on-tertiary-container": "#360061",
+                "on-tertiary": "#47007b",
+                "primary-container": "#ffd709",
+                "primary-dim": "#efc900",
+                "primary": "#ffe792",
+                "on-secondary-fixed-variant": "#006668",
+                "inverse-surface": "#fcf8fd",
+                "on-secondary": "#005b5d",
+                "surface-container-highest": "#25252a",
+                "tertiary-container": "#c285fb",
+                "on-error": "#450900",
+                "surface-container-lowest": "#000000",
+                "tertiary": "#cc97ff",
+                "error-container": "#b92902",
+                "surface-dim": "#0e0e11",
+                "surface-container": "#19191d",
+                "secondary-fixed": "#5af8fb",
+                "outline-variant": "#48474b",
+                "on-background": "#f3f0f4",
+                "background": "#0e0e11",
+                "surface": "#0e0e11",
+                "secondary-dim": "#46eaed",
+                "inverse-primary": "#705e00",
+                "surface-tint": "#ffe792",
+                "inverse-on-surface": "#555458",
+                "primary-fixed-dim": "#efc900",
+                "on-tertiary-fixed": "#270048",
+                "on-primary-fixed-variant": "#665500",
+                "surface-bright": "#2c2c30",
+                "on-surface-variant": "#acaaae",
+                "on-tertiary-fixed-variant": "#54118a",
+                "on-surface": "#f3f0f4",
+                "surface-variant": "#25252a",
+                "on-primary-fixed": "#453900",
+                "error-dim": "#d53d18",
+                "outline": "#767579",
+                "tertiary-dim": "#bf83f8"
+              },
+              fontFamily: {
+                "headline": ["Space Grotesk"],
+                "body": ["Manrope"],
+                "label": ["Space Grotesk"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #0e0e11;
+            color: #f3f0f4;
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 35, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(72, 71, 75, 0.15);
+        }
+        .glow-secondary {
+            text-shadow: 0 0 10px rgba(90, 248, 251, 0.5);
+        }
+        .glow-primary {
+            text-shadow: 0 0 10px rgba(255, 231, 146, 0.5);
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1.2fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 1024px) {
+            .asymmetric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl dark:bg-zinc-950/30 bg-gradient-to-b from-zinc-900/50 to-transparent shadow-[0_20px_50px_rgba(90,248,251,0.08)]">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-[1440px] mx-auto">
+<div class="text-xl font-bold tracking-tighter text-[#ffe792] drop-shadow-[0_0_8px_rgba(255,231,146,0.4)] font-headline">
+                INTERSTELLAR INTELLIGENCE
+            </div>
+<div class="hidden md:flex items-center gap-10">
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">MISSIONS</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-[#5af8fb] border-b-2 border-[#5af8fb] pb-1 shadow-[0_4px_10px_rgba(90,248,251,0.3)]" href="#">ATMOSPHERE</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">STARMAP</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">CHRONOS</a>
+</div>
+<div class="flex items-center gap-4 text-secondary">
+<span class="material-symbols-outlined cursor-pointer hover:bg-white/5 p-2 rounded-full transition-all duration-300">notifications_active</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-white/5 p-2 rounded-full transition-all duration-300">settings</span>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-12 px-8 max-w-[1440px] mx-auto">
+<!-- Header Section -->
+<header class="mb-12">
+<div class="flex flex-col md:flex-row justify-between items-end gap-6">
+<div>
+<p class="font-label text-secondary tracking-widest text-xs mb-2">SYSTEM.RADAR.ACTIVE</p>
+<h1 class="font-headline text-5xl font-bold tracking-tight text-on-surface leading-none">Deep-Space Radar</h1>
+<p class="font-body text-on-surface-variant mt-4 max-w-xl">Real-time atmospheric telemetry from the Eridian Horizon. Monitoring stellar wind fluctuations and ionizing radiation density across the outer rim.</p>
+</div>
+<div class="flex gap-4">
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+<div class="text-right">
+<p class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Local Star Time</p>
+<p class="font-headline text-xl text-primary glow-primary">14:42:09</p>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl">schedule</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Dashboard Layout -->
+<div class="asymmetric-grid">
+<!-- Left Column: Critical Metrics -->
+<div class="space-y-6">
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 blur-[60px] rounded-full"></div>
+<p class="font-label text-xs text-secondary mb-4 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                        LIVE TELEMETRY
+                    </p>
+<div class="space-y-8">
+<div>
+<label class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Stellar Wind Velocity</label>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-4xl font-bold text-on-surface">482.1</span>
+<span class="font-label text-sm text-secondary">km/s</span>
+</div>
+<div class="w-full h-1 bg-surface-container-low mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4 shadow-[0_0_8px_#5af8fb]"></div>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Pressure Gradient</label>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-4xl font-bold text-on-surface">1,029</span>
+<span class="font-label text-sm text-tertiary">hPa</span>
+</div>
+<div class="w-full h-1 bg-surface-container-low mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-1/2 shadow-[0_0_8px_#cc97ff]"></div>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Ionization Level</label>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-4xl font-bold text-on-surface">Critical</span>
+<span class="material-symbols-outlined text-error text-xl ml-2">warning</span>
+</div>
+<p class="text-[10px] text-error mt-1 font-body">X-CLASS FLARE IMMINENT</p>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-label text-xs text-on-surface mb-6 tracking-widest">ATMOSPHERIC COMPOSITION</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-xs">
+<span class="text-zinc-400">Nitrogen</span>
+<span class="text-on-surface">78.08%</span>
+</div>
+<div class="w-full h-0.5 bg-surface-container-lowest">
+<div class="h-full bg-zinc-500 w-[78%]"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-zinc-400">Oxygen</span>
+<span class="text-on-surface">20.95%</span>
+</div>
+<div class="w-full h-0.5 bg-surface-container-lowest">
+<div class="h-full bg-primary w-[21%]"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-zinc-400">Argon</span>
+<span class="text-on-surface">0.93%</span>
+</div>
+<div class="w-full h-0.5 bg-surface-container-lowest">
+<div class="h-full bg-secondary w-[1%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Column: Main Data Visualizer -->
+<div class="glass-panel rounded-xl flex flex-col min-h-[600px] relative">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<div>
+<h2 class="font-headline text-xl font-medium">Solar Radiation Trends</h2>
+<p class="text-xs text-zinc-500 font-body">Deep-space sensor array #04-ALPHA</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-[10px] font-label rounded-md bg-secondary/10 text-secondary border border-secondary/20">24H</button>
+<button class="px-3 py-1 text-[10px] font-label rounded-md text-zinc-500 hover:text-on-surface transition-colors">7D</button>
+<button class="px-3 py-1 text-[10px] font-label rounded-md text-zinc-500 hover:text-on-surface transition-colors">30D</button>
+</div>
+</div>
+<div class="flex-1 p-8 flex flex-col justify-end relative">
+<!-- Faux Chart Representation -->
+<div class="absolute inset-x-8 inset-y-12 flex items-end justify-between overflow-hidden">
+<!-- Background Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+</div>
+<!-- Data Lines & Points -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 800 400">
+<defs>
+<lineargradient id="lineGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffe792" stop-opacity="0.5"></stop>
+<stop offset="100%" stop-color="#ffe792" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Secondary Blue Trend -->
+<path class="drop-shadow-[0_0_10px_#5af8fb]" d="M0,300 Q100,280 200,320 T400,250 T600,280 T800,150" fill="none" stroke="#5af8fb" stroke-width="2"></path>
+<!-- Primary Gold Trend -->
+<path d="M0,350 Q150,320 300,340 T450,280 T600,150 T800,50" fill="url(#lineGrad)" stroke="none"></path>
+<path class="drop-shadow-[0_0_15px_#ffe792]" d="M0,350 Q150,320 300,340 T450,280 T600,150 T800,50" fill="none" stroke="#ffe792" stroke-width="3"></path>
+<!-- Glowing Data Points -->
+<circle class="animate-pulse" cx="200" cy="320" fill="#5af8fb" r="4"></circle>
+<circle class="animate-pulse" cx="600" cy="150" fill="#ffe792" r="4"></circle>
+<circle cx="800" cy="50" fill="#ffe792" r="6"></circle>
+</svg>
+</div>
+<div class="flex justify-between w-full font-label text-[10px] text-zinc-500 mt-4 relative z-10">
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>12:00</span>
+<span>16:00</span>
+<span>20:00</span>
+<span>24:00</span>
+</div>
+</div>
+<div class="p-6 bg-surface-container-low/50 rounded-b-xl border-t border-outline-variant/10">
+<div class="grid grid-cols-3 gap-8">
+<div>
+<p class="text-[10px] text-zinc-500 font-label uppercase">Max Flux</p>
+<p class="text-xl font-headline text-on-surface">1.28 <span class="text-xs text-zinc-400">mW/m²</span></p>
+</div>
+<div>
+<p class="text-[10px] text-zinc-500 font-label uppercase">Mean Variance</p>
+<p class="text-xl font-headline text-on-surface">± 0.04</p>
+</div>
+<div>
+<p class="text-[10px] text-zinc-500 font-label uppercase">Alert Level</p>
+<p class="text-xl font-headline text-error">ELEVATED</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: System Logs & Map -->
+<div class="space-y-6">
+<div class="glass-panel p-6 rounded-xl aspect-square overflow-hidden relative">
+<img alt="Star Map" class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Digital representation of stars and nebulae in dark space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjbn9vtnHC8yibKqKbtZiQI-T1rk2xYJtcQlMyO8yS80h84GdBHX6N1JcpGoXsWuRRF70lrRefuxYhIMaabYtvVCkGg9RHJO5rxBzmN6dn0C8nhWTlZvoQfviVRLvD3wrSqqJupCJrdCcUFvzX4g6cTrc4Sm2QScyYBt85s8-eQi2MFPNT_PtaCkBHcISoQw2kfWnWlbRglqNuqw_TRKmdVLeEL4gNAjydYMdBis3RCGkCuLNiy0I-CWaJNbwathTL6aK6hjisDP8x"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="relative z-10 h-full flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<h3 class="font-label text-xs tracking-widest text-secondary">RADAR.MAP</h3>
+<span class="material-symbols-outlined text-secondary text-lg">my_location</span>
+</div>
+<div>
+<p class="font-label text-[10px] text-zinc-400">Tracking Sector</p>
+<p class="font-headline text-lg text-on-surface">ERIDIAN_SECTOR_7G</p>
+</div>
+</div>
+<!-- Radar Ping Overlay -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="w-32 h-32 border border-secondary/30 rounded-full animate-ping"></div>
+<div class="absolute inset-0 w-32 h-32 border border-secondary/20 rounded-full scale-150 opacity-0 animate-pulse"></div>
+</div>
+</div>
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="p-4 bg-white/5 border-b border-outline-variant/10">
+<h3 class="font-label text-xs tracking-widest text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span>
+                            SYSTEM_LOGS
+                        </h3>
+</div>
+<div class="p-4 space-y-4 max-h-[250px] overflow-y-auto scrollbar-hide">
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:40</span>
+<p class="text-[10px] font-body text-zinc-400">Sensor recalibration complete for Array Alpha-9.</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:38</span>
+<p class="text-[10px] font-body text-error">Warning: Rapid pressure drop detected in Sector 3.</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:35</span>
+<p class="text-[10px] font-body text-zinc-400">Atmospheric ionization baseline established at 42.1%.</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:30</span>
+<p class="text-[10px] font-body text-zinc-400">Connecting to celestial observer uplink...</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:28</span>
+<p class="text-[10px] font-body text-zinc-400">Heartbeat signal received from satellite node 12.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Analysis Table (Bottom) -->
+<section class="mt-12">
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="p-6 border-b border-outline-variant/10">
+<h2 class="font-headline text-xl">Chronological Drift Analysis</h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low/80">
+<tr>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Epoch (T+)</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Solar Radiance</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Neutrino Density</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Atm. Stability</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-headline text-sm text-secondary">4,281.04</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">1,361 W/m²</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">6.5e10/cm²</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-full"></div>
+</div>
+<span class="text-[10px] text-zinc-400">NOMINAL</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded text-[10px] font-label bg-secondary/10 text-secondary">ACTIVE</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-headline text-sm text-secondary">4,281.02</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">1,358 W/m²</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">6.2e10/cm²</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+<span class="text-[10px] text-zinc-400">STABLE</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded text-[10px] font-label bg-secondary/10 text-secondary">ACTIVE</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-headline text-sm text-secondary">4,281.00</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">1,340 W/m²</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">5.8e10/cm²</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-error w-1/4"></div>
+</div>
+<span class="text-[10px] text-zinc-400">DEGRADED</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded text-[10px] font-label bg-error/10 text-error">ARCHIVED</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Section -->
+<footer class="w-full border-t border-zinc-800/30 bg-[#0e0e11] dark:bg-zinc-950">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-8 w-full">
+<div class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 mb-4 md:mb-0">
+                © 2145 CELESTIAL OBSERVER | MISSION ELAPSED TIME: 4,281 DAYS
+            </div>
+<div class="flex gap-8">
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">TECHNICAL_STATUS: NOMINAL</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">ENCRYPTED_UPLINK</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">SYSTEM_LOGS</a>
+</div>
+</div>
+</footer>
+<!-- FAB (Suppressed on Details Page based on logic rules, but provided as small interactive shortcut) -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-[0_10px_20px_rgba(255,231,146,0.3)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add_chart</span>
+</button>
+</div>
+</body></html>
+
+<!-- Deep-Space Radar - Detailed Forecast -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eridian Horizon | Observation Deck</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#00696b",
+              "surface-container-high": "#1f1f23",
+              "primary-fixed": "#ffd709",
+              "secondary-fixed-dim": "#46eaed",
+              "tertiary-fixed": "#ce9aff",
+              "on-primary": "#655400",
+              "secondary": "#5af8fb",
+              "on-primary-container": "#5b4b00",
+              "on-error-container": "#ffd2c8",
+              "on-secondary-container": "#d9ffff",
+              "tertiary-fixed-dim": "#c588fe",
+              "on-secondary-fixed": "#004748",
+              "surface-container-low": "#131316",
+              "error": "#ff7351",
+              "on-tertiary-container": "#360061",
+              "on-tertiary": "#47007b",
+              "primary-container": "#ffd709",
+              "primary-dim": "#efc900",
+              "primary": "#ffe792",
+              "on-secondary-fixed-variant": "#006668",
+              "inverse-surface": "#fcf8fd",
+              "on-secondary": "#005b5d",
+              "surface-container-highest": "#25252a",
+              "tertiary-container": "#c285fb",
+              "on-error": "#450900",
+              "surface-container-lowest": "#000000",
+              "tertiary": "#cc97ff",
+              "error-container": "#b92902",
+              "surface-dim": "#0e0e11",
+              "surface-container": "#19191d",
+              "secondary-fixed": "#5af8fb",
+              "outline-variant": "#48474b",
+              "on-background": "#f3f0f4",
+              "background": "#0e0e11",
+              "surface": "#0e0e11",
+              "secondary-dim": "#46eaed",
+              "inverse-primary": "#705e00",
+              "surface-tint": "#ffe792",
+              "inverse-on-surface": "#555458",
+              "primary-fixed-dim": "#efc900",
+              "on-tertiary-fixed": "#270048",
+              "on-primary-fixed-variant": "#665500",
+              "surface-bright": "#2c2c30",
+              "on-surface-variant": "#acaaae",
+              "on-tertiary-fixed-variant": "#54118a",
+              "on-surface": "#f3f0f4",
+              "surface-variant": "#25252a",
+              "on-primary-fixed": "#453900",
+              "error-dim": "#d53d18",
+              "outline": "#767579",
+              "tertiary-dim": "#bf83f8"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(31, 31, 35, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(90, 248, 251, 0.15);
+        }
+        .glow-secondary {
+            box-shadow: 0 0 20px rgba(90, 248, 251, 0.1);
+        }
+        .nebula-bg {
+            background: radial-gradient(circle at 20% 30%, rgba(204, 151, 255, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(90, 248, 251, 0.05) 0%, transparent 50%),
+                        #0e0e11;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(90, 248, 251, 0.2), transparent);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary/30 nebula-bg min-h-screen">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl dark:bg-zinc-950/30 bg-gradient-to-b from-zinc-900/50 to-transparent shadow-[0_20px_50px_rgba(90,248,251,0.08)]">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-[1440px] mx-auto">
+<div class="text-xl font-bold tracking-tighter text-[#ffe792] drop-shadow-[0_0_8px_rgba(255,231,146,0.4)] font-headline">INTERSTELLAR INTELLIGENCE</div>
+<div class="hidden md:flex items-center gap-12 font-['Space_Grotesk'] tracking-widest uppercase text-xs">
+<a class="text-[#5af8fb] border-b-2 border-[#5af8fb] pb-1 shadow-[0_4px_10px_rgba(90,248,251,0.3)]" href="#">MISSIONS</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#">ATMOSPHERE</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#">STARMAP</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#">CHRONOS</a>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-yellow-200 dark:text-[#ffe792] cursor-pointer hover:bg-white/5 p-2 rounded-full transition-all duration-300">notifications_active</span>
+<span class="material-symbols-outlined text-yellow-200 dark:text-[#ffe792] cursor-pointer hover:bg-white/5 p-2 rounded-full transition-all duration-300">settings</span>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-8 max-w-[1440px] mx-auto relative overflow-hidden">
+<!-- System Log Overlay -->
+<div class="absolute top-40 right-10 text-[10px] font-label tracking-[0.2em] text-secondary/30 pointer-events-none select-none uppercase space-y-2 max-w-[200px]">
+<p>&gt; SYSLOG_INIT: SUCCESS</p>
+<p>&gt; ENCRYPTED_HANDSHAKE: OK</p>
+<p>&gt; SIGNAL_LATENCY: 14.2ms</p>
+<p>&gt; RAD_DETECTOR: STANDBY</p>
+<p>&gt; LOCAL_TEMP: NOMINAL</p>
+</div>
+<!-- Hero: Current Surface Conditions -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+<div class="lg:col-span-8 glass-panel rounded-xl p-10 relative overflow-hidden border-l-4 border-l-secondary">
+<div class="scanline opacity-20"></div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
+<div>
+<h2 class="font-label text-secondary text-xs tracking-[0.3em] uppercase mb-2">Observation Deck</h2>
+<h1 class="font-headline text-6xl md:text-7xl font-bold tracking-tight text-on-surface">ERIDIAN<br/>SURFACE</h1>
+</div>
+<div class="mt-6 md:mt-0 glass-panel px-6 py-4 rounded-lg flex items-center gap-4 border-secondary/20">
+<span class="material-symbols-outlined text-primary text-3xl" data-weight="fill">wb_sunny</span>
+<div>
+<p class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Orbital Phase</p>
+<p class="font-headline text-lg text-primary">Zenith High</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="group">
+<p class="font-label text-xs text-secondary/70 uppercase tracking-widest mb-1">Temperature</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-light text-on-surface">342</span>
+<span class="font-headline text-xl text-primary font-bold">K</span>
+</div>
+<div class="w-full bg-surface-container-low h-1 mt-4 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%] group-hover:w-[70%] transition-all duration-700"></div>
+</div>
+</div>
+<div class="group">
+<p class="font-label text-xs text-secondary/70 uppercase tracking-widest mb-1">Pressure</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-light text-on-surface">2.4</span>
+<span class="font-headline text-xl text-secondary font-bold">atm</span>
+</div>
+<div class="w-full bg-surface-container-low h-1 mt-4 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[42%] group-hover:w-[48%] transition-all duration-700"></div>
+</div>
+</div>
+<div class="group">
+<p class="font-label text-xs text-secondary/70 uppercase tracking-widest mb-1">Radiation</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-5xl font-light text-on-surface">1.2</span>
+<span class="font-headline text-xl text-error font-bold">mSv</span>
+</div>
+<div class="w-full bg-surface-container-low h-1 mt-4 rounded-full overflow-hidden">
+<div class="bg-error h-full w-[12%] group-hover:w-[15%] transition-all duration-700"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Access / Atmospheric Composition -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<div class="glass-panel rounded-xl p-8 flex-1 border-r-2 border-r-primary/30">
+<h3 class="font-label text-xs tracking-widest text-on-surface-variant uppercase mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">science</span> Atmosphere Composition
+                    </h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="font-label text-sm text-on-surface">Ammonia (NH3)</span>
+<span class="font-headline text-primary">82%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-sm text-on-surface">Nitrogen (N2)</span>
+<span class="font-headline text-secondary">14%</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label text-sm text-on-surface">Methane (CH4)</span>
+<span class="font-headline text-tertiary">4%</span>
+</div>
+</div>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold py-6 px-8 rounded-xl flex items-center justify-between group hover:scale-[1.02] transition-transform">
+<span class="tracking-widest uppercase">Launch Surface Probe</span>
+<span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">rocket_launch</span>
+</button>
+</div>
+</section>
+<!-- Bento Grid: Forecast & Data Analytics -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- 7-Day Orbital Forecast -->
+<div class="lg:col-span-3 glass-panel rounded-xl p-8">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-label text-sm tracking-[0.2em] text-on-surface uppercase font-bold">7-Day Orbital Forecast</h3>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-primary/20"></div>
+<div class="w-3 h-3 rounded-full bg-secondary/40"></div>
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+<!-- Day Cards -->
+<div class="surface-container-low p-4 rounded-lg flex flex-col items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group border border-transparent hover:border-secondary/20">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sol 421</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<div class="text-center">
+<p class="font-headline text-xl text-on-surface">345K</p>
+<p class="font-label text-[10px] text-secondary">Stable</p>
+</div>
+</div>
+<div class="surface-container-low p-4 rounded-lg flex flex-col items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group border border-transparent hover:border-secondary/20">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sol 422</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">wb_twilight</span>
+<div class="text-center">
+<p class="font-headline text-xl text-on-surface">338K</p>
+<p class="font-label text-[10px] text-secondary">Haze</p>
+</div>
+</div>
+<div class="surface-container-low p-4 rounded-lg flex flex-col items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group border border-transparent hover:border-secondary/20">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sol 423</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">cloudy_snowing</span>
+<div class="text-center">
+<p class="font-headline text-xl text-on-surface">331K</p>
+<p class="font-label text-[10px] text-error">Ion Storm</p>
+</div>
+</div>
+<div class="surface-container-low p-4 rounded-lg flex flex-col items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group border border-transparent hover:border-secondary/20">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sol 424</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<div class="text-center">
+<p class="font-headline text-xl text-on-surface">348K</p>
+<p class="font-label text-[10px] text-secondary">Peak</p>
+</div>
+</div>
+<div class="surface-container-low p-4 rounded-lg flex flex-col items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group border border-transparent hover:border-secondary/20">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sol 425</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">nights_stay</span>
+<div class="text-center">
+<p class="font-headline text-xl text-on-surface">312K</p>
+<p class="font-label text-[10px] text-secondary">Clear</p>
+</div>
+</div>
+<div class="surface-container-low p-4 rounded-lg flex flex-col items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group border border-transparent hover:border-secondary/20">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sol 426</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<div class="text-center">
+<p class="font-headline text-xl text-on-surface">344K</p>
+<p class="font-label text-[10px] text-secondary">Nominal</p>
+</div>
+</div>
+<div class="surface-container-low p-4 rounded-lg flex flex-col items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group border border-transparent hover:border-secondary/20">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Sol 427</span>
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">grain</span>
+<div class="text-center">
+<p class="font-headline text-xl text-on-surface">340K</p>
+<p class="font-label text-[10px] text-secondary">Mist</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Scientific Metric Widget -->
+<div class="lg:col-span-1 glass-panel rounded-xl p-8 flex flex-col justify-between border-t-2 border-t-tertiary/30">
+<div>
+<h3 class="font-label text-xs tracking-widest text-on-surface-variant uppercase mb-4">Neutrino Density</h3>
+<div class="flex items-center gap-3 mb-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-headline text-3xl text-on-surface">18.42</span>
+</div>
+<p class="text-[10px] font-label text-secondary uppercase tracking-tighter italic">"Astrophage active presence detected"</p>
+</div>
+<div class="mt-8">
+<div class="flex items-end gap-1 h-20">
+<div class="flex-1 bg-tertiary/20 h-[30%] rounded-sm"></div>
+<div class="flex-1 bg-tertiary/40 h-[50%] rounded-sm"></div>
+<div class="flex-1 bg-tertiary/30 h-[40%] rounded-sm"></div>
+<div class="flex-1 bg-tertiary/60 h-[70%] rounded-sm"></div>
+<div class="flex-1 bg-tertiary/80 h-[90%] rounded-sm"></div>
+<div class="flex-1 bg-secondary h-[60%] rounded-sm"></div>
+<div class="flex-1 bg-primary h-[85%] rounded-sm"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Content: Visuals & System Status -->
+<section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="md:col-span-2 glass-panel rounded-xl overflow-hidden h-[300px] relative">
+<img alt="Eridian Landscape View" class="w-full h-full object-cover opacity-60" data-alt="Deep space nebula with vibrant purple and cyan clouds" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyFtQqY8eBv8Ul9Xg9hcNd8OwB8fx3HuDQkxGTXsHkv-yW3yxzG5DJNeWj4x7d21KG2-vE-309HolAuUit6RH4KQUHH1i5CH_cf6LVY8bvL7FtDkfVtvmdtuKA4rbKEjc-5b-CYPkng5EBrv9QtlLv5TSyDasPKHqmvmy8bLKtSPWKJz9_c6LFHqjRZcXOHZ97vUMvMp_W0C8YcY_PWw3f6Ikel4-pCcpC_Udik4GAEKAh8QioJxaIe6yLwGLNOeAEMSD3lP3A8PTG"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<span class="px-3 py-1 bg-secondary text-on-secondary text-[10px] font-bold tracking-widest uppercase rounded mb-3 inline-block">Live Feed: Sector 7G</span>
+<h4 class="font-headline text-2xl font-bold text-on-surface">Petrova Point Observation</h4>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-8">
+<h3 class="font-label text-xs tracking-widest text-on-surface-variant uppercase mb-6">Mission Alerts</h3>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-error/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-error text-xl">warning</span>
+</div>
+<div>
+<p class="font-headline text-sm font-bold text-on-surface">High Radiation Alert</p>
+<p class="text-[10px] font-body text-on-surface-variant mt-1">Sol 423 predicted flare intensity +200%.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-secondary text-xl">task_alt</span>
+</div>
+<div>
+<p class="font-headline text-sm font-bold text-on-surface">Probe Calibration OK</p>
+<p class="text-[10px] font-body text-on-surface-variant mt-1">All sensors reporting nominal variance.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary text-xl">solar_power</span>
+</div>
+<div>
+<p class="font-headline text-sm font-bold text-on-surface">Power Flux Stable</p>
+<p class="text-[10px] font-body text-on-surface-variant mt-1">Astrophage consumption at 4.2kg/hr.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-zinc-800/30 bg-[#0e0e11] dark:bg-zinc-950">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-8 w-full">
+<div class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 uppercase mb-4 md:mb-0">
+                © 2145 CELESTIAL OBSERVER | MISSION ELAPSED TIME: 4,281 DAYS
+            </div>
+<div class="flex gap-8 font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light">
+<a class="text-zinc-500 hover:text-[#5af8fb] hover:tracking-[0.25em] transition-all duration-500 uppercase" href="#">TECHNICAL_STATUS: NOMINAL</a>
+<a class="text-zinc-500 hover:text-[#5af8fb] hover:tracking-[0.25em] transition-all duration-500 uppercase" href="#">ENCRYPTED_UPLINK</a>
+<a class="text-zinc-500 hover:text-[#5af8fb] hover:tracking-[0.25em] transition-all duration-500 uppercase" href="#">SYSTEM_LOGS</a>
+</div>
+</div>
+</footer>
+</body></html>
+
+<!-- Observation Deck - Main Dashboard -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eridian Horizon | Mission Protocol</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#00696b",
+                        "surface-container-high": "#1f1f23",
+                        "primary-fixed": "#ffd709",
+                        "secondary-fixed-dim": "#46eaed",
+                        "tertiary-fixed": "#ce9aff",
+                        "on-primary": "#655400",
+                        "secondary": "#5af8fb",
+                        "on-primary-container": "#5b4b00",
+                        "on-error-container": "#ffd2c8",
+                        "on-secondary-container": "#d9ffff",
+                        "tertiary-fixed-dim": "#c588fe",
+                        "on-secondary-fixed": "#004748",
+                        "surface-container-low": "#131316",
+                        "error": "#ff7351",
+                        "on-tertiary-container": "#360061",
+                        "on-tertiary": "#47007b",
+                        "primary-container": "#ffd709",
+                        "primary-dim": "#efc900",
+                        "primary": "#ffe792",
+                        "on-secondary-fixed-variant": "#006668",
+                        "inverse-surface": "#fcf8fd",
+                        "on-secondary": "#005b5d",
+                        "surface-container-highest": "#25252a",
+                        "tertiary-container": "#c285fb",
+                        "on-error": "#450900",
+                        "surface-container-lowest": "#000000",
+                        "tertiary": "#cc97ff",
+                        "error-container": "#b92902",
+                        "surface-dim": "#0e0e11",
+                        "surface-container": "#19191d",
+                        "secondary-fixed": "#5af8fb",
+                        "outline-variant": "#48474b",
+                        "on-background": "#f3f0f4",
+                        "background": "#0e0e11",
+                        "surface": "#0e0e11",
+                        "secondary-dim": "#46eaed",
+                        "inverse-primary": "#705e00",
+                        "surface-tint": "#ffe792",
+                        "inverse-on-surface": "#555458",
+                        "primary-fixed-dim": "#efc900",
+                        "on-tertiary-fixed": "#270048",
+                        "on-primary-fixed-variant": "#665500",
+                        "surface-bright": "#2c2c30",
+                        "on-surface-variant": "#acaaae",
+                        "on-tertiary-fixed-variant": "#54118a",
+                        "on-surface": "#f3f0f4",
+                        "surface-variant": "#25252a",
+                        "on-primary-fixed": "#453900",
+                        "error-dim": "#d53d18",
+                        "outline": "#767579",
+                        "tertiary-dim": "#bf83f8"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(37, 37, 42, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(72, 71, 75, 0.15);
+        }
+        .glow-secondary {
+            text-shadow: 0 0 10px rgba(90, 248, 251, 0.4);
+        }
+        .glow-primary {
+            text-shadow: 0 0 10px rgba(255, 231, 146, 0.4);
+        }
+        body {
+            background-color: #0e0e11;
+            color: #f3f0f4;
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl dark:bg-zinc-950/30 bg-gradient-to-b from-zinc-900/50 to-transparent shadow-[0_20px_50px_rgba(90,248,251,0.08)]">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-[1440px] mx-auto">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold tracking-tighter text-[#ffe792] drop-shadow-[0_0_8px_rgba(255,231,146,0.4)] font-headline">INTERSTELLAR INTELLIGENCE</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#5af8fb] border-b-2 border-[#5af8fb] pb-1 shadow-[0_4px_10px_rgba(90,248,251,0.3)] font-label tracking-widest uppercase text-xs" href="#">MISSIONS</a>
+<a class="text-zinc-400 hover:text-white transition-colors font-label tracking-widest uppercase text-xs" href="#">ATMOSPHERE</a>
+<a class="text-zinc-400 hover:text-white transition-colors font-label tracking-widest uppercase text-xs" href="#">STARMAP</a>
+<a class="text-zinc-400 hover:text-white transition-colors font-label tracking-widest uppercase text-xs" href="#">CHRONOS</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-zinc-400 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-zinc-400 hover:text-secondary transition-colors relative">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow pt-24 pb-12 px-6 md:px-12 max-w-[1440px] mx-auto w-full">
+<!-- Header Section -->
+<header class="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
+<div class="max-w-2xl">
+<div class="inline-flex items-center gap-2 bg-surface-container-highest px-3 py-1 rounded-full mb-4">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-[10px] font-label tracking-[0.2em] text-secondary uppercase">Status: Live Uplink</span>
+</div>
+<h1 class="text-5xl md:text-7xl font-headline font-bold text-on-surface tracking-tighter mb-4">MISSION PROTOCOL</h1>
+<p class="text-on-surface-variant text-lg font-light leading-relaxed">
+                    Planetary meteorological assessment for the Eridian Quadrant. Real-time atmospheric composition, gravimetric anomalies, and planetary habitability verification.
+                </p>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label text-xs text-secondary-fixed uppercase tracking-widest mb-1">STARDATE: 2145.08.12</span>
+<span class="font-label text-3xl font-bold text-primary glow-primary">Q4 REPORT</span>
+</div>
+</header>
+<!-- Bento Grid Reports -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Primary Sector Card: Eridis Prime -->
+<div class="md:col-span-8 glass-card rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-9xl">public</span>
+</div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-12">
+<div>
+<h2 class="text-3xl font-headline font-bold text-on-surface mb-1">ERIDIS PRIME</h2>
+<p class="text-xs font-label tracking-widest text-secondary uppercase">Sector 01-A | Primary Habitation Target</p>
+</div>
+<div class="text-right">
+<div class="text-4xl font-headline font-bold text-primary">-24°C</div>
+<div class="text-[10px] font-label text-on-surface-variant">MEAN SURFACE TEMP</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+<div>
+<span class="text-[10px] font-label text-on-surface-variant block mb-2 uppercase tracking-wider">Atmospheric Composition</span>
+<div class="space-y-3">
+<div class="w-full h-1 bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[72%]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label">
+<span class="text-on-surface">Nitrogen</span>
+<span class="text-secondary">72%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-low rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[18%]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label">
+<span class="text-on-surface">Oxygen</span>
+<span class="text-tertiary">18%</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col justify-center border-l border-outline-variant/20 pl-8">
+<span class="text-[10px] font-label text-on-surface-variant block mb-1 uppercase tracking-wider">Gravity Anomaly</span>
+<div class="text-2xl font-headline font-bold text-on-surface">0.982G</div>
+<div class="flex items-center gap-1 text-[10px] text-error font-label">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+                                +0.003 VARIANCE
+                            </div>
+</div>
+<div class="flex flex-col justify-center border-l border-outline-variant/20 pl-8">
+<span class="text-[10px] font-label text-on-surface-variant block mb-1 uppercase tracking-wider">Habitability Index</span>
+<div class="text-4xl font-headline font-bold text-primary glow-primary">8.4/10</div>
+<span class="text-[10px] font-label text-secondary uppercase tracking-[0.2em]">SUSTAINABLE</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-md font-label text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all">VIEW FULL TELEMETRY</button>
+<button class="border border-secondary/30 text-secondary px-6 py-2 rounded-md font-label text-xs font-bold uppercase tracking-widest hover:bg-secondary/10 transition-all">SATELLITE LOGS</button>
+</div>
+</div>
+</div>
+<!-- Secondary Card: Moon X-41 -->
+<div class="md:col-span-4 glass-card rounded-xl p-8 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-xl font-headline font-bold text-on-surface">MOON X-41</h3>
+<span class="bg-surface-container-highest px-2 py-1 text-[9px] font-label text-tertiary rounded uppercase">High Radiation</span>
+</div>
+<div class="aspect-square w-full mb-6 bg-surface-container-low rounded-lg flex items-center justify-center overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-br from-tertiary/20 to-transparent"></div>
+<img alt="Lunar landscape" class="object-cover w-full h-full opacity-60 grayscale" data-alt="Dark cratered lunar surface with purple haze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr6KX9OnsJnzM-ux2lNG90tA6H25obYcFSOOKqnhM-pGpAJHb5qeYePor2ZgzSsOpB2xPIzQyFLM7anYjo9Gdb-SAL6bEisHT7l03gLAxXCMzb53aVq8iHbnaM52C0syZy-s2JxlqML4T4Zd3tioHxUhc3EKdDnOQm_tOsSTiP62lalNquNufd9k3XvQQwzy4iPaE6SPMW5-AkcPUJUke0HTHKdayKOi-RQknqFpzwkhrpAhUpwkJI2MpkjUDrhUY_5Gc9OcKCGgmk"/>
+<div class="absolute bottom-4 left-4 font-label text-[10px] tracking-tighter text-white/50">COORDINATES: 48.22.09N</div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-label text-on-surface-variant uppercase">Methane Concentration</span>
+<span class="text-xs font-headline font-bold text-on-surface">14.2%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-low rounded-full">
+<div class="bg-error h-full w-[84%]"></div>
+</div>
+</div>
+</div>
+<!-- Sector 02-B Card -->
+<div class="md:col-span-4 glass-card rounded-xl p-6 flex flex-col gap-6">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-surface-container-highest rounded-lg">
+<span class="material-symbols-outlined text-secondary">storm</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-on-surface uppercase text-sm">IONIC STORMS</h4>
+<p class="text-[10px] font-label text-on-surface-variant">SECTOR 02-B | ACTIVE</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-outline-variant/10 pb-2">
+<span class="text-xs text-on-surface-variant font-body">Peak Velocity</span>
+<span class="font-headline font-bold text-on-surface">840 km/h</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant/10 pb-2">
+<span class="text-xs text-on-surface-variant font-body">Electrical Charge</span>
+<span class="font-headline font-bold text-on-surface">4.2 MV/m</span>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-on-surface-variant font-body">Threat Level</span>
+<span class="font-headline font-bold text-error uppercase text-xs">CRITICAL</span>
+</div>
+</div>
+</div>
+<!-- Sector 05 Data Visualization -->
+<div class="md:col-span-8 glass-card rounded-xl p-6">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h4 class="font-headline font-bold text-on-surface uppercase text-sm">Atmospheric Pressure Trend</h4>
+<p class="text-[10px] font-label text-on-surface-variant">24-HOUR HYGROMETRIC READOUT</p>
+</div>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+</div>
+<div class="h-48 w-full flex items-end gap-1 mb-4">
+<!-- Faux Bar Chart -->
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[30%] opacity-40"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[45%] opacity-45"></div>
+<div class="flex-1 bg-secondary rounded-t-sm h-[60%] shadow-[0_0_15px_rgba(90,248,251,0.2)]"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[80%] opacity-55"></div>
+<div class="flex-1 bg-secondary rounded-t-sm h-[95%] shadow-[0_0_15px_rgba(90,248,251,0.2)]"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[70%] opacity-50"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[50%] opacity-40"></div>
+<div class="flex-1 bg-tertiary rounded-t-sm h-[40%] shadow-[0_0_15px_rgba(204,151,255,0.2)]"></div>
+<div class="flex-1 bg-tertiary rounded-t-sm h-[55%] shadow-[0_0_15px_rgba(204,151,255,0.2)]"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[30%] opacity-30"></div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[20%] opacity-20"></div>
+<div class="flex-1 bg-secondary rounded-t-sm h-[40%] opacity-60"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label text-on-surface-variant uppercase tracking-widest">
+<span>00:00</span>
+<span>06:00</span>
+<span>12:00</span>
+<span>18:00</span>
+<span>23:59</span>
+</div>
+</div>
+<!-- Small Metric Cards -->
+<div class="md:col-span-3 glass-card rounded-xl p-6">
+<div class="text-[10px] font-label text-on-surface-variant uppercase mb-2">Solar Flare Index</div>
+<div class="text-3xl font-headline font-bold text-primary mb-1">X-CLASS</div>
+<p class="text-[10px] text-on-surface-variant leading-tight">Shielding protocols initiated in Sector 09.</p>
+</div>
+<div class="md:col-span-3 glass-card rounded-xl p-6">
+<div class="text-[10px] font-label text-on-surface-variant uppercase mb-2">Oxygen Generation</div>
+<div class="text-3xl font-headline font-bold text-secondary mb-1">94.8%</div>
+<p class="text-[10px] text-on-surface-variant leading-tight">Bioreactors operating at peak capacity.</p>
+</div>
+<div class="md:col-span-3 glass-card rounded-xl p-6">
+<div class="text-[10px] font-label text-on-surface-variant uppercase mb-2">Tectonic Stability</div>
+<div class="text-3xl font-headline font-bold text-tertiary mb-1">NOMINAL</div>
+<p class="text-[10px] text-on-surface-variant leading-tight">No seismic anomalies detected in last cycle.</p>
+</div>
+<div class="md:col-span-3 glass-card rounded-xl p-6">
+<div class="text-[10px] font-label text-on-surface-variant uppercase mb-2">Active Explorers</div>
+<div class="text-3xl font-headline font-bold text-on-surface mb-1">1,208</div>
+<p class="text-[10px] text-on-surface-variant leading-tight">Biometric vitals synchronized to grid.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-zinc-800/30 bg-[#0e0e11] dark:bg-zinc-950 mt-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-8 w-full">
+<div class="mb-4 md:mb-0">
+<span class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 uppercase">© 2145 CELESTIAL OBSERVER | MISSION ELAPSED TIME: 4,281 DAYS</span>
+</div>
+<div class="flex gap-8">
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] hover:tracking-[0.25em] transition-all duration-500 uppercase" href="#">TECHNICAL_STATUS: NOMINAL</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] hover:tracking-[0.25em] transition-all duration-500 uppercase" href="#">ENCRYPTED_UPLINK</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] hover:tracking-[0.25em] transition-all duration-500 uppercase" href="#">SYSTEM_LOGS</a>
+</div>
+</div>
+</footer>
+</body></html>
+
+<!-- Mission Protocol - Planetary Reports -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Orbital Map | Eridian Horizon</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-container": "#00696b",
+                "surface-container-high": "#1f1f23",
+                "primary-fixed": "#ffd709",
+                "secondary-fixed-dim": "#46eaed",
+                "tertiary-fixed": "#ce9aff",
+                "on-primary": "#655400",
+                "secondary": "#5af8fb",
+                "on-primary-container": "#5b4b00",
+                "on-error-container": "#ffd2c8",
+                "on-secondary-container": "#d9ffff",
+                "tertiary-fixed-dim": "#c588fe",
+                "on-secondary-fixed": "#004748",
+                "surface-container-low": "#131316",
+                "error": "#ff7351",
+                "on-tertiary-container": "#360061",
+                "on-tertiary": "#47007b",
+                "primary-container": "#ffd709",
+                "primary-dim": "#efc900",
+                "primary": "#ffe792",
+                "on-secondary-fixed-variant": "#006668",
+                "inverse-surface": "#fcf8fd",
+                "on-secondary": "#005b5d",
+                "surface-container-highest": "#25252a",
+                "tertiary-container": "#c285fb",
+                "on-error": "#450900",
+                "surface-container-lowest": "#000000",
+                "tertiary": "#cc97ff",
+                "error-container": "#b92902",
+                "surface-dim": "#0e0e11",
+                "surface-container": "#19191d",
+                "secondary-fixed": "#5af8fb",
+                "outline-variant": "#48474b",
+                "on-background": "#f3f0f4",
+                "background": "#0e0e11",
+                "surface": "#0e0e11",
+                "secondary-dim": "#46eaed",
+                "inverse-primary": "#705e00",
+                "surface-tint": "#ffe792",
+                "inverse-on-surface": "#555458",
+                "primary-fixed-dim": "#efc900",
+                "on-tertiary-fixed": "#270048",
+                "on-primary-fixed-variant": "#665500",
+                "surface-bright": "#2c2c30",
+                "on-surface-variant": "#acaaae",
+                "on-tertiary-fixed-variant": "#54118a",
+                "on-surface": "#f3f0f4",
+                "surface-variant": "#25252a",
+                "on-primary-fixed": "#453900",
+                "error-dim": "#d53d18",
+                "outline": "#767579",
+                "tertiary-dim": "#bf83f8"
+              },
+              fontFamily: {
+                "headline": ["Space Grotesk"],
+                "body": ["Manrope"],
+                "label": ["Space Grotesk"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 35, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(118, 117, 121, 0.15);
+        }
+        .orbit-ring {
+            border: 1px solid rgba(90, 248, 251, 0.1);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .tonal-shift {
+            background: linear-gradient(to bottom, #131316, #000000);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-secondary/30">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl dark:bg-zinc-950/30 shadow-[0_20px_50px_rgba(90,248,251,0.08)] bg-gradient-to-b from-zinc-900/50 to-transparent">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-[1440px] mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#ffe792] drop-shadow-[0_0_8px_rgba(255,231,146,0.4)] font-headline">INTERSTELLAR INTELLIGENCE</span>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">MISSIONS</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">ATMOSPHERE</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-[#5af8fb] border-b-2 border-[#5af8fb] pb-1 shadow-[0_4px_10px_rgba(90,248,251,0.3)]" href="#">STARMAP</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">CHRONOS</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-surface-container-lowest/50 px-4 py-1.5 rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm text-secondary mr-2">search</span>
+<input class="bg-transparent border-none text-[10px] tracking-widest focus:ring-0 text-on-surface p-0 w-32 uppercase font-label" placeholder="COORD_SEARCH" type="text"/>
+</div>
+<div class="flex gap-4">
+<button class="text-secondary hover:bg-white/5 p-2 rounded-full transition-all duration-300">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+<button class="text-secondary hover:bg-white/5 p-2 rounded-full transition-all duration-300">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="relative min-h-screen pt-24 pb-12 px-6 overflow-hidden">
+<!-- Visual Background Nebula -->
+<div class="absolute inset-0 pointer-events-none opacity-20">
+<div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-tertiary/20 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/10 blur-[100px] rounded-full"></div>
+</div>
+<div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+<!-- Left Sidebar: Mission Sectors -->
+<aside class="lg:col-span-3 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-xl">
+<h2 class="font-headline text-primary text-sm tracking-[0.2em] uppercase mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">target</span>
+                        Active Sector Scans
+                    </h2>
+<div class="space-y-4">
+<!-- Sector Item -->
+<div class="group cursor-pointer p-4 rounded-lg bg-surface-container-low/50 hover:bg-surface-container-high transition-all border-l-2 border-secondary">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase">Sector 4</span>
+<span class="bg-error/10 text-error text-[9px] px-2 py-0.5 rounded-full font-label tracking-tighter uppercase">Extreme</span>
+</div>
+<h3 class="font-headline text-sm text-on-surface mb-1 uppercase">Radiation Storm</h3>
+<div class="flex items-center gap-3 text-[10px] font-label text-zinc-500">
+<span>COORDS: 04.221</span>
+<span class="text-secondary">ACTIVE</span>
+</div>
+</div>
+<!-- Sector Item -->
+<div class="group cursor-pointer p-4 rounded-lg bg-surface-container-low/30 hover:bg-surface-container-high transition-all border-l-2 border-transparent hover:border-primary-dim">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase">Sector 9</span>
+<span class="bg-secondary/10 text-secondary text-[9px] px-2 py-0.5 rounded-full font-label tracking-tighter uppercase">Nominal</span>
+</div>
+<h3 class="font-headline text-sm text-on-surface mb-1 uppercase">Methane Cyclone</h3>
+<div class="flex items-center gap-3 text-[10px] font-label text-zinc-500">
+<span>COORDS: 12.809</span>
+<span>MONITORING</span>
+</div>
+</div>
+<!-- Sector Item -->
+<div class="group cursor-pointer p-4 rounded-lg bg-surface-container-low/30 hover:bg-surface-container-high transition-all border-l-2 border-transparent hover:border-primary-dim">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase">Sector 12</span>
+<span class="bg-tertiary/10 text-tertiary text-[9px] px-2 py-0.5 rounded-full font-label tracking-tighter uppercase">Anomaly</span>
+</div>
+<h3 class="font-headline text-sm text-on-surface mb-1 uppercase">Ion Dispersion</h3>
+<div class="flex items-center gap-3 text-[10px] font-label text-zinc-500">
+<span>COORDS: 88.001</span>
+<span>ANALYSIS</span>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl mt-auto">
+<div class="flex items-center justify-between mb-4">
+<span class="font-label text-[10px] text-secondary tracking-widest uppercase">Global Atmospheric Load</span>
+<span class="text-primary font-headline text-xs">88%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[88%] shadow-[0_0_8px_rgba(255,231,146,0.6)]"></div>
+</div>
+</div>
+</aside>
+<!-- Centerpiece: Orbital Map -->
+<section class="lg:col-span-9 relative flex items-center justify-center min-h-[600px] lg:min-h-[800px]">
+<!-- Orbital Visual Container -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="orbit-ring w-[90%] h-[90%] opacity-20"></div>
+<div class="orbit-ring w-[70%] h-[70%] opacity-40 border-dashed"></div>
+<div class="orbit-ring w-[50%] h-[50%] opacity-10"></div>
+</div>
+<!-- Central Planet Graphic (Simulated 3D) -->
+<div class="relative w-72 h-72 md:w-[500px] md:h-[500px] group">
+<!-- Glow Layer -->
+<div class="absolute inset-0 rounded-full bg-secondary/10 blur-[60px] animate-pulse"></div>
+<!-- Planet Image with Atmospheric Overlay -->
+<div class="relative w-full h-full rounded-full overflow-hidden shadow-[inset_-20px_-20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(90,248,251,0.2)] border border-secondary/20">
+<img alt="Eridian Prime Planet Surface" class="w-full h-full object-cover scale-110" data-alt="Detailed dark rocky planet surface with glowing teal atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv3AvRWenQiAIazRveY4YWt62DRxeW1wRSbRY2Pow8hauwY2xTroy6FQZ7p0NQxYutc7g8yL-IsX3mghO_DazC8npuQUDABAXQs6fCJWI1eZiIym8L686lMB-5pAudKeNTFkriY35LCoBmK0g8jxcfcdLhv1dweyPOOqYFFO41z-DQsVxTI1QtKP00YLcR0JHGNDr3v9h2JRLb7vmp5mdMKGM-dlL9wprtk81L0mk8Mi_bfVXWwZciJvCIhs6hA-AQALDJr223UseP"/>
+<!-- Atmospheric Storm Overlays (Simulated with absolute position icons and highlights) -->
+<div class="absolute top-[20%] left-[30%] w-24 h-24 bg-primary/20 blur-xl rounded-full"></div>
+<div class="absolute bottom-[25%] right-[20%] w-32 h-32 bg-secondary/20 blur-2xl rounded-full"></div>
+<!-- Map Pins -->
+<div class="absolute top-[40%] left-[45%] flex flex-col items-center">
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_10px_#ffe792]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="bg-black/80 backdrop-blur-md border border-primary/30 px-2 py-0.5 text-[8px] font-label text-primary mt-1 rounded uppercase tracking-[0.2em]">Alpha Base</span>
+</div>
+<div class="absolute top-[25%] right-[35%] flex flex-col items-center opacity-60">
+<span class="material-symbols-outlined text-secondary drop-shadow-[0_0_10px_#5af8fb]" style="font-variation-settings: 'FILL' 1;">radar</span>
+<span class="bg-black/80 backdrop-blur-md border border-secondary/30 px-2 py-0.5 text-[8px] font-label text-secondary mt-1 rounded uppercase tracking-[0.2em]">Storm_S4</span>
+</div>
+</div>
+<!-- Outer HUD Labels -->
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 flex flex-col items-center">
+<span class="font-headline text-3xl md:text-5xl text-secondary opacity-20 select-none">ERIDIAN_PRIME</span>
+</div>
+<!-- Dynamic Floating Data Points -->
+<div class="absolute -right-16 top-1/4 glass-panel p-4 rounded-lg border-l-4 border-primary hidden md:block">
+<div class="text-[9px] font-label text-zinc-400 uppercase tracking-widest mb-1">Atmospheric Pressure</div>
+<div class="text-lg font-headline text-primary tracking-tighter">1.44 ATM</div>
+</div>
+<div class="absolute -left-16 bottom-1/4 glass-panel p-4 rounded-lg border-r-4 border-secondary hidden md:block">
+<div class="text-[9px] font-label text-zinc-400 uppercase tracking-widest mb-1">Axial Rotation</div>
+<div class="text-lg font-headline text-secondary tracking-tighter">0.988 G-SYNC</div>
+</div>
+</div>
+<!-- Bottom Controls HUD -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 glass-panel px-6 py-3 rounded-full">
+<button class="p-2 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<div class="w-px h-6 bg-outline-variant/30"></div>
+<button class="p-2 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">visibility</span>
+</button>
+<button class="p-2 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">layers</span>
+</button>
+<div class="w-px h-6 bg-outline-variant/30"></div>
+<button class="p-2 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">3d_rotation</span>
+</button>
+<button class="p-2 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Metric Floating Chips (Asymmetric Layout) -->
+<div class="max-w-[1440px] mx-auto mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between">
+<span class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Orbital Velocity</span>
+<span class="text-2xl font-headline text-on-surface mt-2 tracking-tighter">24,402 <span class="text-xs text-zinc-500">KM/H</span></span>
+</div>
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between border-t border-primary/20">
+<span class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Surface Temp</span>
+<span class="text-2xl font-headline text-primary mt-2 tracking-tighter">-142.5 <span class="text-xs text-zinc-500">°C</span></span>
+</div>
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between">
+<span class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Magnetic Flux</span>
+<span class="text-2xl font-headline text-on-surface mt-2 tracking-tighter">4.21 <span class="text-xs text-zinc-500">TESLA</span></span>
+</div>
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between border-t border-secondary/20">
+<span class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Satellite Link</span>
+<span class="text-2xl font-headline text-secondary mt-2 tracking-tighter">STABLE</span>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-zinc-800/30 tonal-shift from-zinc-900 to-black">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-8 w-full">
+<div class="text-[#5af8fb] font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light mb-4 md:mb-0">
+                © 2145 CELESTIAL OBSERVER | MISSION ELAPSED TIME: 4,281 DAYS
+            </div>
+<div class="flex gap-8">
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">TECHNICAL_STATUS: NOMINAL</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">ENCRYPTED_UPLINK</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">SYSTEM_LOGS</a>
+</div>
+</div>
+</footer>
+</body></html>
+
+<!-- Orbital Map - Weather Visualization -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Deep-Space Radar | Interstellar Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-container": "#00696b",
+                "surface-container-high": "#1f1f23",
+                "primary-fixed": "#ffd709",
+                "secondary-fixed-dim": "#46eaed",
+                "tertiary-fixed": "#ce9aff",
+                "on-primary": "#655400",
+                "secondary": "#5af8fb",
+                "on-primary-container": "#5b4b00",
+                "on-error-container": "#ffd2c8",
+                "on-secondary-container": "#d9ffff",
+                "tertiary-fixed-dim": "#c588fe",
+                "on-secondary-fixed": "#004748",
+                "surface-container-low": "#131316",
+                "error": "#ff7351",
+                "on-tertiary-container": "#360061",
+                "on-tertiary": "#47007b",
+                "primary-container": "#ffd709",
+                "primary-dim": "#efc900",
+                "primary": "#ffe792",
+                "on-secondary-fixed-variant": "#006668",
+                "inverse-surface": "#fcf8fd",
+                "on-secondary": "#005b5d",
+                "surface-container-highest": "#25252a",
+                "tertiary-container": "#c285fb",
+                "on-error": "#450900",
+                "surface-container-lowest": "#000000",
+                "tertiary": "#cc97ff",
+                "error-container": "#b92902",
+                "surface-dim": "#0e0e11",
+                "surface-container": "#19191d",
+                "secondary-fixed": "#5af8fb",
+                "outline-variant": "#48474b",
+                "on-background": "#f3f0f4",
+                "background": "#0e0e11",
+                "surface": "#0e0e11",
+                "secondary-dim": "#46eaed",
+                "inverse-primary": "#705e00",
+                "surface-tint": "#ffe792",
+                "inverse-on-surface": "#555458",
+                "primary-fixed-dim": "#efc900",
+                "on-tertiary-fixed": "#270048",
+                "on-primary-fixed-variant": "#665500",
+                "surface-bright": "#2c2c30",
+                "on-surface-variant": "#acaaae",
+                "on-tertiary-fixed-variant": "#54118a",
+                "on-surface": "#f3f0f4",
+                "surface-variant": "#25252a",
+                "on-primary-fixed": "#453900",
+                "error-dim": "#d53d18",
+                "outline": "#767579",
+                "tertiary-dim": "#bf83f8"
+              },
+              fontFamily: {
+                "headline": ["Space Grotesk"],
+                "body": ["Manrope"],
+                "label": ["Space Grotesk"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #0e0e11;
+            color: #f3f0f4;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(31, 31, 35, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(72, 71, 75, 0.15);
+        }
+        .glow-secondary {
+            text-shadow: 0 0 10px rgba(90, 248, 251, 0.5);
+        }
+        .glow-primary {
+            text-shadow: 0 0 10px rgba(255, 231, 146, 0.5);
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1.2fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 1024px) {
+            .asymmetric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cosmic Background Effects */
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #131316 0%, #000000 100%);
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: var(--max-opacity); transform: scale(1); }
+        }
+
+        .mote {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(4px);
+            animation: drift var(--drift-duration) linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes drift {
+            from { transform: translate(var(--start-x), var(--start-y)); }
+            to { transform: translate(var(--end-x), var(--end-y)); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Cosmic Background Layer -->
+<div class="cosmic-bg" id="cosmic-bg">
+<!-- Stars and Motes will be injected here -->
+<script>
+            const bg = document.getElementById('cosmic-bg');
+            
+            // Create Stars
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.setProperty('--max-opacity', Math.random() * 0.7 + 0.3);
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                bg.appendChild(star);
+            }
+
+            // Create Motes (Astrophage Gold & Eridian Blue)
+            const colors = ['#5af8fb', '#ffe792'];
+            for (let i = 0; i < 20; i++) {
+                const mote = document.createElement('div');
+                mote.className = 'mote';
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = Math.random() * 60 + 20;
+                mote.style.width = `${size}px`;
+                mote.style.height = `${size}px`;
+                mote.style.background = `radial-gradient(circle, ${color}33 0%, transparent 70%)`;
+                
+                const startX = Math.random() * 120 - 10;
+                const startY = Math.random() * 120 - 10;
+                const endX = startX + (Math.random() * 20 - 10);
+                const endY = startY + (Math.random() * 20 - 10);
+
+                mote.style.setProperty('--start-x', `${startX}vw`);
+                mote.style.setProperty('--start-y', `${startY}vh`);
+                mote.style.setProperty('--end-x', `${endX}vw`);
+                mote.style.setProperty('--end-y', `${endY}vh`);
+                mote.style.setProperty('--drift-duration', `${Math.random() * 40 + 60}s`);
+                mote.style.animationDelay = `-${Math.random() * 100}s`;
+                
+                bg.appendChild(mote);
+            }
+        </script>
+</div>
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl dark:bg-zinc-950/30 bg-gradient-to-b from-zinc-900/50 to-transparent shadow-[0_20px_50px_rgba(90,248,251,0.08)]">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-[1440px] mx-auto">
+<div class="text-xl font-bold tracking-tighter text-[#ffe792] drop-shadow-[0_0_8px_rgba(255,231,146,0.4)] font-headline">
+                INTERSTELLAR INTELLIGENCE
+            </div>
+<div class="hidden md:flex items-center gap-10">
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">MISSIONS</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-[#5af8fb] border-b-2 border-[#5af8fb] pb-1 shadow-[0_4px_10px_rgba(90,248,251,0.3)]" href="#">ATMOSPHERE</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">STARMAP</a>
+<a class="font-['Space_Grotesk'] tracking-widest uppercase text-xs text-zinc-400 hover:text-white transition-colors" href="#">CHRONOS</a>
+</div>
+<div class="flex items-center gap-4 text-secondary">
+<span class="material-symbols-outlined cursor-pointer hover:bg-white/5 p-2 rounded-full transition-all duration-300">notifications_active</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-white/5 p-2 rounded-full transition-all duration-300">settings</span>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-12 px-8 max-w-[1440px] mx-auto relative z-10">
+<!-- Header Section -->
+<header class="mb-12">
+<div class="flex flex-col md:flex-row justify-between items-end gap-6">
+<div>
+<p class="font-label text-secondary tracking-widest text-xs mb-2">SYSTEM.RADAR.ACTIVE</p>
+<h1 class="font-headline text-5xl font-bold tracking-tight text-on-surface leading-none">Deep-Space Radar</h1>
+<p class="font-body text-on-surface-variant mt-4 max-w-xl">Real-time atmospheric telemetry from the Eridian Horizon. Monitoring stellar wind fluctuations and ionizing radiation density across the outer rim.</p>
+</div>
+<div class="flex gap-4">
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+<div class="text-right">
+<p class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Local Star Time</p>
+<p class="font-headline text-xl text-primary glow-primary">14:42:09</p>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl">schedule</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Dashboard Layout -->
+<div class="asymmetric-grid">
+<!-- Left Column: Critical Metrics -->
+<div class="space-y-6">
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 blur-[60px] rounded-full"></div>
+<p class="font-label text-xs text-secondary mb-4 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                        LIVE TELEMETRY
+                    </p>
+<div class="space-y-8">
+<div>
+<label class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Stellar Wind Velocity</label>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-4xl font-bold text-on-surface">482.1</span>
+<span class="font-label text-sm text-secondary">km/s</span>
+</div>
+<div class="w-full h-1 bg-surface-container-low mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4 shadow-[0_0_8px_#5af8fb]"></div>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Pressure Gradient</label>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-4xl font-bold text-on-surface">1,029</span>
+<span class="font-label text-sm text-tertiary">hPa</span>
+</div>
+<div class="w-full h-1 bg-surface-container-low mt-2 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-1/2 shadow-[0_0_8px_#cc97ff]"></div>
+</div>
+</div>
+<div>
+<label class="font-label text-[10px] text-zinc-500 uppercase tracking-widest">Ionization Level</label>
+<div class="flex items-baseline gap-2">
+<span class="font-headline text-4xl font-bold text-on-surface">Critical</span>
+<span class="material-symbols-outlined text-error text-xl ml-2">warning</span>
+</div>
+<p class="text-[10px] text-error mt-1 font-body">X-CLASS FLARE IMMINENT</p>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-label text-xs text-on-surface mb-6 tracking-widest">ATMOSPHERIC COMPOSITION</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-xs">
+<span class="text-zinc-400">Nitrogen</span>
+<span class="text-on-surface">78.08%</span>
+</div>
+<div class="w-full h-0.5 bg-surface-container-lowest">
+<div class="h-full bg-zinc-500 w-[78%]"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-zinc-400">Oxygen</span>
+<span class="text-on-surface">20.95%</span>
+</div>
+<div class="w-full h-0.5 bg-surface-container-lowest">
+<div class="h-full bg-primary w-[21%]"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-zinc-400">Argon</span>
+<span class="text-on-surface">0.93%</span>
+</div>
+<div class="w-full h-0.5 bg-surface-container-lowest">
+<div class="h-full bg-secondary w-[1%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Column: Main Data Visualizer -->
+<div class="glass-panel rounded-xl flex flex-col min-h-[600px] relative">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<div>
+<h2 class="font-headline text-xl font-medium">Solar Radiation Trends</h2>
+<p class="text-xs text-zinc-500 font-body">Deep-space sensor array #04-ALPHA</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-[10px] font-label rounded-md bg-secondary/10 text-secondary border border-secondary/20">24H</button>
+<button class="px-3 py-1 text-[10px] font-label rounded-md text-zinc-500 hover:text-on-surface transition-colors">7D</button>
+<button class="px-3 py-1 text-[10px] font-label rounded-md text-zinc-500 hover:text-on-surface transition-colors">30D</button>
+</div>
+</div>
+<div class="flex-1 p-8 flex flex-col justify-end relative">
+<!-- Faux Chart Representation -->
+<div class="absolute inset-x-8 inset-y-12 flex items-end justify-between overflow-hidden">
+<!-- Background Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+</div>
+<!-- Data Lines & Points -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 800 400">
+<defs>
+<lineargradient id="lineGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffe792" stop-opacity="0.5"></stop>
+<stop offset="100%" stop-color="#ffe792" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Secondary Blue Trend -->
+<path class="drop-shadow-[0_0_10px_#5af8fb]" d="M0,300 Q100,280 200,320 T400,250 T600,280 T800,150" fill="none" stroke="#5af8fb" stroke-width="2"></path>
+<!-- Primary Gold Trend -->
+<path d="M0,350 Q150,320 300,340 T450,280 T600,150 T800,50" fill="url(#lineGrad)" stroke="none"></path>
+<path class="drop-shadow-[0_0_15px_#ffe792]" d="M0,350 Q150,320 300,340 T450,280 T600,150 T800,50" fill="none" stroke="#ffe792" stroke-width="3"></path>
+<!-- Glowing Data Points -->
+<circle class="animate-pulse" cx="200" cy="320" fill="#5af8fb" r="4"></circle>
+<circle class="animate-pulse" cx="600" cy="150" fill="#ffe792" r="4"></circle>
+<circle cx="800" cy="50" fill="#ffe792" r="6"></circle>
+</svg>
+</div>
+<div class="flex justify-between w-full font-label text-[10px] text-zinc-500 mt-4 relative z-10">
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>12:00</span>
+<span>16:00</span>
+<span>20:00</span>
+<span>24:00</span>
+</div>
+</div>
+<div class="p-6 bg-surface-container-low/50 rounded-b-xl border-t border-outline-variant/10">
+<div class="grid grid-cols-3 gap-8">
+<div>
+<p class="text-[10px] text-zinc-500 font-label uppercase">Max Flux</p>
+<p class="text-xl font-headline text-on-surface">1.28 <span class="text-xs text-zinc-400">mW/m²</span></p>
+</div>
+<div>
+<p class="text-[10px] text-zinc-500 font-label uppercase">Mean Variance</p>
+<p class="text-xl font-headline text-on-surface">± 0.04</p>
+</div>
+<div>
+<p class="text-[10px] text-zinc-500 font-label uppercase">Alert Level</p>
+<p class="text-xl font-headline text-error">ELEVATED</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: System Logs & Map -->
+<div class="space-y-6">
+<div class="glass-panel p-6 rounded-xl aspect-square overflow-hidden relative">
+<img alt="Star Map" class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Digital representation of stars and nebulae in dark space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjbn9vtnHC8yibKqKbtZiQI-T1rk2xYJtcQlMyO8yS80h84GdBHX6N1JcpGoXsWuRRF70lrRefuxYhIMaabYtvVCkGg9RHJO5rxBzmN6dn0C8nhWTlZvoQfviVRLvD3wrSqqJupCJrdCcUFvzX4g6cTrc4Sm2QScyYBt85s8-eQi2MFPNT_PtaCkBHcISoQw2kfWnWlbRglqNuqw_TRKmdVLeEL4gNAjydYMdBis3RCGkCuLNiy0I-CWaJNbwathTL6aK6hjisDP8x"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="relative z-10 h-full flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<h3 class="font-label text-xs tracking-widest text-secondary">RADAR.MAP</h3>
+<span class="material-symbols-outlined text-secondary text-lg">my_location</span>
+</div>
+<div>
+<p class="font-label text-[10px] text-zinc-400">Tracking Sector</p>
+<p class="font-headline text-lg text-on-surface">ERIDIAN_SECTOR_7G</p>
+</div>
+</div>
+<!-- Radar Ping Overlay -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="w-32 h-32 border border-secondary/30 rounded-full animate-ping"></div>
+<div class="absolute inset-0 w-32 h-32 border border-secondary/20 rounded-full scale-150 opacity-0 animate-pulse"></div>
+</div>
+</div>
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="p-4 bg-white/5 border-b border-outline-variant/10">
+<h3 class="font-label text-xs tracking-widest text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span>
+                            SYSTEM_LOGS
+                        </h3>
+</div>
+<div class="p-4 space-y-4 max-h-[250px] overflow-y-auto scrollbar-hide">
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:40</span>
+<p class="text-[10px] font-body text-zinc-400">Sensor recalibration complete for Array Alpha-9.</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:38</span>
+<p class="text-[10px] font-body text-error">Warning: Rapid pressure drop detected in Sector 3.</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:35</span>
+<p class="text-[10px] font-body text-zinc-400">Atmospheric ionization baseline established at 42.1%.</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:30</span>
+<p class="text-[10px] font-body text-zinc-400">Connecting to celestial observer uplink...</p>
+</div>
+<div class="flex gap-3">
+<span class="text-[10px] font-label text-secondary shrink-0">14:28</span>
+<p class="text-[10px] font-body text-zinc-400">Heartbeat signal received from satellite node 12.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Analysis Table (Bottom) -->
+<section class="mt-12">
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="p-6 border-b border-outline-variant/10">
+<h2 class="font-headline text-xl">Chronological Drift Analysis</h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low/80">
+<tr>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Epoch (T+)</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Solar Radiance</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Neutrino Density</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Atm. Stability</th>
+<th class="px-6 py-4 font-label text-[10px] text-zinc-500 uppercase tracking-widest">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-headline text-sm text-secondary">4,281.04</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">1,361 W/m²</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">6.5e10/cm²</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-full"></div>
+</div>
+<span class="text-[10px] text-zinc-400">NOMINAL</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded text-[10px] font-label bg-secondary/10 text-secondary">ACTIVE</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-headline text-sm text-secondary">4,281.02</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">1,358 W/m²</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">6.2e10/cm²</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+<span class="text-[10px] text-zinc-400">STABLE</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded text-[10px] font-label bg-secondary/10 text-secondary">ACTIVE</span>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5 font-headline text-sm text-secondary">4,281.00</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">1,340 W/m²</td>
+<td class="px-6 py-5 font-body text-sm text-on-surface">5.8e10/cm²</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1 bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-error w-1/4"></div>
+</div>
+<span class="text-[10px] text-zinc-400">DEGRADED</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded text-[10px] font-label bg-error/10 text-error">ARCHIVED</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Section -->
+<footer class="w-full border-t border-zinc-800/30 bg-[#0e0e11] dark:bg-zinc-950 relative z-10">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-8 w-full">
+<div class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 mb-4 md:mb-0">
+                © 2145 CELESTIAL OBSERVER | MISSION ELAPSED TIME: 4,281 DAYS
+            </div>
+<div class="flex gap-8">
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">TECHNICAL_STATUS: NOMINAL</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">ENCRYPTED_UPLINK</a>
+<a class="font-['Space_Grotesk'] text-[10px] tracking-[0.2em] font-light text-zinc-500 hover:text-[#5af8fb] transition-all duration-500 hover:tracking-[0.25em]" href="#">SYSTEM_LOGS</a>
+</div>
+</div>
+</footer>
+<!-- FAB -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-[0_10px_20px_rgba(255,231,146,0.3)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add_chart</span>
+</button>
+</div>
+</body></html>
+
+<!-- Deep-Space Radar - Enhanced Cosmic Background -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Interstellar Intelligence - Observation Deck</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-variant": "#25252a",
+              "surface-container-lowest": "#000000",
+              "on-error-container": "#ffd2c8",
+              "surface": "#0e0e11",
+              "surface-container-low": "#131316",
+              "surface-dim": "#0e0e11",
+              "surface-tint": "#ffe792",
+              "on-secondary-fixed-variant": "#006668",
+              "secondary": "#5af8fb",
+              "tertiary-dim": "#bf83f8",
+              "primary": "#ffe792",
+              "primary-container": "#ffd709",
+              "background": "#0e0e11",
+              "on-secondary": "#005b5d",
+              "on-surface-variant": "#acaaae",
+              "on-tertiary": "#47007b",
+              "tertiary": "#cc97ff",
+              "error": "#ff7351",
+              "primary-fixed": "#ffd709",
+              "surface-bright": "#2c2c30",
+              "primary-fixed-dim": "#efc900",
+              "secondary-dim": "#46eaed",
+              "on-primary-container": "#5b4b00",
+              "on-primary-fixed": "#453900",
+              "surface-container-highest": "#25252a",
+              "on-tertiary-fixed-variant": "#54118a",
+              "on-primary-fixed-variant": "#665500",
+              "secondary-fixed": "#5af8fb",
+              "secondary-container": "#00696b",
+              "inverse-on-surface": "#555458",
+              "tertiary-fixed-dim": "#c588fe",
+              "on-background": "#f3f0f4",
+              "outline-variant": "#48474b",
+              "on-secondary-container": "#d9ffff",
+              "on-tertiary-fixed": "#270048",
+              "outline": "#767579",
+              "surface-container": "#19191d",
+              "error-container": "#b92902",
+              "inverse-primary": "#705e00",
+              "on-tertiary-container": "#360061",
+              "inverse-surface": "#fcf8fd",
+              "on-secondary-fixed": "#004748",
+              "on-error": "#450900",
+              "error-dim": "#d53d18",
+              "tertiary-container": "#c285fb",
+              "secondary-fixed-dim": "#46eaed",
+              "primary-dim": "#efc900",
+              "on-surface": "#f3f0f4",
+              "tertiary-fixed": "#ce9aff",
+              "surface-container-high": "#1f1f23",
+              "on-primary": "#655400"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .star-field {
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 80px 120px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 110px 10px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 150px 150px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.2;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-md dark:bg-zinc-950/30 flex justify-between items-center px-6 h-16 w-full bg-gradient-to-b from-zinc-950 to-transparent shadow-[0_20px_50px_rgba(90,248,251,0.08)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="menu_open">menu_open</span>
+<h1 class="font-['Space_Grotesk'] tracking-widest uppercase text-sm text-amber-200 dark:text-[#ffe792] font-bold tracking-tighter text-[#ffe792] drop-shadow-[0_0_8px_rgba(255,231,146,0.4)]">Interstellar Intelligence</h1>
+</div>
+<div class="w-8 h-8 rounded-full border border-secondary/30 overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Stellar explorer profile avatar portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD40sB1MoZv4jr6yUSAda8rk3kIjQem4WSrf58wI7AT9CEPMgEt0KU4SRNHSnHupzQQpMBVxPhx9hvNaoK58OlwXDdM_XrRfg_XJ1sUKLRUQorhjwfLB-EuN6YdKFcjeAnS8vNwktLnutHIjFoDGfyRoGJhYTqAm0MNgGoBWW5NeKi8QrPh0c6wVNU5_Z2AM7LzVTVAU3b5w7suQQVi1ZpA_p3DuhLRBYG13BGxjOV87QsJ6clJUt_6PS1WSBrWVTQSM-l4OMAc5M8V"/>
+</div>
+</header>
+<main class="pt-20 pb-28 px-4 min-h-screen relative overflow-hidden">
+<!-- Ambient Background Layers -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute inset-0 star-field"></div>
+<div class="absolute top-[-10%] right-[-20%] w-[80%] h-[60%] bg-tertiary/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-5%] left-[-10%] w-[60%] h-[50%] bg-secondary/5 blur-[100px] rounded-full"></div>
+</div>
+<!-- Hero Section -->
+<section class="relative z-10 mb-8 pt-4">
+<div class="flex flex-col gap-1">
+<span class="font-label text-secondary text-[10px] uppercase tracking-[0.3em] opacity-80">Telemetry Active</span>
+<h2 class="font-headline text-4xl font-bold tracking-tighter text-on-surface leading-none">ERIDIAN SURFACE</h2>
+</div>
+<!-- Hero Visual Metric -->
+<div class="mt-6 p-6 rounded-2xl bg-surface-container-high/40 backdrop-blur-xl border border-outline-variant/15 shadow-2xl relative overflow-hidden group">
+<div class="absolute -right-4 -top-10 w-40 h-40 bg-primary/10 blur-3xl rounded-full transition-transform duration-700 group-hover:scale-150"></div>
+<div class="relative flex justify-between items-end">
+<div class="flex flex-col">
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest mb-1">Main Temperature</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-6xl font-light text-primary">342</span>
+<span class="font-headline text-2xl text-primary-container">K</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-2 py-1 rounded bg-error-container/20 text-error text-[10px] font-bold uppercase tracking-wider">High Heat Alert</span>
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="thermostat" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Dynamic Data Bento Grid -->
+<section class="relative z-10 grid grid-cols-2 gap-4 mb-8">
+<!-- Pressure Card -->
+<div class="p-5 rounded-2xl bg-surface-container-high/40 backdrop-blur-lg border border-outline-variant/15 flex flex-col justify-between aspect-square">
+<div>
+<span class="material-symbols-outlined text-secondary mb-3" data-icon="compress">compress</span>
+<h3 class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Pressure</h3>
+</div>
+<div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-3xl font-medium text-on-surface">2.4</span>
+<span class="text-xs text-secondary opacity-80">ATM</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-2 overflow-hidden">
+<div class="h-full w-[65%] bg-secondary shadow-[0_0_8px_rgba(90,248,251,0.5)]"></div>
+</div>
+</div>
+</div>
+<!-- Radiation Card -->
+<div class="p-5 rounded-2xl bg-surface-container-high/40 backdrop-blur-lg border border-outline-variant/15 flex flex-col justify-between aspect-square">
+<div>
+<span class="material-symbols-outlined text-tertiary mb-3" data-icon="radiology">radiology</span>
+<h3 class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Radiation</h3>
+</div>
+<div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-3xl font-medium text-on-surface">1.2</span>
+<span class="text-xs text-tertiary opacity-80">mSv</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-2 overflow-hidden">
+<div class="h-full w-[30%] bg-tertiary shadow-[0_0_8px_rgba(204,151,255,0.5)]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mission Alerts Section -->
+<section class="relative z-10 mb-8">
+<div class="flex justify-between items-center mb-4 px-1">
+<h3 class="font-headline text-sm font-bold uppercase tracking-widest flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+                    Mission Alerts
+                </h3>
+<span class="text-[10px] text-secondary font-label uppercase">View All</span>
+</div>
+<div class="space-y-3">
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/10 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-error-container/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-error" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-on-surface">Ion Storm Approaching</span>
+<span class="text-[10px] text-on-surface-variant">Arrival in T-minus 14:00h</span>
+</div>
+<span class="ml-auto material-symbols-outlined text-on-surface-variant text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/10 flex items-center gap-4 opacity-70">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-secondary" data-icon="shuttle" style="font-variation-settings: 'FILL' 1;">rocket</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-semibold text-on-surface">Cargo Drone Deployment</span>
+<span class="text-[10px] text-on-surface-variant">Scheduled for Sol 45.2</span>
+</div>
+<span class="ml-auto material-symbols-outlined text-on-surface-variant text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- 7-Day Orbital Forecast -->
+<section class="relative z-10 mb-4">
+<div class="px-1 mb-4">
+<h3 class="font-headline text-sm font-bold uppercase tracking-widest">Orbital Forecast</h3>
+</div>
+<div class="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
+<!-- Day 1 (Active) -->
+<div class="flex-shrink-0 w-24 p-4 rounded-2xl bg-white/5 border border-primary/30 flex flex-col items-center gap-2 shadow-[inset_0_0_15px_rgba(255,231,146,0.1)]">
+<span class="font-label text-[10px] text-primary font-bold uppercase">Today</span>
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="wb_sunny" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<span class="font-headline text-lg font-bold text-on-surface">342K</span>
+</div>
+<!-- Day 2 -->
+<div class="flex-shrink-0 w-24 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10 flex flex-col items-center gap-2 opacity-60">
+<span class="font-label text-[10px] text-on-surface-variant uppercase">Sol 46</span>
+<span class="material-symbols-outlined text-on-surface-variant text-2xl" data-icon="wb_cloudy">wb_cloudy</span>
+<span class="font-headline text-lg font-medium text-on-surface">328K</span>
+</div>
+<!-- Day 3 -->
+<div class="flex-shrink-0 w-24 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10 flex flex-col items-center gap-2 opacity-60">
+<span class="font-label text-[10px] text-on-surface-variant uppercase">Sol 47</span>
+<span class="material-symbols-outlined text-on-surface-variant text-2xl" data-icon="storm">storm</span>
+<span class="font-headline text-lg font-medium text-on-surface">310K</span>
+</div>
+<!-- Day 4 -->
+<div class="flex-shrink-0 w-24 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/10 flex flex-col items-center gap-2 opacity-60">
+<span class="font-label text-[10px] text-on-surface-variant uppercase">Sol 48</span>
+<span class="material-symbols-outlined text-on-surface-variant text-2xl" data-icon="partly_cloudy_day">partly_cloudy_day</span>
+<span class="font-headline text-lg font-medium text-on-surface">335K</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full h-20 bg-[#0e0e11]/80 backdrop-blur-xl flex justify-around items-center px-4 pb-4 rounded-t-3xl border-t border-white/5 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+<!-- Orbital Tab (Active) -->
+<a class="flex flex-col items-center justify-center text-[#ffe792] bg-white/5 rounded-xl px-3 py-1 shadow-[inset_0_0_10px_rgba(255,231,146,0.1)] transition-transform duration-200 translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider mt-1">Orbital</span>
+</a>
+<!-- Sensors Tab -->
+<a class="flex flex-col items-center justify-center text-zinc-500 opacity-60 hover:opacity-100 hover:text-[#5af8fb] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="wb_twilight">wb_twilight</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider mt-1">Sensors</span>
+</a>
+<!-- Logs Tab -->
+<a class="flex flex-col items-center justify-center text-zinc-500 opacity-60 hover:opacity-100 hover:text-[#5af8fb] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider mt-1">Logs</span>
+</a>
+<!-- System Tab -->
+<a class="flex flex-col items-center justify-center text-zinc-500 opacity-60 hover:opacity-100 hover:text-[#5af8fb] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider mt-1">System</span>
+</a>
+</nav>
+</body></html>
+
+<!-- Observation Deck - Mobile Dashboard -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Deep-Space Radar | Interstellar Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#25252a",
+                        "surface-container-lowest": "#000000",
+                        "on-error-container": "#ffd2c8",
+                        "surface": "#0e0e11",
+                        "surface-container-low": "#131316",
+                        "surface-dim": "#0e0e11",
+                        "surface-tint": "#ffe792",
+                        "on-secondary-fixed-variant": "#006668",
+                        "secondary": "#5af8fb",
+                        "tertiary-dim": "#bf83f8",
+                        "primary": "#ffe792",
+                        "primary-container": "#ffd709",
+                        "background": "#0e0e11",
+                        "on-secondary": "#005b5d",
+                        "on-surface-variant": "#acaaae",
+                        "on-tertiary": "#47007b",
+                        "tertiary": "#cc97ff",
+                        "error": "#ff7351",
+                        "primary-fixed": "#ffd709",
+                        "surface-bright": "#2c2c30",
+                        "primary-fixed-dim": "#efc900",
+                        "secondary-dim": "#46eaed",
+                        "on-primary-container": "#5b4b00",
+                        "on-primary-fixed": "#453900",
+                        "surface-container-highest": "#25252a",
+                        "on-tertiary-fixed-variant": "#54118a",
+                        "on-primary-fixed-variant": "#665500",
+                        "secondary-fixed": "#5af8fb",
+                        "secondary-container": "#00696b",
+                        "inverse-on-surface": "#555458",
+                        "tertiary-fixed-dim": "#c588fe",
+                        "on-background": "#f3f0f4",
+                        "outline-variant": "#48474b",
+                        "on-secondary-container": "#d9ffff",
+                        "on-tertiary-fixed": "#270048",
+                        "outline": "#767579",
+                        "surface-container": "#19191d",
+                        "error-container": "#b92902",
+                        "inverse-primary": "#705e00",
+                        "on-tertiary-container": "#360061",
+                        "inverse-surface": "#fcf8fd",
+                        "on-secondary-fixed": "#004748",
+                        "on-error": "#450900",
+                        "error-dim": "#d53d18",
+                        "tertiary-container": "#c285fb",
+                        "secondary-fixed-dim": "#46eaed",
+                        "primary-dim": "#efc900",
+                        "on-surface": "#f3f0f4",
+                        "tertiary-fixed": "#ce9aff",
+                        "surface-container-high": "#1f1f23",
+                        "on-primary": "#655400"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(31, 31, 35, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .ghost-border {
+            border: 1px solid rgba(72, 71, 75, 0.15);
+        }
+        .star-field {
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 80px 120px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 110px 10px, #5af8fb, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 150px 150px, #ffe792, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            opacity: 0.3;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary/30">
+<!-- Ambient Atmosphere -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute inset-0 star-field"></div>
+<div class="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-tertiary/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-5%] left-[-5%] w-[50%] h-[50%] bg-secondary/5 blur-[100px] rounded-full"></div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-md flex justify-between items-center px-6 h-16 w-full no-line tonal-transition bg-gradient-to-b from-zinc-950 to-transparent">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 0;">menu_open</span>
+<h1 class="font-headline tracking-widest uppercase text-sm text-amber-200 font-bold tracking-tighter text-[#ffe792] drop-shadow-[0_0_8px_rgba(255,231,146,0.4)]">Interstellar Intelligence</h1>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20 bg-surface-container-highest flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="Celestial Observer Profile Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3WZuFftqXTBA5Ikqv_J93CRNa0GB1LFNEhp9qG-jfiQrrNh7mV4Yi6PEn9u8INWFtutySU7ptUmRKcrQBeO5qHE6oct6tdgFeN3APrVpgBXaXtJ77MlOi7v7umJkCPilxZNcECcwl5w9bQ2-S_zGyfvDw__WURp2P2sDf4VP_1or2_67PJgsv8JQVOd3_4t4IGSw9G2lUlTZhaUL0qE-fAD_uG0KTjFvsstsX5AELiuirn35JpfSqOM6GqkJzpHwg7DpvmKywhUpv"/>
+</div>
+</header>
+<main class="relative z-10 pt-24 pb-32 px-4 space-y-6 max-w-lg mx-auto">
+<!-- Radar Map Visualization -->
+<section class="space-y-3">
+<div class="flex justify-between items-end px-2">
+<div>
+<span class="font-label text-xs uppercase tracking-[0.2em] text-secondary opacity-80">Active Sector</span>
+<h2 class="font-headline text-2xl font-bold text-on-surface">Deep-Space Radar</h2>
+</div>
+<div class="text-right">
+<span class="block font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Live Telemetry</span>
+<span class="block font-headline text-primary text-xs font-medium">SCANNING...</span>
+</div>
+</div>
+<div class="glass-card ghost-border rounded-3xl aspect-square relative overflow-hidden flex items-center justify-center">
+<!-- Radar UI Simulation -->
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent"></div>
+<div class="w-4/5 h-4/5 rounded-full border border-secondary/10 flex items-center justify-center relative">
+<div class="w-3/4 h-3/4 rounded-full border border-secondary/20 flex items-center justify-center">
+<div class="w-1/2 h-1/2 rounded-full border border-secondary/30 flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_15px_#ffe792]"></div>
+</div>
+</div>
+<!-- Radar Sweep -->
+<div class="absolute inset-0 bg-gradient-to-r from-secondary/20 to-transparent origin-center rounded-full" style="transform: rotate(45deg);"></div>
+<!-- Blips -->
+<div class="absolute top-1/4 right-1/3 w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_10px_#5af8fb]"></div>
+<div class="absolute bottom-1/4 left-1/4 w-1 h-1 rounded-full bg-tertiary shadow-[0_0_10px_#cc97ff] opacity-60"></div>
+</div>
+<!-- Radar Overlay Labels -->
+<div class="absolute inset-4 flex flex-col justify-between pointer-events-none">
+<div class="flex justify-between font-label text-[8px] opacity-40 uppercase tracking-tighter">
+<span>AZM: 342.1</span>
+<span>ELEV: -12.4</span>
+</div>
+<div class="flex justify-between font-label text-[8px] opacity-40 uppercase tracking-tighter">
+<span>DIST: 4.2 AU</span>
+<span>VEL: 12.8 KM/S</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Telemetry Grid -->
+<section class="grid grid-cols-2 gap-3">
+<div class="glass-card ghost-border p-4 rounded-2xl flex flex-col gap-1">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Stellar Wind</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-2xl font-bold text-primary">842</span>
+<span class="font-label text-xs text-on-surface-variant">km/s</span>
+</div>
+<div class="mt-2 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[75%]"></div>
+</div>
+</div>
+<div class="glass-card ghost-border p-4 rounded-2xl flex flex-col gap-1">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Pressure</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-2xl font-bold text-secondary">0.04</span>
+<span class="font-label text-xs text-on-surface-variant">nPa</span>
+</div>
+<div class="mt-2 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[40%]"></div>
+</div>
+</div>
+<div class="glass-card ghost-border p-4 rounded-2xl col-span-2 flex justify-between items-center">
+<div class="flex flex-col gap-1">
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Ionization Level</span>
+<span class="font-headline text-xl font-medium text-tertiary uppercase">High Activity</span>
+</div>
+<div class="flex -space-x-1">
+<span class="w-1.5 h-6 bg-tertiary/20 rounded-full"></span>
+<span class="w-1.5 h-6 bg-tertiary/40 rounded-full"></span>
+<span class="w-1.5 h-6 bg-tertiary/60 rounded-full"></span>
+<span class="w-1.5 h-6 bg-tertiary rounded-full shadow-[0_0_10px_#cc97ff]"></span>
+</div>
+</div>
+</section>
+<!-- Solar Radiation Trends Chart -->
+<section class="space-y-3">
+<h3 class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant px-2">Radiation Trends (24H)</h3>
+<div class="glass-card ghost-border rounded-3xl p-5 h-48 relative flex items-end gap-2">
+<!-- Bar Chart Simulation -->
+<div class="flex-1 bg-primary/20 h-1/2 rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary/40 blur-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex-1 bg-primary/30 h-2/3 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-1/3 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-3/4 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-full rounded-t-sm relative">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 font-label text-[8px] text-primary whitespace-nowrap">PEAK</div>
+</div>
+<div class="flex-1 bg-primary/40 h-5/6 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-2/3 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-1/2 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/10 h-1/4 rounded-t-sm"></div>
+<!-- Chart Overlay Grid -->
+<div class="absolute inset-0 p-5 flex flex-col justify-between pointer-events-none opacity-20 border-b border-on-surface-variant/20">
+<div class="border-t border-on-surface-variant/30 w-full"></div>
+<div class="border-t border-on-surface-variant/30 w-full"></div>
+<div class="border-t border-on-surface-variant/30 w-full"></div>
+</div>
+</div>
+</section>
+<!-- System Logs -->
+<section class="space-y-4">
+<div class="flex justify-between items-center px-2">
+<h3 class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">System Logs</h3>
+<span class="text-secondary font-label text-[10px] uppercase hover:underline cursor-pointer">Export CSV</span>
+</div>
+<div class="space-y-2">
+<div class="glass-card ghost-border p-4 rounded-2xl flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline text-sm font-medium truncate">Anomalous Spike Detected</p>
+<p class="font-body text-[10px] text-on-surface-variant">Sector 7-G | Time: 12:44:02</p>
+</div>
+<span class="font-label text-[10px] text-primary">FIXED</span>
+</div>
+<div class="glass-card ghost-border p-4 rounded-2xl flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">sync</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline text-sm font-medium truncate">Telemetry Recalibration</p>
+<p class="font-body text-[10px] text-on-surface-variant">System-wide | Time: 09:12:55</p>
+</div>
+<span class="font-label text-[10px] text-on-surface-variant">SUCCESS</span>
+</div>
+<div class="glass-card ghost-border p-4 rounded-2xl flex items-center gap-4 opacity-60">
+<div class="w-10 h-10 rounded-xl bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">database</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-headline text-sm font-medium truncate">Daily Buffer Flush</p>
+<p class="font-body text-[10px] text-on-surface-variant">Central Core | Time: 04:00:00</p>
+</div>
+<span class="font-label text-[10px] text-on-surface-variant">ARCHIVED</span>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB for Critical Action -->
+<div class="fixed bottom-24 right-6 z-50">
+<button class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary-container text-on-primary shadow-[0_10px_30px_rgba(255,231,146,0.3)] flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-4 pb-4 bg-[#0e0e11]/80 backdrop-blur-xl rounded-t-3xl border-t border-white/5 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-zinc-500 opacity-60 hover:opacity-100 hover:text-[#5af8fb] transition-colors">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider">Orbital</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#ffe792] bg-white/5 rounded-xl px-3 py-1 shadow-[inset_0_0_10px_rgba(255,231,146,0.1)] active:translate-y-[-2px] transition-transform duration-200">
+<span class="material-symbols-outlined">wb_twilight</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider">Sensors</span>
+</div>
+<div class="flex flex-col items-center justify-center text-zinc-500 opacity-60 hover:opacity-100 hover:text-[#5af8fb] transition-colors">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider">Logs</span>
+</div>
+<div class="flex flex-col items-center justify-center text-zinc-500 opacity-60 hover:opacity-100 hover:text-[#5af8fb] transition-colors">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-wider">System</span>
+</div>
+</nav>
+</body></html>

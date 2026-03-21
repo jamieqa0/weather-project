@@ -18,13 +18,13 @@
 
 /* 헤더 */
 h1, h2, h3 {
-  font-family: 'Space Grotesk', sans-serif !important;
+  font-family: 'Space Grotesk', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif !important;
   color: var(--primary) !important;
   text-shadow: 0 0 12px rgba(255, 231, 146, 0.4);
 }
 
-/* 본문 텍스트 */
-p, span, div { font-family: 'Manrope', sans-serif !important; color: var(--on-surface); }
+/* 본문 텍스트 — span 제외 (Streamlit 아이콘 리게처 깨짐 방지) */
+p, div { font-family: 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif !important; color: var(--on-surface); }
 
 /* 메트릭 값 */
 [data-testid="stMetricValue"] {
@@ -33,9 +33,8 @@ p, span, div { font-family: 'Manrope', sans-serif !important; color: var(--on-su
   text-shadow: 0 0 8px rgba(90, 248, 251, 0.4);
 }
 
-/* 카드 (glass panel) */
-[data-testid="stMetricContainer"],
-[data-testid="stVerticalBlock"] > div {
+/* 카드 (glass panel) — metric 컨테이너에만 적용 */
+[data-testid="stMetricContainer"] {
   background: rgba(31, 31, 35, 0.4) !important;
   backdrop-filter: blur(16px);
   border: 1px solid rgba(72, 71, 75, 0.2);
