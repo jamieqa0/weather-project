@@ -90,6 +90,64 @@ def render_hero():
     """, unsafe_allow_html=True)
 
 
+def render_floating_toc():
+    st.markdown("""
+    <style>
+      .ftoc {
+        position: fixed;
+        right: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1000;
+        background: rgba(25,25,29,0.88);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(72,71,75,0.35);
+        border-radius: 0.75rem;
+        padding: 0.75rem 0.625rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+      .ftoc-title {
+        font-size: 0.6rem;
+        color: #48474b;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-align: center;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(72,71,75,0.3);
+        margin-bottom: 0.2rem;
+      }
+      .ftoc a {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.28rem 0.5rem;
+        border-radius: 0.375rem;
+        font-size: 0.72rem;
+        color: #767579;
+        text-decoration: none !important;
+        transition: all 150ms ease;
+        white-space: nowrap;
+      }
+      .ftoc a:hover { color: #acaaae; background: rgba(72,71,75,0.2); }
+      .ftoc-dot { width:4px; height:4px; border-radius:50%; background:currentColor; flex-shrink:0; }
+      @media (max-width: 900px) { .ftoc { display: none; } }
+      /* 앵커 도달 시 상단 여백 확보 */
+      a[id="today-weather"], a[id="anomaly"], a[id="subway"] {
+        scroll-margin-top: 72px;
+      }
+    </style>
+    <nav class="ftoc" aria-label="페이지 목차">
+      <div class="ftoc-title">목차</div>
+      <a href="#today-weather"><span class="ftoc-dot"></span>오늘 날씨</a>
+      <a href="#anomaly"><span class="ftoc-dot"></span>이상 기후</a>
+      <a href="#subway"><span class="ftoc-dot"></span>지하철 혼잡도</a>
+    </nav>
+    """, unsafe_allow_html=True)
+
+
 def render_footer():
     st.markdown("""
     <div style="
@@ -119,11 +177,11 @@ def render_footer():
                style="color: #5af8fb; text-decoration: none;">
                 💻 GitHub
             </a>
-            <a href="/about" target="_blank"
+            <a href="/about" target="_self"
                style="color: #ffe792; text-decoration: none;">
                 🌌 프로젝트 소개 페이지
             </a>
-            <a href="/about#timeline" target="_blank"
+            <a href="/about?scrollTo=timeline" target="_self"
                style="color: #5af8fb; text-decoration: none;">
                 🤖 Claude 협업 타임라인
             </a>
@@ -138,9 +196,11 @@ def render_footer():
 def main():
     st.set_page_config(layout="wide", page_title="기후탐정", page_icon="🚇")
     inject_css()
+    render_floating_toc()
     render_hero()
 
     # ── 섹션 1: 오늘 날씨 ─────────────────────────────────
+    st.markdown('<a id="today-weather"></a>', unsafe_allow_html=True)
     st.header("☀️ 박보닥씨, 오늘 문정역 날씨예요")
     st.caption(f"🕐 {format_last_updated(datetime.now())}")
 
@@ -181,6 +241,7 @@ def main():
     st.divider()
 
     # ── 섹션 2: 이상 기후 탐지 ────────────────────────────
+    st.markdown('<a id="anomaly"></a>', unsafe_allow_html=True)
     st.header("🚨 근데 오늘 좀 이상한 날씨 아닌가요?")
     st.info("🚨 **AI가 찾아낸 요주의 날씨!**\n\n"
             "최근 3달 동안 유독 비가 많이 오거나 기온이 널뛰었던 **상위 5%의 특이한 날**들만 콕 집어냈어요. 오늘 그래프에 **보라색 점**이 찍혔다면 단단히 대비하고 나가세요!")
@@ -214,6 +275,7 @@ def main():
     st.divider()
 
     # ── 섹션 3: 날씨 × 지하철 상관관계 ────────────────────
+    st.markdown('<a id="subway"></a>', unsafe_allow_html=True)
     st.header("🚇 이 날씨에 지하철 얼마나 붐빌까요?")
     st.caption("날씨와 문정역 지하철 이용객 수를 분석했어요. 오늘 같은 날씨, 지하철이 더 붐빌까요?")
 

@@ -1,4 +1,5 @@
 import os
+# Force Streamlit to hot-reload HTML changes
 import streamlit as st
 import streamlit.components.v1 as components
 from timeline.builder import build_timeline_html
@@ -21,5 +22,15 @@ with open(html_path, encoding="utf-8") as f:
 
 log_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "timeline", "log.json")
 html_content = html_content.replace('<!-- TIMELINE_PLACEHOLDER -->', build_timeline_html(log_path))
+
+if st.query_params.get("scrollTo") == "timeline":
+    html_content += """
+    <script>
+      setTimeout(function() {
+        var el = document.getElementById('timeline');
+        if (el) el.scrollIntoView({behavior: "smooth", block: "start"});
+      }, 500);
+    </script>
+    """
 
 components.html(html_content, height=5500, scrolling=True)
