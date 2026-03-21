@@ -36,6 +36,8 @@ data/collector.py  →  data/storage.py
 - `commentary/generator.py` — 규칙 기반 감성 멘트
 - `commentary/interpretation.py` — 상관계수 한국어 해석, 시간 포맷, 알고리즘 정보 반환
 - `app.py` — 위 모듈들을 조합해 Streamlit 대시보드 렌더링
+- `pages/about.py` — 소개 페이지. `static/about.html`을 읽어 `components.html()`로 렌더링. `timeline/builder.py`로 타임라인 HTML을 생성해 `<!-- TIMELINE_PLACEHOLDER -->`에 주입
+- `timeline/builder.py` — `timeline/log.json`을 읽어 Claude 협업 타임라인 HTML 반환. Streamlit 의존성 없어 단독 테스트 가능
 
 ## 주요 설계 결정
 
@@ -62,8 +64,9 @@ data/collector.py  →  data/storage.py
 
 `.streamlit/config.toml`에 `enableStaticServing = true` 설정. `static/` 폴더의 파일이 `/app/static/` 경로로 서빙됨.
 
-- **프로젝트 소개 페이지**: `static/about.html` (정식 소스, 루트의 `index.html`은 redirect만)
-- 대시보드 푸터에서 `/app/static/index.html`로 링크
+- **프로젝트 소개 페이지**: `pages/about.py`로 렌더링 (`/about`). `static/about.html`이 실제 소스, 루트의 `index.html`은 redirect만
+- 대시보드 푸터에서 `/about`, `/about#timeline`으로 링크
+- `static/` 직접 접근(`/app/static/about.html`)은 MIME 타입 문제로 사용하지 않음
 
 ## 환경 변수
 
