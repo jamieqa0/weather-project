@@ -55,10 +55,50 @@ def weather_label(code: int) -> str:
     return WEATHER_LABELS.get(code, f"날씨 코드 {code}")
 
 
+def render_hero():
+    st.markdown("""
+    <div style="
+        text-align: center;
+        padding: 3rem 1rem 2rem;
+        background: linear-gradient(180deg, rgba(255,231,146,0.06) 0%, transparent 100%);
+        border-bottom: 1px solid rgba(72,71,75,0.3);
+        margin-bottom: 2rem;
+    ">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌌</div>
+        <h1 style="font-size: 2.8rem; margin: 0; letter-spacing: -0.02em;">기후탐정</h1>
+        <p style="color: #acaaae; font-size: 1.05rem; margin-top: 0.6rem;">
+            지구 양 끝 날씨 비교 · 이상 기후 탐지 · 도시 데이터 상관분석
+        </p>
+        <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.2rem; font-size: 0.85rem; color: #767579;">
+            <span>📍 문정역, 서울</span>
+            <span style="color: #48474b;">↔</span>
+            <span>📍 몬테비데오, 우루과이</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def render_footer():
+    st.markdown("""
+    <div style="
+        text-align: center;
+        padding: 2rem 1rem;
+        margin-top: 3rem;
+        border-top: 1px solid rgba(72,71,75,0.3);
+        color: #767579;
+        font-size: 0.8rem;
+    ">
+        <p style="margin: 0;">기후탐정 · 사내 스터디 프로젝트</p>
+        <p style="margin: 0.3rem 0 0; color: #48474b;">
+            데이터: Open-Meteo API · 서울 열린데이터광장 샘플 · Eridian Horizon 디자인 시스템
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+
 def main():
     inject_css()
-    st.title("🌌 기후탐정")
-    st.caption("문정역(서울) ↔ 몬테비데오(우루과이) · 날씨 이상 탐지 대시보드")
+    render_hero()
 
     # ── 섹션 1: 양극단 날씨 비교 ──────────────────────────
     st.header("📍 지구 양 끝 날씨")
@@ -145,6 +185,8 @@ def main():
         st.plotly_chart(fig2, use_container_width=True)
     else:
         st.info("날씨 데이터와 지하철 데이터의 날짜가 겹치지 않아 차트를 표시할 수 없습니다.")
+
+    render_footer()
 
 
 if __name__ == "__main__":
