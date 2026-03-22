@@ -23,6 +23,9 @@ def inject_css():
     # pages/ 폴더로 인해 자동 생성되는 사이드 네비게이션 숨기기 + 툴바/툴팁 오버라이드
     st.markdown("""
     <style>
+      /* 초기 흰 화면 방지 */
+      html, body { background-color: #0e0e11 !important; }
+
       [data-testid="stSidebar"] { display: none; }
       [data-testid="collapsedControl"] { display: none; }
 
