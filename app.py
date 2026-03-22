@@ -10,7 +10,7 @@ from data.collector import fetch_current_weather, fetch_historical_weather, fetc
 from analysis.anomaly import detect_anomalies
 from analysis.correlation import compute_correlation
 from commentary.generator import generate_comment
-from commentary.interpretation import interpret_correlation, format_last_updated
+from commentary.interpretation import interpret_correlation, format_last_updated, format_montevideo_time
 
 load_dotenv()
 
@@ -20,11 +20,33 @@ MONTEVIDEO = {"name": "몬테비데오 (우루과이)", "lat": -34.9011, "lon": 
 
 # ── CSS 주입 ─────────────────────────────────────────────
 def inject_css():
-    # pages/ 폴더로 인해 자동 생성되는 사이드 네비게이션 숨기기
+    # pages/ 폴더로 인해 자동 생성되는 사이드 네비게이션 숨기기 + 툴바/툴팁 오버라이드
     st.markdown("""
     <style>
       [data-testid="stSidebar"] { display: none; }
       [data-testid="collapsedControl"] { display: none; }
+
+      /* 상단 툴바 숨기기 + 여백 제거 */
+      [data-testid="stToolbar"],
+      [data-testid="stAppToolbar"],
+      header[data-testid="stHeader"],
+      .stAppToolbar { display: none !important; }
+      .block-container { padding-top: 0 !important; }
+      [data-testid="stAppViewContainer"] { padding-top: 0 !important; }
+      [data-testid="stMainBlockContainer"] { padding-top: 0 !important; }
+
+      /* 툴팁 다크 스타일 */
+      div[data-testid="stTooltipHoverTarget"] + div,
+      div[role="tooltip"],
+      .stTooltipContent,
+      [class*="tooltip"] {
+        background-color: #1f1f23 !important;
+        color: #f3f0f4 !important;
+        border: 1px solid rgba(90, 248, 251, 0.3) !important;
+        border-radius: 6px !important;
+      }
+      div[role="tooltip"] *,
+      .stTooltipContent * { color: #f3f0f4 !important; }
     </style>
     """, unsafe_allow_html=True)
     css_path = os.path.join(os.path.dirname(__file__), "assets", "style.css")
@@ -196,7 +218,7 @@ def render_hero():
         margin-bottom: 2rem;
     ">
         <div style="font-size: 3rem; margin-bottom: 0.5rem;">🚇</div>
-        <h1 style="font-size: 2.8rem; margin: 0; letter-spacing: -0.02em;">문정동 Jamie | 오늘 나갈까?</h1>
+        <h1 style="font-size: 2.8rem; margin: 0; letter-spacing: -0.02em;">문정동, 출근해볼까?</h1>
         <p style="color: #acaaae; font-size: 1.05rem; margin-top: 0.6rem;">
             오늘 문정동 날씨, 출근 전에 미리 확인해요
         </p>
@@ -251,10 +273,10 @@ def render_floating_toc():
       .ftoc a:hover { color: #acaaae; background: rgba(72,71,75,0.2); }
       .ftoc-dot { width:4px; height:4px; border-radius:50%; background:currentColor; flex-shrink:0; }
       @media (max-width: 900px) { .ftoc { display: none; } }
-      /* 앵커 도달 시 상단 여백 확보 (타이틀이 넉넉하게 보이도록 여백 증가) */
+      /* 앵커 도달 시 상단 여백 */
       a[id="today-weather"], a[id="anomaly"], a[id="subway"] {
         display: block;
-        scroll-margin-top: 100px;
+        scroll-margin-top: 8px;
       }
 
       /* =========================================
@@ -385,7 +407,7 @@ def render_footer():
         font-size: 0.82rem;
         line-height: 1.8;
     ">
-        <p style="margin: 0 0 0.8rem; font-size: 0.95rem; color: #acaaae;">문정동 Jamie | 오늘 나갈까? · <span style="color:#cc97ff;">Job-Stealer</span> 사내 스터디</p>
+        <p style="margin: 0 0 0.8rem; font-size: 0.95rem; color: #acaaae;">문정동, 출근해볼까? · <span style="color:#cc97ff;">Job-Stealer</span> 사내 스터디</p>
         <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 0.6rem;">
             <a href="https://open-meteo.com" target="_blank"
                style="color: #5af8fb; text-decoration: none;">
@@ -420,7 +442,7 @@ def render_footer():
 
 
 def main():
-    st.set_page_config(layout="wide", page_title="Jamie | 오늘 나갈까?", page_icon="🚇")
+    st.set_page_config(layout="wide", page_title="문정동, 출근해볼까?", page_icon="🚇")
     inject_css()
     render_floating_toc()
     render_hero()
@@ -428,7 +450,7 @@ def main():
     # ── 섹션 1: 오늘 날씨 ─────────────────────────────────
     st.markdown('<a id="today-weather"></a>', unsafe_allow_html=True)
     st.header("☀️ Jamie, 오늘 문정동 날씨예요")
-    st.caption(f"🕐 {format_last_updated(datetime.now())}")
+    st.caption(f"🕐 {format_last_updated()}")
 
     if os.getenv("SEOUL_API_KEY") is None:
         st.toast("💡 안내: 지하철 혼잡도는 과거 샘플 데이터를 기준으로 보여드려요.")
@@ -470,19 +492,31 @@ def main():
 
     # ② 나머지 수치
     col1, col2, col3 = st.columns(3)
-    col1.metric("강수량 (오늘 합계)", f"{mj['precipitation_sum']} mm",
-                delta=f"{mj['precipitation_sum'] - ly['precipitation']:+.1f} mm vs 1년전",
-                delta_color="inverse")
+    col1.metric("강수량 (오늘 합계)", f"{mj['precipitation_sum']} mm")
     col2.metric("습도", f"{mj['humidity']}%")
     col3.metric("풍속", f"{mj['wind_speed']} m/s")
     temp_diff = mj['temperature_max'] - ly['temperature']
     prec_diff = mj['precipitation_sum'] - ly['precipitation']
-    temp_str = f"{abs(temp_diff):.1f}도 {'높아요' if temp_diff > 0 else '낮아요'}" if abs(temp_diff) >= 0.1 else "비슷해요"
-    prec_str = f"{abs(prec_diff):.1f}mm {'많아요' if prec_diff > 0 else '적어요'}" if abs(prec_diff) >= 0.1 else "똑같이 맑아요 ☀️" if ly['precipitation'] == 0 else "비슷해요"
-    st.caption(f"📅 **1년 전 오늘({year_ago_date})과 비교하면** — 최고기온 {temp_str}, 강수량 {prec_str}")
+    temp_str = f"{abs(temp_diff):.1f}도 {'더 높음' if temp_diff > 0 else '더 낮음'}" if abs(temp_diff) >= 0.1 else "비슷함"
+    prec_str = f"{abs(prec_diff):.1f}mm {'더 많음' if prec_diff > 0 else '더 적음'}" if abs(prec_diff) >= 0.1 else "비슷함"
+    _tc = "#ff7351" if temp_diff > 0.1 else "#5af8fb" if temp_diff < -0.1 else "#767579"
+    _pc = "#ff7351" if prec_diff > 0.1 else "#5af8fb" if prec_diff < -0.1 else "#767579"
+    _ta = "▲" if temp_diff > 0.1 else "▼" if temp_diff < -0.1 else "━"
+    _pa = "▲" if prec_diff > 0.1 else "▼" if prec_diff < -0.1 else "━"
+    st.markdown(f"""
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
+                padding:0.65rem 1rem;margin:0.4rem 0;
+                background:rgba(72,71,75,0.15);border-radius:0.5rem;
+                font-size:0.85rem;color:#767579;">
+      <span>📅 1년 전 오늘 <strong style="color:#acaaae;">({year_ago_date})</strong> 과 비교</span>
+      <span>최고기온 &nbsp;<strong style="color:{_tc};">{_ta} {temp_str}</strong></span>
+      <span>강수량 &nbsp;<strong style="color:{_pc};">{_pa} {prec_str}</strong></span>
+    </div>
+    """, unsafe_allow_html=True)
 
-    with st.expander("🌏 지구 반대편은?"):
+    with st.expander("🌏 지구 반대편은 어떨까?"):
         st.caption(f"몬테비데오 (우루과이) · {mv['temperature']}°C · {weather_label(mv['weather_code'])}")
+        st.caption(f"🕐 {format_montevideo_time()}")
 
     st.divider()
 
@@ -667,22 +701,22 @@ def main():
     """, unsafe_allow_html=True)
 
     # ② 수치 근거 — 1행 4카드 배치
-    pearson_str = f"{corr['pearson']:.4f}" if corr['pearson'] is not None else "데이터 없음"
-    spearman_str = f"{corr['spearman']:.4f}" if corr['spearman'] is not None else "데이터 없음"
-    precip_pearson_str = f"{corr['precipitation_pearson']:.4f}" if corr['precipitation_pearson'] is not None else "데이터 없음"
-    precip_spearman_str = f"{corr['precipitation_spearman']:.4f}" if corr['precipitation_spearman'] is not None else "데이터 없음"
+    pearson_str = f"{corr['pearson']:.2f}" if corr['pearson'] is not None else "데이터 없음"
+    spearman_str = f"{corr['spearman']:.2f}" if corr['spearman'] is not None else "데이터 없음"
+    precip_pearson_str = f"{corr['precipitation_pearson']:.2f}" if corr['precipitation_pearson'] is not None else "데이터 없음"
+    precip_spearman_str = f"{corr['precipitation_spearman']:.2f}" if corr['precipitation_spearman'] is not None else "데이터 없음"
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("기온 선형\n(Pearson)", pearson_str,
-                help="기온과 이용객 수의 직선적 관계")
+                help="기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n+1에 가까울수록 → 더울수록 지하철이 붐벼요\n-1에 가까울수록 → 추울수록 지하철이 붐벼요\n0에 가까울수록 → 기온이랑 혼잡도는 별 상관 없어요")
     col2.metric("기온 순위\n(Spearman)", spearman_str,
-                help="기온 순위와 이용객 순위의 일치도")
+                help="'더운 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n기온 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
     col3.metric("강수량 선형\n(Pearson)", precip_pearson_str,
-                help="강수량과 이용객 수의 직선적 관계")
+                help="비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n-1에 가까울수록 → 비 올수록 지하철이 붐벼요\n+1에 가까울수록 → 비 와도 오히려 한산해요\n0에 가까울수록 → 강수량이랑 혼잡도는 별 상관 없어요")
     col4.metric("강수량 순위\n(Spearman)", precip_spearman_str,
-                help="강수량 순위와 이용객 순위의 일치도")
+                help="'비 많은 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n강수량 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
 
-    st.caption("**Pearson**과 **Spearman**은 기온·강수량과 지하철 이용객 수의 관계를 각각 직선적, 순위 기반으로 측정해요. 기온은 +1에 가까울수록 따뜻할 때 붐비고, 강수량은 -1에 가까울수록 비올 때 적어진다는 의미입니다. 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
+    st.caption("📌 **숫자 해석 방법** — 각 수치는 -1 ~ +1 사이예요. **선형**과 **순위** 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
 
     merged = pd.merge(hist_df, subway_df, on='date')
     if len(merged) >= 2:
@@ -701,6 +735,10 @@ def main():
             annotation_position='top',
             annotation_font_color='#ffe792',
         )
+        fig_temp.update_traces(
+            hovertemplate='일평균기온: %{x:.1f}°C<br>이용객 수: %{y:,.0f}명<extra></extra>',
+            selector=dict(mode='markers'),
+        )
         fig_temp.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
@@ -712,7 +750,7 @@ def main():
             trendline='ols',
             title='강수량 vs 지하철 이용객 수 (평일)',
             labels={'precipitation': '강수량 (mm)', 'passengers': '이용객 수'},
-            color_discrete_sequence=['#ff9999'],
+            color_discrete_sequence=['#ff7351'],
         )
         fig_precip.add_vline(
             x=mj['precipitation_sum'],
@@ -720,6 +758,10 @@ def main():
             annotation_text=f"오늘 강수량 {mj['precipitation_sum']}mm",
             annotation_position='top',
             annotation_font_color='#ffe792',
+        )
+        fig_precip.update_traces(
+            hovertemplate='강수량: %{x:.1f}mm<br>이용객 수: %{y:,.0f}명<extra></extra>',
+            selector=dict(mode='markers'),
         )
         fig_precip.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',

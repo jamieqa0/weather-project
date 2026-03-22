@@ -734,27 +734,72 @@
 
 
     /* Scroll Reveal */
-    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .reveal.active { opacity: 1; transform: translateY(0); }
-    
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* Holographic Hover */
-    .glass { transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; }
+    .glass {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+
     .hover-hologram:hover {
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 10px 40px -10px rgba(90, 248, 251, 0.15), 0 0 20px rgba(204, 151, 255, 0.1), inset 0 0 0 1px rgba(90, 248, 251, 0.2);
       background: rgba(31, 31, 35, 0.7);
     }
-    
+
     /* Animated Data Flow Pipes */
-    .pipe { width: 2px; height: 35px; background: rgba(90, 248, 251, 0.1); margin: 0.2rem auto; position: relative; overflow: hidden; }
+    .pipe {
+      width: 2px;
+      height: 35px;
+      background: rgba(90, 248, 251, 0.1);
+      margin: 0.2rem auto;
+      position: relative;
+      overflow: hidden;
+    }
+
     .pipe::before {
-      content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(to bottom, transparent, #5af8fb, #ffe792, transparent);
       animation: pulse-flow 1.5s infinite linear;
     }
-    @keyframes pulse-flow { 0% { top: -100%; } 100% { top: 100%; } }
-    .pulse-node { animation: glow-pulse 2s infinite alternate; }
-    @keyframes glow-pulse { 0% { box-shadow: 0 0 5px rgba(90,248,251,0.2); } 100% { box-shadow: 0 0 20px rgba(90,248,251,0.6); } }
+
+    @keyframes pulse-flow {
+      0% {
+        top: -100%;
+      }
+
+      100% {
+        top: 100%;
+      }
+    }
+
+    .pulse-node {
+      animation: glow-pulse 2s infinite alternate;
+    }
+
+    @keyframes glow-pulse {
+      0% {
+        box-shadow: 0 0 5px rgba(90, 248, 251, 0.2);
+      }
+
+      100% {
+        box-shadow: 0 0 20px rgba(90, 248, 251, 0.6);
+      }
+    }
 
     @media (max-width: 900px) {
       .floating-toc {
@@ -770,7 +815,7 @@
   <section id="hero" class="relative overflow-hidden pt-24 pb-20 px-6 text-center">
     <div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
     <p class="text-muted font-body text-sm tracking-widest uppercase mb-4">Job-Stealer 사내 스터디 · 2026</p>
-    <h1 class="text-5xl md:text-7xl font-headline font-bold text-primary glow-gold mb-4">🕵️‍♂️ 기후탐정 소개합니다.</h1>
+    <h1 class="text-5xl md:text-7xl font-headline font-bold text-primary glow-gold mb-4">🕵️‍♂️ 문정동 출근, 소개합니다.</h1>
     <p class="text-xl md:text-2xl text-on-surface/80 font-body max-w-2xl mx-auto mb-8">
       지구 양 끝 날씨를 비교하고, 이상 기후를 AI로 탐지하며,<br />도시 데이터와의 숨은 상관관계를 찾아냅니다.
     </p>
@@ -1359,7 +1404,8 @@
           <div class="pipe"></div>
           <!-- 앱 -->
           <div class="arch-row">
-            <div class="arch-node n-app pulse-node" style="min-width:200px">🚀 app.py<small>Streamlit 웹 대시보드</small></div>
+            <div class="arch-node n-app pulse-node" style="min-width:200px">🚀 app.py<small>Streamlit 웹 대시보드</small>
+            </div>
           </div>
         </div>
       </div>
@@ -1412,7 +1458,7 @@
         🏠 메인 대시보드로 돌아가기
       </a>
     </div>
-    <p>기후탐정 · <span style="color:#cc97ff;">Job-Stealer</span> 사내 스터디 · 2026</p>
+    <p>문정동 출근 · <span style="color:#cc97ff;">Job-Stealer</span> 사내 스터디 · 2026</p>
     <p class="mt-1" style="color:#48474b">Built with Python · Streamlit · Plotly · scikit-learn · Claude</p>
   </footer>
 
@@ -1429,10 +1475,10 @@
   </nav>
   <script>
     (function () {
-      var SECTIONS = ['hero','tech-stack','features','process','architecture','timeline','links'];
+      var SECTIONS = ['hero', 'tech-stack', 'features', 'process', 'architecture', 'timeline', 'links'];
       var toc = document.getElementById('floating-toc');
       var linkMap = {};
-      SECTIONS.forEach(function(id) {
+      SECTIONS.forEach(function (id) {
         linkMap[id] = document.querySelector('.floating-toc a[href="#' + id + '"]');
       });
 
@@ -1458,7 +1504,7 @@
               }
               node = node.parentElement;
             }
-          } catch(e) {}
+          } catch (e) { }
           return window.parent.document.documentElement;
         }
 
@@ -1474,14 +1520,14 @@
             var cRect = c.getBoundingClientRect();
             var fRect = window.frameElement.getBoundingClientRect();
             return fRect.top - cRect.top + c.scrollTop;
-          } catch(e) { return 0; }
+          } catch (e) { return 0; }
         }
 
         // 링크 클릭 → 실제 스크롤 컨테이너로 이동
-        SECTIONS.forEach(function(id) {
+        SECTIONS.forEach(function (id) {
           var link = linkMap[id];
           if (!link) return;
-          link.addEventListener('click', function(e) {
+          link.addEventListener('click', function (e) {
             e.preventDefault();
             var el = document.getElementById(id);
             if (!el) return;
@@ -1492,24 +1538,24 @@
         });
 
         function positionToc() {
-          var c      = getContainer();
-          var iOff   = iframeOffsetInContainer();
-          var viewH  = c.clientHeight;
-          var tocH   = toc.offsetHeight;
+          var c = getContainer();
+          var iOff = iframeOffsetInContainer();
+          var viewH = c.clientHeight;
+          var tocH = toc.offsetHeight;
           var newTop = (c.scrollTop - iOff) + (viewH - tocH) / 2;
           toc.style.top = Math.max(20, newTop) + 'px';
         }
 
         function updateHighlight() {
-          var c       = getContainer();
-          var iOff    = iframeOffsetInContainer();
+          var c = getContainer();
+          var iOff = iframeOffsetInContainer();
           var scrollPos = c.scrollTop - iOff + c.clientHeight * 0.25;
           var current = SECTIONS[0];
-          SECTIONS.forEach(function(id) {
+          SECTIONS.forEach(function (id) {
             var el = document.getElementById(id);
             if (el && el.offsetTop <= scrollPos) current = id;
           });
-          SECTIONS.forEach(function(id) {
+          SECTIONS.forEach(function (id) {
             if (linkMap[id]) linkMap[id].classList.toggle('toc-active', id === current);
           });
         }
@@ -1522,7 +1568,7 @@
             _container.addEventListener('scroll', onScroll, { passive: true });
             positionToc();
             updateHighlight();
-          } catch(e) {
+          } catch (e) {
             setTimeout(initEmbedded, 300);
           }
         }
@@ -1530,30 +1576,30 @@
 
       } else {
         // ── 독립 열람 모드 (position:fixed 정상 동작) ────────────
-        var tocObserver = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
+        var tocObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
             if (entry.isIntersecting) {
               var id = entry.target.id;
-              SECTIONS.forEach(function(k) {
+              SECTIONS.forEach(function (k) {
                 if (linkMap[k]) linkMap[k].classList.remove('toc-active');
               });
               if (linkMap[id]) linkMap[id].classList.add('toc-active');
             }
           });
         }, { threshold: 0.15, rootMargin: '-5% 0px -60% 0px' });
-        SECTIONS.forEach(function(id) {
+        SECTIONS.forEach(function (id) {
           var el = document.getElementById(id);
           if (el) tocObserver.observe(el);
         });
       }
 
       // Scroll Reveal (임베딩/독립 공통)
-      var revealObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
+      var revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
           if (entry.isIntersecting) entry.target.classList.add('active');
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-      document.querySelectorAll('.reveal').forEach(function(el) {
+      document.querySelectorAll('.reveal').forEach(function (el) {
         revealObserver.observe(el);
       });
     })();

@@ -16,6 +16,7 @@
 /* 전체 배경 */
 .stApp { background-color: var(--bg) !important; }
 
+
 /* 헤더 */
 h1, h2, h3 {
   font-family: 'Space Grotesk', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif !important;
@@ -49,3 +50,4 @@ p, div { font-family: 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-se
 
 /* 구분선 */
 hr { border-color: var(--outline) !important; }
+

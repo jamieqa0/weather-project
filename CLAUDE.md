@@ -71,7 +71,7 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - `analysis/anomaly.py` — Isolation Forest 이상 탐지 (7 features, contamination=0.05)
 - `analysis/correlation.py` — Pearson + Spearman 상관계수 (기온, 강수량 vs 이용객 수, 평일만)
 - `commentary/generator.py` — 기온·강수량·날씨 코드 기반 규칙적 감성 멘트 생성
-- `commentary/interpretation.py` — 상관계수 한국어 해석, 시간 포맷, 알고리즘 정보 반환
+- `commentary/interpretation.py` — 상관계수 한국어 해석, 시간 포맷(`format_last_updated` KST 기준, `format_montevideo_time` UTC-3 기준), 알고리즘 정보 반환
 - `app.py` — 위 모듈들을 조합해 Streamlit 대시보드 렌더링. 두괄식 UI(결과 → 설명 → 차트 → 상세). 기온/강수량 그래프 좌우 배치, 메트릭 1행 4카드
 - `pages/about.py` — 소개 페이지. `static/about.html`을 읽어 `components.html()`로 렌더링. `timeline/builder.py`로 타임라인 HTML을 생성해 `<!-- TIMELINE_PLACEHOLDER -->`에 주입
 - `timeline/builder.py` — `timeline/log.json`을 읽어 Claude 협업 타임라인 HTML 반환. Streamlit 의존성 없어 단독 테스트 가능
@@ -84,6 +84,10 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - **지하철 API 범위**: `SEOUL_API_KEY` 있으면 366일(5~370일 전) 병렬 조회 (`max_workers=20`), 없으면 `data/sample/subway.csv` 사용 (2023~2026 평일 데이터)
 - **날씨 API**: Open-Meteo 현재(`current`) + 일일(`daily`) 데이터. 일일 데이터에서 `temperature_2m_min`, `temperature_2m_mean` 함께 조회. daily 배열이 비어있거나 키가 없으면 current 값으로 기본값 설정 (Streamlit Cloud 호환성)
 - **CSS 인코딩**: `assets/style.css`를 읽을 때 반드시 `encoding='utf-8'` 명시 (Windows cp949 충돌 방지)
+- **CSS 주입 구조**: 툴바 숨김(`stToolbar`, `stAppToolbar`, `stHeader`)과 툴팁 다크 스타일은 `inject_css()` 내부 `st.markdown` 블록에 직접 주입. 나머지 스타일은 `assets/style.css`. Streamlit DOM 선택자가 버전마다 달라질 수 있으므로 두 곳 중 `inject_css()` 블록이 우선 적용됨
+- **Streamlit 테마**: `.streamlit/config.toml`에 `[theme]` 설정으로 다크 모드 전역 적용 — dataframe, 차트 등 Streamlit 기본 컴포넌트도 다크로 렌더링됨. `primaryColor = "#5af8fb"`, `backgroundColor = "#0e0e11"`, `secondaryBackgroundColor = "#19191d"`
+- **디자인 시스템**: Eridian Horizon — 주요 색상 `#ffe792`(골드), `#5af8fb`(시안), `#cc97ff`(보라), `#ff7351`(오렌지-레드), 배경 `#0e0e11`. 새 UI 요소 추가 시 이 팔레트 준수
+- **타임존**: `format_last_updated()`는 KST(UTC+9), `format_montevideo_time()`은 UYT(UTC-3) 기준. 파라미터 없이 호출하면 각 타임존의 현재 시각 반환
 - **Streamlit 캐싱**: 날씨/지하철 API는 `ttl=3600`, 1년 전 날씨는 `ttl=86400`
 
 ## 서울 지하철 API
@@ -121,6 +125,54 @@ SEOUL_API_KEY=...  # 없으면 샘플 데이터로 자동 폴백
 SEOUL_API_KEY = "YOUR_API_KEY"
 ```
 저장 후 앱 자동 재시작됨.
+
+## 의존성
+
+코어 패키지 (자동 설치):
+```
+streamlit         # 대시보드
+pandas            # 데이터프레임
+numpy             # 수치 계산
+scipy             # 통계 (pearsonr, spearmanr)
+scikit-learn      # 이상 탐지 (IsolationForest)
+plotly            # 상호작용 차트
+requests          # HTTP API 호출
+python-dotenv     # .env 파일 로드
+```
+
+테스트 & 개발:
+```
+pytest            # 테스트 실행
+pytest-cov        # 커버리지 분석
+```
+
+## 문제 해결
+
+**문제**: 지하철 데이터가 91일만 나옴
+- **원인**: fetch_subway_data의 API 범위가 짧음
+- **해결**: `range(5, 371)`로 366일 조회 (max_workers=20 병렬화)
+
+**문제**: Streamlit에서 "KeyError: temperature_max"
+- **원인**: Open-Meteo daily 배열이 비어있을 때
+- **해결**: fetch_current_weather에서 current 값으로 기본값 설정
+
+**문제**: 지하철/날씨 데이터 merge가 안 됨
+- **원인**: Arrow 직렬화 후 date 컬럼이 string → datetime64로 변환됨
+- **해결**: get_subway()와 상관분석 전에 `.astype(str)` 명시적 변환
+
+**문제**: 테스트 중 "ConstantInputWarning" 발생
+- **원인**: test_strong_positive_correlation에서 precipitation이 상수
+- **영향**: 경고일 뿐 커버리지/기능에 영향 없음
+
+## UI 구조
+
+**두괄식 패턴** (결과 우선):
+1. 메트릭 & 요약 (상단)
+2. 해석 텍스트
+3. 차트 & 시각화
+4. 상세 정보
+
+이를 통해 사용자가 핵심 정보를 먼저 파악할 수 있음.
 
 ## 문서
 

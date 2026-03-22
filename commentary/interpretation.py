@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 
 def interpret_correlation(pearson: float | None) -> str:
@@ -26,8 +26,13 @@ def interpret_correlation(pearson: float | None) -> str:
     )
 
 
-def format_last_updated(dt: datetime) -> str:
-    """datetime을 'M월 D일 오전/오후 H시 M분 기준' 형식으로 반환."""
+def format_last_updated(dt: datetime = None) -> str:
+    """datetime을 'M월 D일 오전/오후 H시 M분 기준' 형식으로 반환. (KST 기준)"""
+    if dt is None:
+        # KST(한국 표준시) 타임존으로 현재 시간 가져오기
+        kst = timezone(timedelta(hours=9))
+        dt = datetime.now(kst)
+
     if dt.hour == 0:
         hour, meridiem = 12, "오전"
     elif dt.hour < 12:
@@ -37,6 +42,24 @@ def format_last_updated(dt: datetime) -> str:
     else:
         hour, meridiem = dt.hour - 12, "오후"
     return f"{dt.month}월 {dt.day}일 {meridiem} {hour}시 {dt.minute}분 기준"
+
+
+def format_montevideo_time(dt: datetime = None) -> str:
+    """몬테비데오(우루과이) 시간을 'M월 D일 오전/오후 H시 M분' 형식으로 반환."""
+    if dt is None:
+        # UTC-3 (우루과이 표준시)
+        utc_minus_3 = timezone(timedelta(hours=-3))
+        dt = datetime.now(utc_minus_3)
+
+    if dt.hour == 0:
+        hour, meridiem = 12, "오전"
+    elif dt.hour < 12:
+        hour, meridiem = dt.hour, "오전"
+    elif dt.hour == 12:
+        hour, meridiem = 12, "오후"
+    else:
+        hour, meridiem = dt.hour - 12, "오후"
+    return f"{dt.month}월 {dt.day}일 {meridiem} {hour}시 {dt.minute}분"
 
 
 def get_anomaly_algorithm_info() -> str:
