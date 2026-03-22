@@ -3,6 +3,7 @@ import pytest
 from commentary.interpretation import (
     interpret_correlation,
     format_last_updated,
+    format_montevideo_time,
     get_anomaly_algorithm_info,
 )
 
@@ -121,6 +122,61 @@ def test_format_last_updated_midnight():
 def test_format_last_updated_contains_suffix():
     result = format_last_updated(datetime(2026, 3, 22, 9, 0))
     assert "기준" in result
+
+
+def test_format_last_updated_none_uses_current_kst():
+    """dt=None이면 KST 현재 시각을 사용해 문자열을 반환한다."""
+    result = format_last_updated(None)
+    assert isinstance(result, str)
+    assert "기준" in result
+    assert "월" in result
+    assert "일" in result
+
+
+# ── format_montevideo_time ─────────────────────────────────────────────────────
+
+def test_format_montevideo_time_returns_string():
+    assert isinstance(format_montevideo_time(datetime(2026, 3, 22, 9, 0)), str)
+
+
+def test_format_montevideo_time_am():
+    result = format_montevideo_time(datetime(2026, 3, 22, 9, 30))
+    assert "오전" in result
+    assert "9시" in result
+    assert "30분" in result
+
+
+def test_format_montevideo_time_pm():
+    result = format_montevideo_time(datetime(2026, 3, 22, 15, 45))
+    assert "오후" in result
+    assert "3시" in result
+    assert "45분" in result
+
+
+def test_format_montevideo_time_noon():
+    result = format_montevideo_time(datetime(2026, 3, 22, 12, 0))
+    assert "오후" in result
+    assert "12시" in result
+
+
+def test_format_montevideo_time_midnight():
+    result = format_montevideo_time(datetime(2026, 3, 22, 0, 0))
+    assert "오전" in result
+    assert "12시" in result
+
+
+def test_format_montevideo_time_no_suffix():
+    """format_last_updated와 달리 '기준' 접미사가 없다."""
+    result = format_montevideo_time(datetime(2026, 3, 22, 9, 0))
+    assert "기준" not in result
+
+
+def test_format_montevideo_time_none_uses_current_utc_minus_3():
+    """dt=None이면 UTC-3 현재 시각을 사용해 문자열을 반환한다."""
+    result = format_montevideo_time(None)
+    assert isinstance(result, str)
+    assert "월" in result
+    assert "일" in result
 
 
 # ── get_anomaly_algorithm_info ────────────────────────────────────────────────

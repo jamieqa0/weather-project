@@ -12,7 +12,17 @@ from analysis.correlation import compute_correlation
 from commentary.generator import generate_comment
 from commentary.interpretation import interpret_correlation, format_last_updated, format_montevideo_time
 
+import base64
+import streamlit.components.v1 as components
 load_dotenv()
+
+@st.cache_data
+def get_base64_image(path: str) -> str | None:
+    try:
+        with open(path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    except FileNotFoundError:
+        return None
 
 # ── 좌표 상수 ────────────────────────────────────────────
 MUNJEONG = {"name": "문정동 (서울)", "lat": 37.4946, "lon": 127.1237}
@@ -50,6 +60,19 @@ def inject_css():
       }
       div[role="tooltip"] *,
       .stTooltipContent * { color: #f3f0f4 !important; }
+
+      /* 모바일 헤더 줄바꿈 */
+      .sec-title { line-height: 1.35; }
+      .sec-title .mb { display: none; }
+      @media (max-width: 640px) {
+        .sec-title .mb { display: block; }
+      }
+
+      /* 익스팬더 애니메이션 레이어 */
+      [data-testid="stExpanderDetails"] {
+        position: relative;
+        overflow: hidden;
+      }
     </style>
     """, unsafe_allow_html=True)
     css_path = os.path.join(os.path.dirname(__file__), "assets", "style.css")
@@ -93,22 +116,19 @@ WEATHER_LABELS = {
 }
 
 WEATHER_ICONS = {
-    0: "☀️", 1: "🌤", 2: "⛅", 3: "☁️",
-    45: "🌫", 48: "🌫",
-    51: "🌦", 53: "🌦", 55: "🌦",
-    61: "🌧", 63: "🌧", 65: "🌧",
-    71: "🌨", 73: "🌨", 75: "❄️",
-    80: "🌦", 81: "🌦", 82: "⛈",
-    95: "⛈",
+    0: "sunny.png", 1: "partly_cloudy.png", 2: "partly_cloudy.png", 3: "cloudy.png",
+    45: "cloudy.png", 48: "cloudy.png",
+    51: "rainy.png", 53: "rainy.png", 55: "rainy.png",
+    61: "rainy.png", 63: "rainy.png", 65: "rainy.png",
+    71: "snowy.png", 73: "snowy.png", 75: "snowy.png",
+    80: "rainy.png", 81: "rainy.png", 82: "thunderstorm.png",
+    95: "thunderstorm.png",
 }
 
 
 def weather_label(code: int) -> str:
     return WEATHER_LABELS.get(code, f"날씨 코드 {code}")
 
-
-def weather_icon(code: int) -> str:
-    return WEATHER_ICONS.get(code, "🌡️")
 
 
 WEATHER_CARD_BG = {
@@ -134,19 +154,183 @@ WEATHER_CARD_BG = {
 }
 
 
+def _lottie_name(code: int) -> str | None:
+    """날씨 코드 → Lottie 파일명 매핑."""
+    if code == 0:
+        return "sunny.json"
+    elif code in (1, 2):
+        return "cloudy.json"
+    elif code == 3:
+        return "overcast.json"
+    elif code in (45, 48):
+        return "fog.json"
+    elif code in (51, 53, 55, 61, 63, 65, 80, 81, 82):
+        return "rain.json"
+    elif code in (71, 73, 75):
+        return "snow.json"
+    elif code == 95:
+        return "thunder.json"
+    return None
+
+@st.cache_data
+def _lottie_lib() -> str:
+    """lottie.min.js 파일 내용을 읽어 캐시."""
+    path = os.path.join(os.path.dirname(__file__), "static", "lottie.min.js")
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        return ""
+
+@st.cache_data
+def _lottie_json(code: int) -> str:
+    """날씨 코드에 해당하는 Lottie JSON 문자열 반환. 없으면 빈 문자열."""
+    fname = _lottie_name(code)
+    if not fname:
+        return ""
+    path = os.path.join(os.path.dirname(__file__), "static", "lottie", fname)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        return ""
+
+
+def render_weather_card_component(wcode: int, mj: dict, comment: str) -> None:
+    """날씨 카드 전체를 components.html()로 렌더링 — lottie-web으로 JSON 인라인 삽입."""
+
+    _bg, _border = WEATHER_CARD_BG.get(wcode, ("rgba(90,248,251,0.06)", "rgba(90,248,251,0.2)"))
+    _label = weather_label(wcode)
+
+    icon_name = WEATHER_ICONS.get(wcode, "sunny.png")
+    icon_b64 = get_base64_image(os.path.join("assets", "icons", icon_name))
+    icon_img = (f'<img src="data:image/png;base64,{icon_b64}" '
+                f'style="width:110px;height:110px;object-fit:contain;'
+                f'filter:drop-shadow(0 0 15px rgba(255,255,255,0.2));">') if icon_b64 else "🌡️"
+
+    lottie_json = _lottie_json(wcode)
+    lottie_layer = ""
+    lottie_script = ""
+    if lottie_json:
+        lottie_layer = '''<div id="lottie-bg" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
+  <div id="lottie-anim-0" style="position:absolute;width:180px;height:180px;right:30%;top:-30px;opacity:0.65;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-1" style="position:absolute;width:110px;height:110px;right:12%;top:10px;opacity:0.45;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-2" style="position:absolute;width:140px;height:140px;right:2%;top:-20px;opacity:0.55;border-radius:50%;overflow:hidden;"></div>
+</div>'''
+        lottie_script = f"""<script>
+var _data = {lottie_json};
+[0,1,2].forEach(function(i) {{
+  var a = lottie.loadAnimation({{
+    container: document.getElementById('lottie-anim-'+i),
+    renderer: 'svg', loop: true, autoplay: true,
+    animationData: JSON.parse(JSON.stringify(_data))
+  }});
+  a.goToAndPlay(i * 25, true);
+}});
+</script>"""
+
+    _lottie_lib_js = _lottie_lib()
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<script>{_lottie_lib_js}</script>
+<style>* {{ box-sizing: border-box; margin: 0; padding: 0; }}
+html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }}
+</style></head>
+<body>
+<div style="position:relative;overflow:hidden;background:{_bg};border:1px solid {_border};
+    border-radius:0.75rem;padding:1.5rem 1.75rem;margin:2px 0;">
+  {lottie_layer}
+  <div style="position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+    <div style="line-height:0;">{icon_img}</div>
+    <div>
+      <div style="font-size:2.8rem;font-weight:700;color:#f3f0f4;line-height:1.1;">{mj['temperature']}°C</div>
+      <div style="font-size:1.05rem;font-weight:600;color:#acaaae;margin-top:0.2rem;">{_label}</div>
+      <div style="font-size:0.9rem;font-weight:600;color:#5af8fb;margin-top:0.25rem;letter-spacing:0.01em;">{comment}</div>
+    </div>
+    <div style="margin-left:auto;text-align:right;font-size:0.9rem;color:#acaaae;line-height:2;">
+      <div>최고 <strong style="color:#f3f0f4;">{mj['temperature_max']}°C</strong></div>
+      <div>최저 <strong style="color:#f3f0f4;">{mj['temperature_min']}°C</strong></div>
+      <div>평균 <strong style="color:#f3f0f4;">{mj['temperature_mean']}°C</strong></div>
+    </div>
+  </div>
+</div>
+{lottie_script}
+</body></html>"""
+
+    components.html(html, height=165)
+
+
+def render_lottie_in_expander(code: int, line1: str = "", line2: str = "") -> None:
+    """expander 내부에 Lottie 배경 + 텍스트 오버레이를 한 블록으로 렌더링."""
+    lottie_json = _lottie_json(code)
+    if not lottie_json:
+        if line1:
+            st.caption(line1)
+        if line2:
+            st.caption(line2)
+        return
+    _lottie_lib_js = _lottie_lib()
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<script>{_lottie_lib_js}</script>
+<style>
+* {{ margin:0; padding:0; box-sizing:border-box; }}
+html, body {{ background: transparent; }}
+.wrap {{ position:relative; width:100%; height:88px; overflow:hidden; border-radius:0.5rem; }}
+.anim {{ position:absolute; inset:0; width:100%; height:100%; opacity:0.9; }}
+.overlay {{ position:absolute; inset:0; display:flex; flex-direction:column;
+            justify-content:center; padding:0 1.2rem;
+            background:linear-gradient(90deg,rgba(14,14,17,0.55) 0%,rgba(14,14,17,0.1) 100%); }}
+.t1 {{ font-size:0.78rem; color:#acaaae; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }}
+.t2 {{ font-size:1rem; font-weight:600; color:#f3f0f4; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; margin-top:0.2rem; }}
+</style>
+</head><body>
+<div class="wrap">
+  <div id="lottie-exp" class="anim"></div>
+  <div class="overlay">
+    <div class="t1">{line1}</div>
+    <div class="t2">{line2}</div>
+  </div>
+</div>
+<script>
+lottie.loadAnimation({{
+  container: document.getElementById('lottie-exp'),
+  renderer: 'svg', loop: true, autoplay: true,
+  animationData: {lottie_json}
+}});
+</script>
+</body></html>"""
+    components.html(html, height=92)
+
 def weather_animation_html(code: int) -> str:
     """날씨 코드에 맞는 배경 애니메이션 HTML 반환. 랜덤 시드를 코드로 고정해 리렌더 시 위치 일정."""
     rng = random.Random(code * 7919)
     els = []
 
-    if code == 0:  # ☀️ 맑음 — 태양 광선
+    if code == 0:  # ☀️ 맑음 — 태양 + 회전 광선 + 반짝이
         css = """
-        @keyframes sun-glow{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.6;transform:scale(1.08)}}
-        @keyframes sun-ray{0%,100%{opacity:.1}50%{opacity:.22}}"""
-        els.append('<div style="position:absolute;right:-15px;top:-15px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(255,231,146,.35) 0%,transparent 70%);animation:sun-glow 3s ease-in-out infinite;pointer-events:none;"></div>')
+        @keyframes sun-pulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+        @keyframes sun-outer{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.65;transform:scale(1.15)}}
+        @keyframes sun-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes ray-flash{0%,100%{opacity:.5}50%{opacity:.9}}
+        @keyframes sparkle{0%,100%{opacity:0;transform:scale(.4)}45%,55%{opacity:.85;transform:scale(1)}}"""
+        # 외곽 글로우
+        els.append('<div style="position:absolute;right:-8px;top:-8px;width:105px;height:105px;border-radius:50%;background:radial-gradient(circle,rgba(255,231,146,.35) 0%,transparent 68%);animation:sun-outer 3s ease-in-out .4s infinite;pointer-events:none;"></div>')
+        # 태양 원판
+        els.append('<div style="position:absolute;right:15px;top:12px;width:65px;height:65px;border-radius:50%;background:radial-gradient(circle,rgba(255,231,146,.95) 25%,rgba(255,200,60,.55) 55%,transparent 78%);animation:sun-pulse 2.5s ease-in-out infinite;pointer-events:none;"></div>')
+        # 회전하는 광선 레이어
+        ray_els = '<div style="position:absolute;right:15px;top:12px;width:65px;height:65px;animation:sun-spin 10s linear infinite;pointer-events:none;">'
         for i in range(8):
             ang = i * 45
-            els.append(f'<div style="position:absolute;right:33px;top:18px;width:55px;height:2px;background:rgba(255,231,146,.18);transform-origin:0 50%;transform:rotate({ang}deg);animation:sun-ray 4s ease-in-out {i*0.4:.1f}s infinite;border-radius:2px;pointer-events:none;"></div>')
+            ray_els += f'<div style="position:absolute;left:50%;top:50%;width:42px;height:3px;background:linear-gradient(to right,rgba(255,231,146,.85),transparent);transform-origin:0 50%;transform:translateY(-50%) rotate({ang}deg);border-radius:3px;animation:ray-flash 2s ease-in-out {i*0.25:.2f}s infinite;"></div>'
+        ray_els += '</div>'
+        els.append(ray_els)
+        # 반짝이 파티클
+        for i in range(5):
+            lx, ty = rng.randint(5, 72), rng.randint(8, 82)
+            d = rng.uniform(0, 2.5)
+            sz = rng.randint(3, 6)
+            els.append(f'<div style="position:absolute;left:{lx}%;top:{ty}%;width:{sz}px;height:{sz}px;border-radius:50%;background:rgba(255,231,146,.9);animation:sparkle {1.4+i*0.35:.2f}s ease-in-out {d:.2f}s infinite;pointer-events:none;"></div>')
 
     elif code in (1, 2):  # 🌤⛅ 대체로 맑음 / 구름 조금
         css = """
@@ -212,24 +396,59 @@ def weather_animation_html(code: int) -> str:
 
 
 def render_hero():
-    st.markdown("""
-    <div style="
-        text-align: center;
-        padding: 3rem 1rem 2rem;
-        background: linear-gradient(180deg, rgba(255,231,146,0.06) 0%, transparent 100%);
-        border-bottom: 1px solid rgba(72,71,75,0.3);
-        margin-bottom: 2rem;
-    ">
-        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🚇</div>
-        <h1 style="font-size: 2.8rem; margin: 0; letter-spacing: -0.02em;">문정동, 출근해볼까?</h1>
-        <p style="color: #acaaae; font-size: 1.05rem; margin-top: 0.6rem;">
-            오늘 문정동 날씨, 출근 전에 미리 확인해요
-        </p>
-        <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.2rem; font-size: 0.85rem; color: #767579;">
-            <span>📍 문정동, 서울 출근 날씨 리포트</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    lottie_json = _lottie_json(0)  # sunny
+    lottie_lib_js = _lottie_lib()
+
+    lottie_bg = ""
+    lottie_script = ""
+    if lottie_json:
+        lottie_bg = '''
+  <div id="lottie-anim-0" style="position:absolute;width:220px;height:220px;right:18%;top:-40px;opacity:0.55;pointer-events:none;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-1" style="position:absolute;width:130px;height:130px;right:4%;top:20px;opacity:0.35;pointer-events:none;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-2" style="position:absolute;width:160px;height:160px;left:5%;top:-10px;opacity:0.3;pointer-events:none;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-3" style="position:absolute;width:100px;height:100px;left:22%;top:50px;opacity:0.2;pointer-events:none;border-radius:50%;overflow:hidden;"></div>'''
+        lottie_script = f"""<script>
+var _data = {lottie_json};
+[0,1,2,3].forEach(function(i) {{
+  var a = lottie.loadAnimation({{
+    container: document.getElementById('lottie-anim-'+i),
+    renderer: 'svg', loop: true, autoplay: true,
+    animationData: JSON.parse(JSON.stringify(_data))
+  }});
+  a.goToAndPlay(i * 20, true);
+}});
+</script>"""
+
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<script>{lottie_lib_js}</script>
+<style>
+* {{ margin:0; padding:0; box-sizing:border-box; }}
+html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }}
+.hero {{
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 3.5rem 2rem;
+  background: radial-gradient(circle at center, rgba(255,231,146,0.07) 0%, transparent 70%);
+  border-bottom: 1px solid rgba(72,71,75,0.15);
+  min-height: 240px;
+}}
+h1 {{ font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; color: #ffe792;
+      text-shadow: 0 0 25px rgba(255,231,146,0.3); letter-spacing: -0.02em; line-height: 1.1; }}
+p  {{ color: #acaaae; font-size: 1rem; margin-top: 0.9rem; line-height: 1.6; max-width: 560px; }}
+</style>
+</head><body>
+<div class="hero">
+  {lottie_bg}
+  <div style="position:relative;z-index:1;">
+    <h1>문정동, 출근해볼까?</h1>
+    <p>데이터로 분석한 문정동의 실시간 날씨와<br>지하철 혼잡도를 출근 전에 스마트하게 체크하세요</p>
+  </div>
+</div>
+{lottie_script}
+</body></html>"""
+
+    components.html(html, height=280)
 
 
 def render_floating_toc():
@@ -282,46 +501,6 @@ def render_floating_toc():
         scroll-margin-top: 8px;
       }
 
-      /* =========================================
-         Streamlit 순차 페이드인 애니메이션 (유저 요청)
-         ========================================= */
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translate3d(0, 30px, 0); }
-        to { opacity: 1; transform: translate3d(0, 0, 0); }
-      }
-      
-      /* 모든 메인 블록의 자식 요소들에 지연 애니메이션 적용 */
-      [data-testid="stVerticalBlock"] > div {
-        animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-      }
-      
-      [data-testid="stVerticalBlock"] > div:nth-child(1) { animation-delay: 0.05s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(2) { animation-delay: 0.15s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(3) { animation-delay: 0.25s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(4) { animation-delay: 0.35s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(5) { animation-delay: 0.45s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(6) { animation-delay: 0.55s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(7) { animation-delay: 0.65s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(8) { animation-delay: 0.75s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(9) { animation-delay: 0.85s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(10) { animation-delay: 0.95s; }
-      [data-testid="stVerticalBlock"] > div:nth-child(n+11) { animation-delay: 1.05s; }
-      
-      /* TOC 래퍼의 애니메이션 해제 (position: fixed & transform 충돌 방지) */
-      [data-testid="stVerticalBlock"] > div:has(.ftoc) {
-        animation: none !important;
-        transform: none !important;
-      }
-      
-      /* Metric 컨테이너 호버 3D 효과 (보너스) */
-      [data-testid="stMetric"] {
-        transition: transform 0.25s ease, background 0.25s ease;
-        padding: 0.5rem 1rem; border-radius: 0.5rem;
-      }
-      [data-testid="stMetric"]:hover {
-        transform: translateY(-3px) scale(1.02);
-        background: rgba(255, 231, 146, 0.03);
-      }
     </style>
     <nav class="ftoc" id="main-ftoc" aria-label="페이지 목차">
       <div class="ftoc-title">목차</div>
@@ -331,7 +510,6 @@ def render_floating_toc():
     </nav>
     """, unsafe_allow_html=True)
 
-    import streamlit.components.v1 as components
     components.html("""
     <script>
     (function () {
@@ -445,14 +623,15 @@ def render_footer():
 
 
 def main():
-    st.set_page_config(layout="wide", page_title="문정동, 출근해볼까?", page_icon="🚇")
+    favicon_path = os.path.join("assets", "icons", "favicon.png")
+    st.set_page_config(layout="wide", page_title="문정동, 출근해볼까?", page_icon=favicon_path)
     inject_css()
     render_floating_toc()
     render_hero()
 
     # ── 섹션 1: 오늘 날씨 ─────────────────────────────────
     st.markdown('<a id="today-weather"></a>', unsafe_allow_html=True)
-    st.header("☀️ Jamie, 오늘 문정동 날씨예요")
+    st.markdown('<h2 class="sec-title">☀️ 오늘 문정동<span class="mb"></span> 날씨예요</h2>', unsafe_allow_html=True)
     st.caption(f"🕐 {format_last_updated()}")
 
     if os.getenv("SEOUL_API_KEY") is None:
@@ -467,31 +646,9 @@ def main():
     year_ago_date = f"{_ya.year}년 {_ya.month}월 {_ya.day}일"
 
     _wcode = mj['weather_code']
-    _bg, _border = WEATHER_CARD_BG.get(_wcode, ("rgba(90,248,251,0.06)", "rgba(90,248,251,0.2)"))
 
     # ① 핵심 하이라이트 카드
-    st.markdown(f"""
-    <div style="
-        position: relative; overflow: hidden;
-        background: {_bg}; border: 1px solid {_border};
-        border-radius: 0.75rem; padding: 1.5rem 1.75rem; margin: 0.5rem 0;
-    ">
-      {weather_animation_html(_wcode)}
-      <div style="position:relative;z-index:1;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;">
-        <span style="font-size:3.5rem;line-height:1;">{weather_icon(_wcode)}</span>
-        <div>
-          <div style="font-size:2.8rem;font-weight:700;color:#f3f0f4;line-height:1.1;">{mj['temperature']}°C</div>
-          <div style="font-size:1.05rem;font-weight:600;color:#acaaae;margin-top:0.2rem;">{weather_label(_wcode)}</div>
-          <div style="font-size:0.85rem;color:#767579;margin-top:0.15rem;">{generate_comment(mj['temperature'], mj['precipitation'], _wcode)}</div>
-        </div>
-        <div style="margin-left:auto;text-align:right;font-size:0.9rem;color:#acaaae;line-height:2;">
-          <div>최고 <strong style="color:#f3f0f4;">{mj['temperature_max']}°C</strong></div>
-          <div>최저 <strong style="color:#f3f0f4;">{mj['temperature_min']}°C</strong></div>
-          <div>평균 <strong style="color:#f3f0f4;">{mj['temperature_mean']}°C</strong></div>
-        </div>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
+    render_weather_card_component(_wcode, mj, generate_comment(mj['temperature'], mj['precipitation'], _wcode))
 
     # ② 나머지 수치
     col1, col2, col3 = st.columns(3)
@@ -518,14 +675,17 @@ def main():
     """, unsafe_allow_html=True)
 
     with st.expander("🌏 지구 반대편은 어떨까?"):
-        st.caption(f"몬테비데오 (우루과이) · {mv['temperature']}°C · {weather_label(mv['weather_code'])}")
-        st.caption(f"🕐 {format_montevideo_time()}")
+        render_lottie_in_expander(
+            mv['weather_code'],
+            line1=f"몬테비데오 (우루과이) · 🕐 {format_montevideo_time()}",
+            line2=f"{mv['temperature']}°C · {weather_label(mv['weather_code'])}",
+        )
 
     st.divider()
 
     # ── 섹션 2: 이상 기후 탐지 ────────────────────────────
     st.markdown('<a id="anomaly"></a>', unsafe_allow_html=True)
-    st.header("🚨 근데, 오늘 좀 이상한 날씨는 아닐까요?")
+    st.markdown('<h2 class="sec-title">🚨 근데, 오늘 날씨<span class="mb"></span> 이상하진 않을까요?</h2>', unsafe_allow_html=True)
 
     with st.spinner("과거 데이터 분석 중..."):
         hist_df = get_historical(MUNJEONG["lat"], MUNJEONG["lon"], days=365)
@@ -545,13 +705,13 @@ def main():
         )
     elif anomaly_count > 0:
         bg, border, icon, title, body = (
-            "rgba(90,248,251,0.08)", "#5af8fb", "✅",
+            "rgba(90,248,251,0.08)", "#5af8fb", "🌿",
             "오늘은 평범한 날씨예요.",
             f"최근 1년간 이상 기후는 {anomaly_count}번 있었지만, 오늘은 해당 없어요 😌"
         )
     else:
         bg, border, icon, title, body = (
-            "rgba(90,248,251,0.08)", "#5af8fb", "✅",
+            "rgba(90,248,251,0.08)", "#5af8fb", "🌿",
             "오늘도, 요즘도 무난해요.",
             "최근 1년간 이상 기후가 없었어요 😊"
         )
@@ -561,7 +721,7 @@ def main():
         border-radius:0.75rem; padding:1.5rem 1.75rem; margin:0.5rem 0;
     ">
       <div style="display:flex;align-items:center;gap:1.25rem;">
-        <span style="font-size:3.5rem;line-height:1;flex-shrink:0;">{icon}</span>
+        <span style="font-size:2.2rem;line-height:1;flex-shrink:0;">{icon}</span>
         <div>
           <div style="font-size:1.2rem;font-weight:700;color:#f3f0f4;margin-bottom:0.3rem;">{title}</div>
           <div style="font-size:0.95rem;color:#acaaae;">{body}</div>
@@ -597,7 +757,7 @@ def main():
     fig.update_layout(
         paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
         font_color='#f3f0f4',
-        title=None,
+        title='',
         xaxis=dict(
             title='날짜', tickformat='%m/%d',
             gridcolor='rgba(72,71,75,0.3)', tickfont=dict(size=11),
@@ -658,7 +818,7 @@ def main():
 
     # ── 섹션 3: 날씨 × 지하철 상관관계 ────────────────────
     st.markdown('<a id="subway"></a>', unsafe_allow_html=True)
-    st.header("🚇 이 날씨에 지하철 얼마나 붐빌까요?")
+    st.markdown('<h2 class="sec-title">📊 이 날씨에<span class="mb"></span> 지하철 얼마나 붐빌까요?</h2>', unsafe_allow_html=True)
 
     with st.spinner("상관관계 분석 중..."):
         subway_df = get_subway()
@@ -670,10 +830,10 @@ def main():
     # 기온과 강수량의 상관도를 모두 반영한 해석
     def get_combined_correlation_text(temp_r, precip_r):
         """기온과 강수량의 상관도를 통합해서 한 문장으로 표현."""
-        avg_r = (abs(temp_r) + abs(precip_r)) / 2 if temp_r and precip_r else None
-
         if not temp_r or not precip_r:
             return "데이터 없음"
+
+        avg_r = (abs(temp_r) + abs(precip_r)) / 2
 
         if avg_r < 0.1:
             level = "거의 영향 없음"

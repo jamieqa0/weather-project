@@ -86,3 +86,40 @@ p, div { font-family: 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-se
 /* 구분선 */
 hr { border-color: var(--outline) !important; }
 
+/* Premium Weather Icon Styles */
+.weather-icon-container img {
+  animation: float 5s ease-in-out infinite;
+  transition: filter 0.3s ease;
+}
+
+.weather-icon-container:hover img {
+  filter: drop-shadow(0 0 25px rgba(255, 231, 146, 0.4));
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* Specific icon enhancements */
+.weather-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 231, 146, 0.3) !important;
+}
+/* Hero Icon Enhancement */
+.hero-icon {
+  text-shadow: 0 0 20px rgba(90, 248, 251, 0.6);
+  display: inline-block;
+  animation: pulse-glow 3s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.1); filter: brightness(1.2); }
+}

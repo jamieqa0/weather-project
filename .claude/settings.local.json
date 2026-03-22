@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(pip freeze:*)",
+      "Bash(cat:*)",
+      "WebFetch(domain:lottie.host)",
+      "WebFetch(domain:app.lottiefiles.com)",
+      "Bash(ffmpeg:*)",
+      "Bash(gh issue:*)",
+      "Bash(for i:*)",
+      "Bash(pip show:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:assets10.lottiefiles.com)",
+      "WebFetch(domain:lottiefiles.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:assets2.lottiefiles.com)",
+      "WebFetch(domain:assets9.lottiefiles.com)",
+      "WebSearch",
+      "Bash(gh api:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:assets3.lottiefiles.com)",
+      "Bash(python3:*)"
+    ]
+  }
+}
