@@ -1545,17 +1545,17 @@
         linkMap[id] = document.querySelector('.floating-toc a[href="#' + id + '"]');
       });
 
-      if (window.self !== window.top) {
-        // ── Streamlit iframe 임베딩 모드 ────────────────────────
-        // Streamlit은 window가 아닌 내부 div가 실제 스크롤 컨테이너
-        // position:fixed는 5500px 가상뷰포트 기준이라 JS로 직접 배치
+      // scrolling=True iframe 여부 감지 (이 경우 window 자체가 스크롤됨)
+      var selfScrolling = document.documentElement.scrollHeight > window.innerHeight + 10;
+
+      if (window.self !== window.top && !selfScrolling) {
+        // ── 부모가 스크롤하는 임베딩 모드 ───────────────────────
         toc.style.position = 'absolute';
         toc.style.transform = 'none';
         toc.style.transition = 'top 60ms linear';
 
         var _container = null;
 
-        // iframe 조상 중 실제로 스크롤되는 div 탐색
         function findContainer() {
           try {
             var p = window.parent;
@@ -1576,7 +1576,6 @@
           return _container;
         }
 
-        // iframe이 컨테이너 상단에서 몇 px 아래에 있는지 (절대 오프셋)
         function iframeOffsetInContainer() {
           try {
             var c = getContainer();
@@ -1586,7 +1585,6 @@
           } catch (e) { return 0; }
         }
 
-        // 링크 클릭 → 실제 스크롤 컨테이너로 이동
         SECTIONS.forEach(function (id) {
           var link = linkMap[id];
           if (!link) return;
@@ -1594,17 +1592,15 @@
             e.preventDefault();
             var el = document.getElementById(id);
             if (!el) return;
-            var c = getContainer();
-            var titleEl = el.querySelector('h1, h2') || el;
-            var c = getContainer();
-            var cRect = c.getBoundingClientRect();
-            var titleRect = titleEl.getBoundingClientRect();
-            var target = c.scrollTop + (titleRect.top - cRect.top) - 24;
-            c.scrollTo({ top: target, behavior: 'smooth' });
+            // iframe 내부 좌표(getBoundingClientRect)와 부모 좌표를 섞으면 틀림.
+            // el.offsetTop = iframe 문서 최상단 기준 절대 위치
+            // iframeOffsetInContainer() = 부모 스크롤 컨테이너 기준 iframe 위치
+            var iOff = iframeOffsetInContainer();
+            var elTopInIframe = el.offsetTop;
+            var target = iOff + elTopInIframe - 24;
+            getContainer().scrollTo({ top: target, behavior: 'smooth' });
           });
         });
-
-
 
         function positionToc() {
           var c = getContainer();
@@ -1644,7 +1640,35 @@
         setTimeout(initEmbedded, 200);
 
       } else {
-        // ── 독립 열람 모드 (position:fixed 정상 동작) ────────────
+        // ── 자체 스크롤 모드 (scrolling=True iframe 또는 독립 열람) ──
+        // 링크 클릭 → window.scrollTo로 이동
+        SECTIONS.forEach(function (id) {
+          var link = linkMap[id];
+          if (!link) return;
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            var el = document.getElementById(id);
+            if (!el) return;
+            var target = el.getBoundingClientRect().top + window.scrollY - 24;
+            window.scrollTo({ top: target, behavior: 'smooth' });
+          });
+        });
+
+        function updateHighlight() {
+          var scrollPos = window.scrollY + window.innerHeight * 0.25;
+          var current = SECTIONS[0];
+          SECTIONS.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el && el.offsetTop <= scrollPos) current = id;
+          });
+          SECTIONS.forEach(function (id) {
+            if (linkMap[id]) linkMap[id].classList.toggle('toc-active', id === current);
+          });
+        }
+
+        window.addEventListener('scroll', updateHighlight, { passive: true });
+        updateHighlight();
+
         var tocObserver = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {

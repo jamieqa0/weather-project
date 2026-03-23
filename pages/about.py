@@ -31,4 +31,4 @@ if st.query_params.get("scrollTo") == "timeline":
     </script>
     """
 
-components.html(html_content, height=8500, scrolling=True)
+components.html(html_content, height=9500, scrolling=True)
