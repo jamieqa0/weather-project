@@ -930,13 +930,15 @@ def main():
             hovertemplate='일평균기온: %{x:.1f}°C<br>이용객 수: %{y:,.0f}명<extra></extra>',
             selector=dict(mode='markers'),
         )
+        # OLS 트렌드라인 이름 지정 — 기온
+        fig_temp.update_traces(selector=dict(mode='lines'), name='Pearson 추세 (선형)', showlegend=True)
         # Spearman 추세선 (LOWESS) 추가 — 기온
         _lowess_temp = px.scatter(merged, x='temperature', y='passengers', trendline='lowess')
         _lt = _lowess_temp.data[1]
         _lt.line.color = '#cc97ff'
         _lt.line.width = 2
         _lt.line.dash = 'dot'
-        _lt.name = 'Spearman 추세'
+        _lt.name = 'Spearman 추세 (비선형)'
         _lt.showlegend = True
         fig_temp.add_trace(_lt)
         fig_temp.update_layout(
@@ -965,13 +967,15 @@ def main():
             hovertemplate='강수량: %{x:.1f}mm<br>이용객 수: %{y:,.0f}명<extra></extra>',
             selector=dict(mode='markers'),
         )
+        # OLS 트렌드라인 이름 지정 — 강수량
+        fig_precip.update_traces(selector=dict(mode='lines'), name='Pearson 추세 (선형)', showlegend=True)
         # Spearman 추세선 (LOWESS) 추가 — 강수량
         _lowess_precip = px.scatter(merged, x='precipitation', y='passengers', trendline='lowess')
         _lp = _lowess_precip.data[1]
         _lp.line.color = '#cc97ff'
         _lp.line.width = 2
         _lp.line.dash = 'dot'
-        _lp.name = 'Spearman 추세'
+        _lp.name = 'Spearman 추세 (비선형)'
         _lp.showlegend = True
         fig_precip.add_trace(_lp)
         fig_precip.update_layout(
