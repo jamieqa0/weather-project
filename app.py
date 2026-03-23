@@ -910,6 +910,7 @@ def main():
     st.caption("📌 **숫자 해석 방법** — 각 수치는 -1 ~ +1 사이예요. **선형**과 **순위** 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
 
     merged = pd.merge(hist_df, subway_df, on='date')
+    merged = merged[pd.to_datetime(merged['date']).dt.dayofweek < 5].reset_index(drop=True)
     if len(merged) >= 2:
         # 기온 그래프
         fig_temp = px.scatter(
