@@ -938,7 +938,7 @@ def main():
         _lt.line.color = '#cc97ff'
         _lt.line.width = 2
         _lt.line.dash = 'dot'
-        _lt.name = 'Spearman 추세 (비선형)'
+        _lt.name = '비선형 추세 (LOWESS)'
         _lt.showlegend = True
         fig_temp.add_trace(_lt)
         fig_temp.update_layout(
@@ -975,7 +975,7 @@ def main():
         _lp.line.color = '#cc97ff'
         _lp.line.width = 2
         _lp.line.dash = 'dot'
-        _lp.name = 'Spearman 추세 (비선형)'
+        _lp.name = '비선형 추세 (LOWESS)'
         _lp.showlegend = True
         fig_precip.add_trace(_lp)
         fig_precip.update_layout(
