@@ -758,7 +758,7 @@ def main():
     """, unsafe_allow_html=True)
 
     # ② 분석 방법 설명 — 작게
-    st.caption("🤖 **어떻게 판단했냐고요?** Isolation Forest AI가 최근 1년치 최고·최저·평균기온, 일교차, 강수량, 습도, 풍속 7가지를 종합 분석해 상위 5%의 극단적인 날을 이상 기후로 분류했어요. 그래프의 보라색 다이아몬드가 그 날들이에요.")
+    st.caption("🤖 **어떻게 판단했냐고요?** Isolation Forest AI가 최근 1년치 최고·최저·평균기온, 일교차, 강수량, 습도, 풍속 7가지를 종합 분석해 상위 5%의 극단적인 날을 이상 기후로 분류했어요.  \n그래프의 보라색 다이아몬드가 그 날들이에요.")
 
     # ③ 근거: 그래프
     analyzed['구분'] = analyzed['is_anomaly'].map({True: '이상 기후', False: '정상'})
@@ -907,18 +907,6 @@ def main():
                 help="'비 많은 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n강수량 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
 
     st.caption("📌 **숫자 해석 방법** — 각 수치는 -1 ~ +1 사이예요. **선형**과 **순위** 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
-
-    _temp_gap = (abs(corr['pearson'] - corr['spearman'])
-                 if corr['pearson'] is not None and corr['spearman'] is not None else 0)
-    _precip_gap = (abs(corr['precipitation_pearson'] - corr['precipitation_spearman'])
-                   if corr['precipitation_pearson'] is not None and corr['precipitation_spearman'] is not None else 0)
-    if _temp_gap > 0.2 or _precip_gap > 0.2:
-        _parts = []
-        if _temp_gap > 0.2:
-            _parts.append(f"기온 (차이 {_temp_gap:.2f})")
-        if _precip_gap > 0.2:
-            _parts.append(f"강수량 (차이 {_precip_gap:.2f})")
-        st.caption(f"💡 {' · '.join(_parts)}에서 선형·순위 값 차이가 커요 — 단순 직선 관계가 아닌 비선형 패턴이 있을 수 있어요. 순위(Spearman) 값을 더 참고하세요.")
 
     merged = pd.merge(hist_df, subway_df, on='date')
     if len(merged) >= 2:
