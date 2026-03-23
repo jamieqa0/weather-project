@@ -204,9 +204,7 @@ def render_weather_card_component(wcode: int, mj: dict, comment: str) -> None:
 
     icon_name = WEATHER_ICONS.get(wcode, "sunny.png")
     icon_b64 = get_base64_image(os.path.join("assets", "icons", icon_name))
-    icon_img = (f'<img src="data:image/png;base64,{icon_b64}" '
-                f'style="width:110px;height:110px;object-fit:contain;'
-                f'filter:drop-shadow(0 0 15px rgba(255,255,255,0.2));">') if icon_b64 else "🌡️"
+    icon_img = (f'<img src="data:image/png;base64,{icon_b64}">') if icon_b64 else "🌡️"
 
     lottie_json = _lottie_json(wcode)
     lottie_layer = ""
@@ -236,24 +234,38 @@ var _data = {lottie_json};
 <script>{_lottie_lib_js}</script>
 <style>* {{ box-sizing: border-box; margin: 0; padding: 0; }}
 html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }}
+.card {{ position:relative;overflow:hidden;background:{_bg};border:1px solid {_border};
+    border-radius:0.75rem;padding:1.5rem 1.75rem;margin:2px 0; }}
+.row {{ position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem;flex-wrap:nowrap; }}
+.icon img {{ width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 0 15px rgba(255,255,255,0.2)); }}
+.temps {{ font-size:2.8rem;font-weight:700;color:#f3f0f4;line-height:1.1; }}
+.label {{ font-size:1.05rem;font-weight:600;color:#acaaae;margin-top:0.2rem; }}
+.comment {{ font-size:0.9rem;font-weight:600;color:#5af8fb;margin-top:0.25rem;letter-spacing:0.01em; }}
+.stats {{ margin-left:auto;text-align:right;font-size:0.9rem;color:#acaaae;line-height:2;flex-shrink:0; }}
 @media (max-width: 480px) {{
-  #lottie-anim-0 {{ right: 5% !important; width: 100px !important; height: 100px !important; opacity: 0.3 !important; }}
-  #lottie-anim-1 {{ display: none; }}
-  #lottie-anim-2 {{ right: 0 !important; width: 80px !important; height: 80px !important; opacity: 0.2 !important; }}
+  .card {{ padding:1rem 1rem; }}
+  .row {{ gap:0.8rem; }}
+  .icon img {{ width:72px !important; height:72px !important; }}
+  .temps {{ font-size:2rem; }}
+  .label {{ font-size:0.9rem; }}
+  .comment {{ font-size:0.78rem; }}
+  .stats {{ font-size:0.78rem;line-height:1.6; }}
+  #lottie-anim-0 {{ right:2% !important;width:80px !important;height:80px !important;opacity:0.2 !important; }}
+  #lottie-anim-1 {{ display:none; }}
+  #lottie-anim-2 {{ display:none; }}
 }}
 </style></head>
 <body>
-<div style="position:relative;overflow:hidden;background:{_bg};border:1px solid {_border};
-    border-radius:0.75rem;padding:1.5rem 1.75rem;margin:2px 0;">
+<div class="card">
   {lottie_layer}
-  <div style="position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
-    <div style="line-height:0;">{icon_img}</div>
+  <div class="row">
+    <div class="icon" style="line-height:0;flex-shrink:0;">{icon_img}</div>
     <div>
-      <div style="font-size:2.8rem;font-weight:700;color:#f3f0f4;line-height:1.1;">{mj['temperature']}°C</div>
-      <div style="font-size:1.05rem;font-weight:600;color:#acaaae;margin-top:0.2rem;">{_label}</div>
-      <div style="font-size:0.9rem;font-weight:600;color:#5af8fb;margin-top:0.25rem;letter-spacing:0.01em;">{comment}</div>
+      <div class="temps">{mj['temperature']}°C</div>
+      <div class="label">{_label}</div>
+      <div class="comment">{comment}</div>
     </div>
-    <div style="margin-left:auto;text-align:right;font-size:0.9rem;color:#acaaae;line-height:2;">
+    <div class="stats">
       <div>최고 <strong style="color:#f3f0f4;">{mj['temperature_max']}°C</strong></div>
       <div>최저 <strong style="color:#f3f0f4;">{mj['temperature_min']}°C</strong></div>
       <div>평균 <strong style="color:#f3f0f4;">{mj['temperature_mean']}°C</strong></div>
@@ -639,6 +651,13 @@ def render_footer():
 def main():
     favicon_path = os.path.join("assets", "icons", "favicon.png")
     st.set_page_config(layout="wide", page_title="문정동, 출근해볼까?", page_icon=favicon_path)
+    st.markdown("""
+    <meta property="og:title" content="문정동, 출근해볼까?" />
+    <meta property="og:description" content="문정동 실시간 날씨 · 이상 기후 탐지 · 지하철 혼잡도 분석" />
+    <meta property="og:site_name" content="문정동, 출근해볼까?" />
+    <meta name="title" content="문정동, 출근해볼까?" />
+    <meta name="description" content="문정동 실시간 날씨 · 이상 기후 탐지 · 지하철 혼잡도 분석" />
+    """, unsafe_allow_html=True)
     inject_css()
     render_floating_toc()
     render_hero()
