@@ -1721,7 +1721,8 @@
             e.preventDefault();
             
             // Streamlit iframe 모드 시 스크롤 위치 보정
-            if (window.self !== window.top) {
+            if (window.self !== window.top && !selfScrolling) {
+               // 부모가 스크롤하는 임베딩 모드: getContainer() 사용
                try {
                   var c = getContainer();
                   var iOff = iframeOffsetInContainer();
@@ -1729,15 +1730,32 @@
                   if (visibleTop < 0) visibleTop = 0;
                   var visibleHeight = c.clientHeight;
                   var modalContent = testModal.querySelector('.modal-content');
-                  
-                  // iframe 내부 절대 좌표
+
                   testModal.style.position = 'absolute';
                   var iframeHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
                   testModal.style.height = iframeHeight + 'px';
-                  testModal.style.minHeight = iframeHeight + 'px'; // Ensure full coverage
-                  
+                  testModal.style.minHeight = iframeHeight + 'px';
+
                   testModal.style.alignItems = 'flex-start';
-                  var topPos = visibleTop + (visibleHeight - 650) / 2; 
+                  var topPos = visibleTop + (visibleHeight - 650) / 2;
+                  modalContent.style.marginTop = Math.max(20, topPos) + 'px';
+               } catch(err) {
+                  console.log(err);
+               }
+            } else if (selfScrolling) {
+               // scrolling=True 자체 스크롤 모드: window.scrollY 사용
+               try {
+                  var visibleTop = window.scrollY;
+                  var visibleHeight = window.innerHeight;
+                  var modalContent = testModal.querySelector('.modal-content');
+
+                  testModal.style.position = 'absolute';
+                  var iframeHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+                  testModal.style.height = iframeHeight + 'px';
+                  testModal.style.minHeight = iframeHeight + 'px';
+
+                  testModal.style.alignItems = 'flex-start';
+                  var topPos = visibleTop + (visibleHeight - 650) / 2;
                   modalContent.style.marginTop = Math.max(20, topPos) + 'px';
                } catch(err) {
                   console.log(err);
