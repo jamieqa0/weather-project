@@ -932,6 +932,7 @@ def main():
         fig_temp.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
+            yaxis_title=None,
         )
 
         # 강수량 그래프
@@ -956,6 +957,7 @@ def main():
         fig_precip.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
+            yaxis_title=None,
         )
 
         # 좌우 배치
