@@ -715,7 +715,7 @@ def render_footer():
         .footer-pill { padding: 0.5rem 0.8rem; font-size: 0.75rem; }
     }
     </style>
-    <div class="footer-section">
+    <div class="footer-section" style="position: relative; z-index: 9999;">
         <div class="footer-copyright">
             문정동, 출근해볼까? <span style="opacity:0.4; margin:0 0.5rem;">|</span> <span style="color:var(--tertiary);">Job-Stealer</span>
         </div>
@@ -723,8 +723,8 @@ def render_footer():
             <a href="https://open-meteo.com" target="_blank" class="footer-pill">🌤 Open-Meteo</a>
             <a href="https://data.seoul.go.kr" target="_blank" class="footer-pill">🚇 서울데이터광장</a>
             <a href="https://github.com/jamieqa0/weather-project" target="_blank" class="footer-pill">💻 GitHub</a>
-            <a href="/about" target="_top" class="footer-pill highlight">🌌 프로젝트 소개</a>
-            <a href="/about?scrollTo=timeline" target="_top" class="footer-pill">🤖 개발 타임라인</a>
+            <a href="/about" target="_self" class="footer-pill highlight">🌌 프로젝트 소개</a>
+            <a href="/about?scrollTo=timeline" target="_self" class="footer-pill">🤖 개발 타임라인</a>
             <a href="https://stitch.withgoogle.com/projects/10551746938995651396" target="_blank" class="footer-pill">🎨 디자인시스템</a>
         </div>
         <div class="footer-tagline">
