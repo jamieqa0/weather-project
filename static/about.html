@@ -1256,18 +1256,34 @@
               <div class="arch-label" style="text-align:center">Pearson &amp; Spearman</div>
             </div>
           </div>
-          <div class="pipe"></div>
-          <!-- 코멘터리 -->
-          <div class="arch-row">
-            <div class="arch-node n-process">commentary/generator.py</div>
-            <div class="arch-node n-logic" style="margin-left:.5rem;">commentary/interpretation.py<small>상관계수 해석 · 시간 포맷</small></div>
+          <!-- 코멘터리 분기 -->
+          <div class="arch-fork-pipes" style="display:flex;gap:10rem;justify-content:center;margin:0.2rem 0">
+            <div class="pipe" style="margin:0;"></div>
+            <div class="pipe" style="margin:0;"></div>
           </div>
-          <div class="pipe"></div>
+          <div class="arch-row">
+            <div>
+              <div class="arch-node n-process">commentary/generator.py</div>
+              <div class="arch-label" style="text-align:center">감성 날씨 멘트</div>
+            </div>
+            <div>
+              <div class="arch-node n-logic">commentary/interpretation.py</div>
+              <div class="arch-label" style="text-align:center">상관계수 해석 · 시간 포맷</div>
+            </div>
+          </div>
+          <!-- 출력 분기 -->
+          <div class="arch-fork-pipes" style="display:flex;gap:10rem;justify-content:center;margin:0.2rem 0">
+            <div class="pipe" style="margin:0;"></div>
+            <div class="pipe" style="margin:0;"></div>
+          </div>
           <!-- 앱 -->
           <div class="arch-row">
-            <div class="arch-node n-app pulse-node" style="min-width:200px">🚀 app.py<small>Streamlit 웹 대시보드</small>
+            <div>
+              <div class="arch-node n-app pulse-node" style="min-width:180px">🚀 app.py<small>Streamlit 웹 대시보드</small></div>
             </div>
-            <div class="arch-node n-data" style="margin-left:.5rem;">pages/about.py<small>소개 · 타임라인</small></div>
+            <div>
+              <div class="arch-node n-data">pages/about.py<small>소개 · 타임라인</small></div>
+            </div>
           </div>
         </div>
       </div>
