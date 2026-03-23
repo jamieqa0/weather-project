@@ -758,8 +758,8 @@ def main():
     """, unsafe_allow_html=True)
 
     # ② 분석 방법 설명 — 작게
-    st.caption("🤖 **어떻게 판단했냐고요?** Isolation Forest AI가 최근 1년치 최고·최저·평균기온, 일교차, 강수량, 습도, 풍속 7가지를 종합 분석해 상위 5%의 극단적인 날을 이상 기후로 분류했어요.")
-    st.caption("그래프의 보라색 다이아몬드가 그 날들이에요.")
+    st.caption("🤖 **어떻게 판단했냐고요?**")
+    st.caption("Isolation Forest AI가 최근 1년치 최고·최저·평균기온, 일교차, 강수량, 습도, 풍속 7가지를 종합 분석해 상위 5%의 극단적인 날을 이상 기후로 분류했어요. 그래프의 보라색 다이아몬드가 그 날들이에요.")
 
     # ③ 근거: 그래프
     analyzed['구분'] = analyzed['is_anomaly'].map({True: '이상 기후', False: '정상'})
