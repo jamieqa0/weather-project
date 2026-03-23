@@ -123,3 +123,19 @@ hr { border-color: var(--outline) !important; }
   0% { transform: scale(1); filter: brightness(1); }
   100% { transform: scale(1.1); filter: brightness(1.2); }
 }
+
+/* ── 모바일 반응형 ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* 섹션 제목 줄바꿈 보정 */
+  h1, h2 { font-size: 1.2rem !important; }
+
+  /* 메트릭 카드 간격 */
+  [data-testid="stMetricContainer"] { padding: 0.5rem !important; }
+
+  /* Plotly 차트 크기 */
+  [data-testid="stPlotlyChart"] { min-width: 0 !important; }
+
+  /* 가로 스크롤 방지 */
+  [data-testid="stAppViewContainer"] { overflow-x: hidden !important; }
+  [data-testid="stVerticalBlock"]    { overflow-x: hidden !important; }
+}

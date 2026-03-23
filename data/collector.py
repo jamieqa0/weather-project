@@ -1,6 +1,9 @@
 import os
+import urllib3
 import requests
 from datetime import date, timedelta, datetime
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
 
@@ -21,7 +24,7 @@ def fetch_current_weather(lat: float, lon: float) -> dict:
         "&daily=temperature_2m_max,temperature_2m_min,temperature_2m_mean,precipitation_sum"
         "&timezone=Asia%2FSeoul"
     )
-    response = requests.get(url, timeout=10)
+    response = requests.get(url, timeout=10, verify=False)
     response.raise_for_status()
     data = response.json()
     current = data["current"]
@@ -56,7 +59,7 @@ def fetch_historical_weather(lat: float, lon: float, days: int = 90) -> pd.DataF
         "&daily=temperature_2m_max,temperature_2m_min,temperature_2m_mean,"
         "precipitation_sum,relative_humidity_2m_mean,wind_speed_10m_max"
     )
-    response = requests.get(url, timeout=10)
+    response = requests.get(url, timeout=10, verify=False)
     response.raise_for_status()
     daily = response.json()["daily"]
     df = pd.DataFrame({
@@ -79,7 +82,7 @@ def fetch_weather_on_date(lat: float, lon: float, target_date: date) -> dict:
         f"&start_date={target_date}&end_date={target_date}"
         "&daily=temperature_2m_max,precipitation_sum,relative_humidity_2m_mean,wind_speed_10m_max"
     )
-    response = requests.get(url, timeout=10)
+    response = requests.get(url, timeout=10, verify=False)
     response.raise_for_status()
     daily = response.json()["daily"]
     return {
@@ -95,7 +98,7 @@ def _fetch_subway_day(api_key: str, date_str: str) -> dict | None:
     """단일 날짜 문정역 지하철 데이터 조회. 데이터 없으면 None 반환."""
     url = f"{SEOUL_API_BASE}/{api_key}/json/CardSubwayStatsNew/1/1000/{date_str}/"
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=10, verify=False)
         response.raise_for_status()
         data = response.json().get("CardSubwayStatsNew", {})
         if data.get("RESULT", {}).get("CODE") != "INFO-000":

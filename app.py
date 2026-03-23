@@ -232,9 +232,15 @@ var _data = {lottie_json};
     _lottie_lib_js = _lottie_lib()
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script>{_lottie_lib_js}</script>
 <style>* {{ box-sizing: border-box; margin: 0; padding: 0; }}
 html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }}
+@media (max-width: 480px) {{
+  #lottie-anim-0 {{ right: 5% !important; width: 100px !important; height: 100px !important; opacity: 0.3 !important; }}
+  #lottie-anim-1 {{ display: none; }}
+  #lottie-anim-2 {{ right: 0 !important; width: 80px !important; height: 80px !important; opacity: 0.2 !important; }}
+}}
 </style></head>
 <body>
 <div style="position:relative;overflow:hidden;background:{_bg};border:1px solid {_border};
@@ -421,6 +427,7 @@ var _data = {lottie_json};
 
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script>{lottie_lib_js}</script>
 <style>
 * {{ margin:0; padding:0; box-sizing:border-box; }}
@@ -436,6 +443,13 @@ html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFon
 h1 {{ font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; color: #ffe792;
       text-shadow: 0 0 25px rgba(255,231,146,0.3); letter-spacing: -0.02em; line-height: 1.1; }}
 p  {{ color: #acaaae; font-size: 1rem; margin-top: 0.9rem; line-height: 1.6; max-width: 560px; }}
+@media (max-width: 480px) {{
+  .hero {{ padding: 2rem 1.2rem; min-height: 180px; }}
+  #lottie-anim-0 {{ right: 2% !important; width: 100px !important; height: 100px !important; opacity: 0.25 !important; top: 0 !important; }}
+  #lottie-anim-1 {{ display: none; }}
+  #lottie-anim-2 {{ display: none; }}
+  #lottie-anim-3 {{ display: none; }}
+}}
 </style>
 </head><body>
 <div class="hero">

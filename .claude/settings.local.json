@@ -22,7 +22,9 @@
       "Bash(gh api:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:assets3.lottiefiles.com)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(C:\\\\Users\\\\Jamie-I\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe -m pip install -r requirements.txt)",
+      "Bash(git checkout:*)"
     ]
   }
 }

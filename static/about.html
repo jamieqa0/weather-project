@@ -824,6 +824,31 @@
       }
       .floating-icon { width: 60px !important; opacity: 0.1; }
     }
+
+    /* ── 모바일 반응형 ──────────────────────────────────────── */
+    @media (max-width: 640px) {
+      /* 히어로 */
+      #hero { padding-top: 3rem; padding-bottom: 3rem; }
+      #hero h1 { font-size: 2rem; }
+      #hero p  { font-size: 1rem; }
+
+      /* 아키텍처 노드 */
+      .arch-node { min-width: 120px; font-size: .72rem; padding: .5rem .8rem; }
+      .arch-row  { gap: .5rem; flex-wrap: wrap; justify-content: center; }
+
+      /* 아키텍처 분기 파이프 간격 축소 */
+      .arch-fork-pipes { gap: 4rem !important; }
+
+      /* 모달 */
+      .modal-content { width: 95vw !important; padding: 0; }
+      .modal-header, .modal-body { padding: 1rem !important; }
+
+      /* 공통 섹션 패딩 */
+      section { padding-left: 1rem !important; padding-right: 1rem !important; }
+
+      /* 타임라인 아이콘 */
+      .w-10 { width: 2rem; height: 2rem; }
+    }
   </style>
 </head>
 
@@ -917,6 +942,14 @@
           </div>
         </div>
 
+        <div class="glass rounded-xl p-6 flex gap-4 reveal hover-hologram">
+          <span class="text-3xl">🤖</span>
+          <div>
+            <h4 class="font-headline font-semibold text-on-surface mb-1">Claude 협업 타임라인</h4>
+            <p class="text-sm text-muted">기획·설계부터 배포까지 Claude AI와 함께한 개발 과정을 단계별 타임라인으로 기록합니다. 소개 페이지에서 확인 가능합니다.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -970,8 +1003,8 @@
           </div>
           <div class="pb-8">
             <p class="text-xs text-muted mb-1 font-body">Testing</p>
-            <h4 class="font-headline font-semibold text-on-surface mb-1">92개 테스트 · 커버리지 100%</h4>
-            <p class="text-sm text-muted">감성 멘트 · API 수집 · 이상 탐지 · 상관분석 · 데이터 정합성 전 모듈을 단위 테스트로 검증. statement 142개 전부 커버.</p>
+            <h4 class="font-headline font-semibold text-on-surface mb-1">100개 테스트 · 커버리지 100%</h4>
+            <p class="text-sm text-muted">감성 멘트 · API 수집 · 이상 탐지 · 상관분석 · 데이터 정합성 · 타임라인 빌더 전 모듈을 단위 테스트로 검증. statement 전부 커버.</p>
             <div style="margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.35rem;">
               <span class="skill-badge">superpowers:test-driven-development</span>
               <span class="skill-badge">superpowers:verification-before-completion</span>
@@ -1068,6 +1101,7 @@
           <h3 class="text-secondary font-headline font-semibold mb-4">📊 데이터 수집 · 분석</h3>
           <ul class="space-y-2 text-sm text-on-surface/80">
             <li><span class="text-primary">Open-Meteo API</span> — 실시간 + 과거 날씨</li>
+            <li><span class="text-primary">서울 열린데이터광장 API</span> — 지하철 이용 통계</li>
             <li><span class="text-primary">pandas</span> — 데이터 처리</li>
             <li><span class="text-primary">scipy</span> — Pearson / Spearman 상관분석</li>
             <li><span class="text-primary">scikit-learn</span> — Isolation Forest 이상 탐지</li>
@@ -1079,6 +1113,7 @@
           <ul class="space-y-2 text-sm text-on-surface/80">
             <li><span class="text-primary">Streamlit</span> — 메인 웹 프레임워크</li>
             <li><span class="text-primary">Plotly</span> — 인터랙티브 차트</li>
+            <li><span class="text-primary">lottie-web 5.12.2</span> — Lottie 날씨 애니메이션</li>
             <li><span class="text-primary">statsmodels</span> — OLS 추세선</li>
             <li><span class="text-primary">Eridian Horizon</span> — 디자인 시스템</li>
           </ul>
@@ -1201,18 +1236,13 @@
             <div class="arch-node n-process">data/collector.py</div>
           </div>
           <div class="pipe"></div>
-          <!-- 저장 -->
-          <div class="arch-row">
-            <div class="arch-node n-data">data/storage.py<small>CSV 캐시</small></div>
-          </div>
-          <div class="pipe"></div>
           <!-- 분석 (분기) -->
           <div class="arch-row">
             <div style="text-align:center">
               <div class="arch-node n-process" style="min-width:200px">분석 모듈</div>
             </div>
           </div>
-          <div style="display:flex;gap:12rem;justify-content:center;margin:0.2rem 0">
+          <div class="arch-fork-pipes" style="display:flex;gap:12rem;justify-content:center;margin:0.2rem 0">
             <div class="pipe" style="margin:0;"></div>
             <div class="pipe" style="margin:0;"></div>
           </div>
@@ -1230,12 +1260,14 @@
           <!-- 코멘터리 -->
           <div class="arch-row">
             <div class="arch-node n-process">commentary/generator.py</div>
+            <div class="arch-node n-logic" style="margin-left:.5rem;">commentary/interpretation.py<small>상관계수 해석 · 시간 포맷</small></div>
           </div>
           <div class="pipe"></div>
           <!-- 앱 -->
           <div class="arch-row">
             <div class="arch-node n-app pulse-node" style="min-width:200px">🚀 app.py<small>Streamlit 웹 대시보드</small>
             </div>
+            <div class="arch-node n-data" style="margin-left:.5rem;">pages/about.py<small>소개 · 타임라인</small></div>
           </div>
         </div>
       </div>
