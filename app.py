@@ -182,7 +182,7 @@ def _lottie_lib() -> str:
     except FileNotFoundError:
         return ""
 
-@st.cache_data
+@st.cache_data(ttl=86400)
 def _lottie_json(code: int) -> str:
     """날씨 코드에 해당하는 Lottie JSON 문자열 반환. 없으면 빈 문자열."""
     fname = _lottie_name(code)
