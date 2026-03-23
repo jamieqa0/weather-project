@@ -971,6 +971,10 @@ def main():
         merged['rank_precip'] = merged['precipitation'].rank()
         merged['rank_passengers'] = merged['passengers'].rank()
 
+        # 오늘 값의 순위 계산 (과거 데이터 중 몇 번째인지)
+        rank_today_temp = int((merged['temperature'] <= mj['temperature_mean']).sum())
+        rank_today_precip = int((merged['precipitation'] <= mj['precipitation_sum']).sum())
+
         fig_sp_temp = px.scatter(
             merged, x='rank_temp', y='rank_passengers',
             trendline='ols',
@@ -981,6 +985,13 @@ def main():
         fig_sp_temp.update_traces(
             hovertemplate='기온 순위: %{x:.0f}<br>이용객 순위: %{y:.0f}<extra></extra>',
             selector=dict(mode='markers'),
+        )
+        fig_sp_temp.add_vline(
+            x=rank_today_temp,
+            line_width=2, line_dash='dash', line_color='#ffe792',
+            annotation_text=f"오늘 평균 {mj['temperature_mean']}°C (순위 {rank_today_temp}위)",
+            annotation_position='top',
+            annotation_font_color='#ffe792',
         )
         fig_sp_temp.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
@@ -998,6 +1009,13 @@ def main():
         fig_sp_precip.update_traces(
             hovertemplate='강수량 순위: %{x:.0f}<br>이용객 순위: %{y:.0f}<extra></extra>',
             selector=dict(mode='markers'),
+        )
+        fig_sp_precip.add_vline(
+            x=rank_today_precip,
+            line_width=2, line_dash='dash', line_color='#ffe792',
+            annotation_text=f"오늘 강수량 {mj['precipitation_sum']}mm (순위 {rank_today_precip}위)",
+            annotation_position='top',
+            annotation_font_color='#ffe792',
         )
         fig_sp_precip.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
