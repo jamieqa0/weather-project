@@ -73,6 +73,7 @@ p, div { font-family: 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-se
 [data-testid="stMetricContainer"] {
   background: rgba(31, 31, 35, 0.4) !important;
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(72, 71, 75, 0.2);
   border-radius: 8px;
 }

@@ -10,7 +10,7 @@ from data.collector import fetch_current_weather, fetch_historical_weather, fetc
 from analysis.anomaly import detect_anomalies
 from analysis.correlation import compute_correlation
 from commentary.generator import generate_comment
-from commentary.interpretation import interpret_correlation, format_last_updated, format_montevideo_time
+from commentary.interpretation import format_last_updated, format_montevideo_time
 
 import base64
 import streamlit.components.v1 as components
@@ -210,19 +210,22 @@ def render_weather_card_component(wcode: int, mj: dict, comment: str) -> None:
     lottie_layer = ""
     lottie_script = ""
     if lottie_json:
-        lottie_layer = '''<div id="lottie-bg" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
-  <div id="lottie-anim-0" style="position:absolute;width:130px;height:130px;right:4%;top:-10px;opacity:0.18;border-radius:50%;overflow:hidden;"></div>
-  <div id="lottie-anim-1" style="position:absolute;width:80px;height:80px;right:16%;top:20px;opacity:0.10;border-radius:50%;overflow:hidden;"></div>
+        lottie_layer = '''<div id="lottie-bg" style="position:absolute;top:0;bottom:0;right:0;width:42%;pointer-events:none;z-index:0;overflow:hidden;">
+  <div id="lottie-anim-0" style="position:absolute;width:190px;height:190px;right:-30px;top:-40px;opacity:0.30;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-1" style="position:absolute;width:120px;height:120px;right:100px;top:-20px;opacity:0.20;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-2" style="position:absolute;width:90px;height:90px;right:30px;top:70px;opacity:0.16;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-3" style="position:absolute;width:65px;height:65px;right:150px;top:55px;opacity:0.12;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-4" style="position:absolute;width:75px;height:75px;right:185px;top:-10px;opacity:0.11;border-radius:50%;overflow:hidden;"></div>
 </div>'''
         lottie_script = f"""<script>
 var _data = {lottie_json};
-[0,1].forEach(function(i) {{
+[0,1,2,3,4].forEach(function(i) {{
   var a = lottie.loadAnimation({{
     container: document.getElementById('lottie-anim-'+i),
     renderer: 'svg', loop: true, autoplay: true,
     animationData: JSON.parse(JSON.stringify(_data))
   }});
-  a.goToAndPlay(i * 25, true);
+  a.goToAndPlay(i * 18, true);
 }});
 </script>"""
 
@@ -230,17 +233,19 @@ var _data = {lottie_json};
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script>{_lottie_lib_js}</script>
 <style>* {{ box-sizing: border-box; margin: 0; padding: 0; }}
-html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }}
+html, body {{ background: #0e0e11; font-family: 'Space Grotesk', 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }}
 .card {{ position:relative;overflow:hidden;background:{_bg};border:1px solid {_border};
     border-radius:0.75rem;padding:1.5rem 1.75rem;margin:2px 0; }}
 .row {{ position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem;flex-wrap:nowrap; }}
 .icon img {{ width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 0 15px rgba(255,255,255,0.2)); }}
 .temps {{ font-size:2.8rem;font-weight:700;color:#f3f0f4;line-height:1.1; }}
-.label {{ font-size:1.05rem;font-weight:600;color:#acaaae;margin-top:0.2rem; }}
+.label {{ font-size:1.05rem;font-weight:600;color:#ffe792;margin-top:0.2rem; }}
 .comment {{ font-size:0.9rem;font-weight:600;color:#5af8fb;margin-top:0.25rem;letter-spacing:0.01em; }}
-.stats {{ margin-left:auto;text-align:right;font-size:0.9rem;color:#acaaae;line-height:2;flex-shrink:0; }}
+.stats {{ font-size:0.78rem;color:#acaaae;margin-top:0.35rem;letter-spacing:0.01em; }}
+.stats span {{ color:#f3f0f4;font-weight:600; }}
 @media (max-width: 480px) {{
   .card {{ padding:1rem 1rem; }}
   .row {{ gap:0.8rem; }}
@@ -248,9 +253,10 @@ html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFon
   .temps {{ font-size:2rem; }}
   .label {{ font-size:0.9rem; }}
   .comment {{ font-size:0.78rem; }}
-  .stats {{ font-size:0.78rem;line-height:1.6; }}
-  #lottie-anim-0 {{ width:60px !important; height:60px !important; right:2% !important; top:0 !important; opacity:0.15 !important; }}
-  #lottie-anim-1 {{ display:none; }}
+  .stats {{ font-size:0.72rem; }}
+  #lottie-anim-0 {{ width:70px !important; height:70px !important; right:-5px !important; top:-5px !important; opacity:0.20 !important; }}
+  #lottie-anim-1 {{ width:50px !important; height:50px !important; right:60px !important; top:10px !important; opacity:0.13 !important; }}
+  #lottie-anim-2, #lottie-anim-3, #lottie-anim-4 {{ display:none; }}
 }}
 </style></head>
 <body>
@@ -262,11 +268,7 @@ html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFon
       <div class="temps">{mj['temperature']}°C</div>
       <div class="label">{_label}</div>
       <div class="comment">{comment}</div>
-    </div>
-    <div class="stats">
-      <div>최고 <strong style="color:#f3f0f4;">{mj['temperature_max']}°C</strong></div>
-      <div>최저 <strong style="color:#f3f0f4;">{mj['temperature_min']}°C</strong></div>
-      <div>평균 <strong style="color:#f3f0f4;">{mj['temperature_mean']}°C</strong></div>
+      <div class="stats">최고 <span>{mj['temperature_max']}°C</span> &nbsp;·&nbsp; 최저 <span>{mj['temperature_min']}°C</span> &nbsp;·&nbsp; 평균 <span>{mj['temperature_mean']}°C</span></div>
     </div>
   </div>
 </div>
@@ -288,31 +290,45 @@ def render_lottie_in_expander(code: int, line1: str = "", line2: str = "") -> No
     _lottie_lib_js = _lottie_lib()
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script>{_lottie_lib_js}</script>
 <style>
 * {{ margin:0; padding:0; box-sizing:border-box; }}
 html, body {{ background: transparent; }}
 .wrap {{ position:relative; width:100%; height:88px; overflow:hidden; border-radius:0.5rem; }}
-.anim {{ position:absolute; inset:0; width:100%; height:100%; opacity:0.9; }}
-.overlay {{ position:absolute; inset:0; display:flex; flex-direction:column;
-            justify-content:center; padding:0 1.2rem;
-            background:linear-gradient(90deg,rgba(14,14,17,0.55) 0%,rgba(14,14,17,0.1) 100%); }}
-.t1 {{ font-size:0.78rem; color:#acaaae; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }}
-.t2 {{ font-size:1rem; font-weight:600; color:#f3f0f4; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; margin-top:0.2rem; }}
+.lottie-zone {{ position:absolute;top:0;bottom:0;right:0;width:55%;pointer-events:none;z-index:0;overflow:hidden; }}
+.lottie-zone div {{ position:absolute;border-radius:50%;overflow:hidden; }}
+.overlay {{ position:absolute;inset:0;display:flex;flex-direction:column;
+            justify-content:center;padding:0 1.2rem;z-index:1;
+            background:linear-gradient(90deg,rgba(14,14,17,0.65) 0%,rgba(14,14,17,0.25) 60%,transparent 100%); }}
+.t1 {{ font-size:0.78rem;color:#acaaae;font-family:'Manrope','Apple SD Gothic Neo','Malgun Gothic',sans-serif; }}
+.t2 {{ font-size:1rem;font-weight:600;color:#f3f0f4;font-family:'Space Grotesk','Apple SD Gothic Neo','Malgun Gothic',sans-serif;margin-top:0.2rem; }}
+@media (max-width:480px) {{ #la2,#la3,#la4 {{ display:none; }} }}
 </style>
 </head><body>
 <div class="wrap">
-  <div id="lottie-exp" class="anim"></div>
+  <div class="lottie-zone">
+    <div id="la0" style="width:130px;height:130px;right:-20px;top:-25px;opacity:0.32;"></div>
+    <div id="la1" style="width:85px;height:85px;right:90px;top:-15px;opacity:0.22;"></div>
+    <div id="la2" style="width:65px;height:65px;right:165px;top:10px;opacity:0.15;"></div>
+    <div id="la3" style="width:70px;height:70px;right:50px;top:35px;opacity:0.16;"></div>
+    <div id="la4" style="width:50px;height:50px;right:200px;top:-8px;opacity:0.11;"></div>
+  </div>
   <div class="overlay">
     <div class="t1">{line1}</div>
     <div class="t2">{line2}</div>
   </div>
 </div>
 <script>
-lottie.loadAnimation({{
-  container: document.getElementById('lottie-exp'),
-  renderer: 'svg', loop: true, autoplay: true,
-  animationData: {lottie_json}
+var _d = {lottie_json};
+['la0','la1','la2','la3','la4'].forEach(function(id,i) {{
+  var el = document.getElementById(id);
+  if (!el) return;
+  var a = lottie.loadAnimation({{
+    container:el, renderer:'svg', loop:true, autoplay:true,
+    animationData:JSON.parse(JSON.stringify(_d))
+  }});
+  a.goToAndPlay(i*18, true);
 }});
 </script>
 </body></html>"""
@@ -436,10 +452,11 @@ var _data = {lottie_json};
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script>{lottie_lib_js}</script>
 <style>
 * {{ margin:0; padding:0; box-sizing:border-box; }}
-html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }}
+html, body {{ background: #0e0e11; font-family: 'Space Grotesk', 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }}
 .hero {{
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -758,8 +775,7 @@ def main():
     """, unsafe_allow_html=True)
 
     # ② 분석 방법 설명 — 작게
-    st.caption("🤖 **어떻게 판단했냐고요?**")
-    st.caption("Isolation Forest AI가 최근 1년치 최고·최저·평균기온, 일교차, 강수량, 습도, 풍속 7가지를 종합 분석해 상위 5%의 극단적인 날을 이상 기후로 분류했어요. 그래프의 보라색 다이아몬드가 그 날들이에요.")
+    st.markdown("🤖 **어떻게 판단했냐고요?**<br><span style='color:#acaaae;font-size:0.875rem;'>Isolation Forest AI가 최근 1년치 최고·최저·평균기온, 일교차, 강수량, 습도, 풍속 7가지를 종합 분석해 상위 5%의 극단적인 날을 이상 기후로 분류했어요. 그래프의 <span style='color:#cc97ff;font-weight:700;'>보라색 다이아몬드</span>가 그 날들이에요.</span>", unsafe_allow_html=True)
 
     # ③ 근거: 그래프
     analyzed['구분'] = analyzed['is_anomaly'].map({True: '이상 기후', False: '정상'})
@@ -872,7 +888,7 @@ def main():
         else:
             level = "큰 영향"
 
-        return f"기온과 강수량 둘 다 {level} — 지하철 이용객 수는 날씨 변화와 큰 관련이 없는 것으로 보여요."
+        return f"비가 오나 눈이 오나 건조주의보가 내리나, 오늘도 문정역 출근러는 지하철을 탑니다. 날씨와 지하철의 상관관계는 <span style='color:#5af8fb;font-weight:700;'>{level}</span>."
 
     combined_interp = get_combined_correlation_text(corr['pearson'], corr['precipitation_pearson'])
 
@@ -899,13 +915,13 @@ def main():
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("기온 선형 (Pearson)", pearson_str,
-                help="기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n+1에 가까울수록 → 더울수록 지하철이 붐벼요\n-1에 가까울수록 → 추울수록 지하철이 붐벼요\n0에 가까울수록 → 기온이랑 혼잡도는 별 상관 없어요")
+                help="기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n• +1에 가까울수록 → 더울수록 지하철이 붐벼요\n• -1에 가까울수록 → 추울수록 지하철이 붐벼요\n• 0에 가까울수록 → 기온이랑 혼잡도는 별 상관 없어요")
     col2.metric("기온 순위 (Spearman)", spearman_str,
-                help="'더운 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n기온 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
+                help="'더운 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n• 기온 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n• 방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
     col3.metric("강수량 선형 (Pearson)", precip_pearson_str,
-                help="비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n-1에 가까울수록 → 비 올수록 지하철이 붐벼요\n+1에 가까울수록 → 비 와도 오히려 한산해요\n0에 가까울수록 → 강수량이랑 혼잡도는 별 상관 없어요")
+                help="비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n• +1에 가까울수록 → 비 올수록 지하철이 붐벼요\n• -1에 가까울수록 → 비 오면 오히려 한산해요\n• 0에 가까울수록 → 강수량이랑 혼잡도는 별 상관 없어요")
     col4.metric("강수량 순위 (Spearman)", precip_spearman_str,
-                help="'비 많은 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n강수량 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
+                help="'비 많은 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n• 강수량 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n• 방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
 
     st.caption("📌 **숫자 해석 방법** — 각 수치는 -1 ~ +1 사이예요. **선형**과 **순위** 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
 
@@ -934,7 +950,7 @@ def main():
         fig_temp.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
-            yaxis_title=None,
+            yaxis_title='이용객 수 (명)',
         )
 
         # 강수량 그래프
@@ -959,7 +975,7 @@ def main():
         fig_precip.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
-            yaxis_title=None,
+            yaxis_title='이용객 수 (명)',
         )
 
         # Pearson 차트 — 좌우 배치
@@ -972,15 +988,19 @@ def main():
         merged['rank_precip'] = merged['precipitation'].rank()
         merged['rank_passengers'] = merged['passengers'].rank()
 
-        # 오늘 값의 순위 계산 (과거 데이터 중 몇 번째인지)
-        rank_today_temp = int((merged['temperature'] <= mj['temperature_mean']).sum())
-        rank_today_precip = int((merged['precipitation'] <= mj['precipitation_sum']).sum())
+        # 오늘 값의 순위 계산 — rank()의 average 방식과 동일하게
+        def _today_rank(series, val):
+            below = (series < val).sum()
+            equal = (series == val).sum()
+            return float(below + (equal + 1) / 2) if equal > 0 else float(below)
+        rank_today_temp = _today_rank(merged['temperature'], mj['temperature_mean'])
+        rank_today_precip = _today_rank(merged['precipitation'], mj['precipitation_sum'])
 
         fig_sp_temp = px.scatter(
             merged, x='rank_temp', y='rank_passengers',
             trendline='ols',
             title='기온 순위 vs 이용객 순위 (Spearman)',
-            labels={'rank_temp': '기온 순위', 'rank_passengers': '이용객 순위'},
+            labels={'rank_temp': '기온 순위 (1위=가장 추운 날)', 'rank_passengers': '이용객 순위'},
             color_discrete_sequence=['#5af8fb'],
         )
         fig_sp_temp.update_traces(
@@ -997,14 +1017,14 @@ def main():
         fig_sp_temp.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
-            yaxis_title=None,
+            yaxis_title='이용객 순위',
         )
 
         fig_sp_precip = px.scatter(
             merged, x='rank_precip', y='rank_passengers',
             trendline='ols',
             title='강수량 순위 vs 이용객 순위 (Spearman)',
-            labels={'rank_precip': '강수량 순위', 'rank_passengers': '이용객 순위'},
+            labels={'rank_precip': '강수량 순위 (1위=가장 적게 온 날)', 'rank_passengers': '이용객 순위'},
             color_discrete_sequence=['#ff7351'],
         )
         fig_sp_precip.update_traces(
@@ -1021,7 +1041,7 @@ def main():
         fig_sp_precip.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
-            yaxis_title=None,
+            yaxis_title='이용객 순위',
         )
 
         col_left2, col_right2 = st.columns(2)

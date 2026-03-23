@@ -60,6 +60,7 @@
     .glass {
       background: rgba(31, 31, 35, .5);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(72, 71, 75, .2);
     }
 
@@ -172,15 +173,15 @@
 
     /* Size */
     .max-w-4xl {
-      max-width: 56rem
+      max-width: 42rem
     }
 
     .max-w-3xl {
-      max-width: 48rem
+      max-width: 36rem
     }
 
     .max-w-2xl {
-      max-width: 42rem
+      max-width: 30rem
     }
 
     .max-w-md {
@@ -609,7 +610,7 @@
     .modal-content {
       width: 90%; max-width: 650px; max-height: 85vh; display: flex; flex-direction: column;
       transform: translateY(20px); transition: transform 0.3s ease;
-      background: rgba(25, 25, 29, 0.95); backdrop-filter: blur(16px);
+      background: rgba(25, 25, 29, 0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(90, 248, 251, 0.2); border-radius: 1rem;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
@@ -817,6 +818,12 @@
     .icon-cloud { top: 45%; right: 8%; width: 150px; animation-duration: 15s; animation-delay: -2s; }
     .icon-rain { bottom: 10%; left: 15%; width: 100px; animation-duration: 9s; animation-delay: -5s; }
     .icon-snow { top: 20%; right: 15%; width: 80px; animation-duration: 11s; animation-delay: -3s; }
+
+    @media (min-width: 901px) {
+      section {
+        padding-right: 10rem !important;
+      }
+    }
 
     @media (max-width: 900px) {
       .floating-toc {
