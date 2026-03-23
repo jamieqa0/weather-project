@@ -49,17 +49,17 @@ def inject_css():
       [data-testid="stMainBlockContainer"] { padding-top: 0 !important; }
 
       /* 툴팁 다크 스타일 */
-      div[data-testid="stTooltipHoverTarget"] + div,
-      div[role="tooltip"],
-      .stTooltipContent,
-      [class*="tooltip"] {
+      div[role="tooltip"] {
         background-color: #1f1f23 !important;
         color: #f3f0f4 !important;
         border: 1px solid rgba(90, 248, 251, 0.3) !important;
         border-radius: 6px !important;
       }
-      div[role="tooltip"] *,
-      .stTooltipContent * { color: #f3f0f4 !important; }
+      div[role="tooltip"] * {
+        background-color: transparent !important;
+        color: #f3f0f4 !important;
+        border: none !important;
+      }
 
       /* 모바일 헤더 줄바꿈 */
       .sec-title { line-height: 1.35; }
