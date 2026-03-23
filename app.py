@@ -211,13 +211,12 @@ def render_weather_card_component(wcode: int, mj: dict, comment: str) -> None:
     lottie_script = ""
     if lottie_json:
         lottie_layer = '''<div id="lottie-bg" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
-  <div id="lottie-anim-0" style="position:absolute;width:180px;height:180px;right:30%;top:-30px;opacity:0.65;border-radius:50%;overflow:hidden;"></div>
-  <div id="lottie-anim-1" style="position:absolute;width:110px;height:110px;right:12%;top:10px;opacity:0.45;border-radius:50%;overflow:hidden;"></div>
-  <div id="lottie-anim-2" style="position:absolute;width:140px;height:140px;right:2%;top:-20px;opacity:0.55;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-0" style="position:absolute;width:130px;height:130px;right:4%;top:-10px;opacity:0.18;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-1" style="position:absolute;width:80px;height:80px;right:16%;top:20px;opacity:0.10;border-radius:50%;overflow:hidden;"></div>
 </div>'''
         lottie_script = f"""<script>
 var _data = {lottie_json};
-[0,1,2].forEach(function(i) {{
+[0,1].forEach(function(i) {{
   var a = lottie.loadAnimation({{
     container: document.getElementById('lottie-anim-'+i),
     renderer: 'svg', loop: true, autoplay: true,
@@ -250,9 +249,8 @@ html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFon
   .label {{ font-size:0.9rem; }}
   .comment {{ font-size:0.78rem; }}
   .stats {{ font-size:0.78rem;line-height:1.6; }}
-  #lottie-anim-0 {{ right:2% !important;width:80px !important;height:80px !important;opacity:0.2 !important; }}
+  #lottie-anim-0 {{ display:none; }}
   #lottie-anim-1 {{ display:none; }}
-  #lottie-anim-2 {{ display:none; }}
 }}
 </style></head>
 <body>
@@ -421,13 +419,11 @@ def render_hero():
     lottie_script = ""
     if lottie_json:
         lottie_bg = '''
-  <div id="lottie-anim-0" style="position:absolute;width:220px;height:220px;right:18%;top:-40px;opacity:0.55;pointer-events:none;border-radius:50%;overflow:hidden;"></div>
-  <div id="lottie-anim-1" style="position:absolute;width:130px;height:130px;right:4%;top:20px;opacity:0.35;pointer-events:none;border-radius:50%;overflow:hidden;"></div>
-  <div id="lottie-anim-2" style="position:absolute;width:160px;height:160px;left:5%;top:-10px;opacity:0.3;pointer-events:none;border-radius:50%;overflow:hidden;"></div>
-  <div id="lottie-anim-3" style="position:absolute;width:100px;height:100px;left:22%;top:50px;opacity:0.2;pointer-events:none;border-radius:50%;overflow:hidden;"></div>'''
+  <div id="lottie-anim-0" style="position:absolute;width:200px;height:200px;right:5%;top:-20px;opacity:0.20;pointer-events:none;border-radius:50%;overflow:hidden;"></div>
+  <div id="lottie-anim-1" style="position:absolute;width:120px;height:120px;right:22%;top:30px;opacity:0.10;pointer-events:none;border-radius:50%;overflow:hidden;"></div>'''
         lottie_script = f"""<script>
 var _data = {lottie_json};
-[0,1,2,3].forEach(function(i) {{
+[0,1].forEach(function(i) {{
   var a = lottie.loadAnimation({{
     container: document.getElementById('lottie-anim-'+i),
     renderer: 'svg', loop: true, autoplay: true,
@@ -457,10 +453,8 @@ h1 {{ font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; color: #ffe792;
 p  {{ color: #acaaae; font-size: 1rem; margin-top: 0.9rem; line-height: 1.6; max-width: 560px; }}
 @media (max-width: 480px) {{
   .hero {{ padding: 2rem 1.2rem; min-height: 180px; }}
-  #lottie-anim-0 {{ right: 2% !important; width: 100px !important; height: 100px !important; opacity: 0.25 !important; top: 0 !important; }}
+  #lottie-anim-0 {{ display: none; }}
   #lottie-anim-1 {{ display: none; }}
-  #lottie-anim-2 {{ display: none; }}
-  #lottie-anim-3 {{ display: none; }}
 }}
 </style>
 </head><body>
