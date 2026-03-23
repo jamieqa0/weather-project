@@ -48,17 +48,29 @@ def inject_css():
       [data-testid="stAppViewContainer"] { padding-top: 0 !important; }
       [data-testid="stMainBlockContainer"] { padding-top: 0 !important; }
 
-      /* 툴팁 다크 스타일 */
+      /* 툴팁 개선: 컴팩트한 크기 & 일관된 스타일 */
       div[role="tooltip"] {
-        background-color: #1f1f23 !important;
+        background-color: rgba(31, 31, 35, 0.95) !important;
+        backdrop-filter: blur(8px) !important;
         color: #f3f0f4 !important;
-        border: 1px solid rgba(90, 248, 251, 0.3) !important;
-        border-radius: 6px !important;
+        border: 1px solid rgba(90, 248, 251, 0.25) !important;
+        border-radius: 4px !important;
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.8rem !important;
+        line-height: 1.4 !important;
+        max-width: 320px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
       }
       div[role="tooltip"] * {
         background-color: transparent !important;
         color: #f3f0f4 !important;
         border: none !important;
+        font-size: inherit !important;
+      }
+      /* 툴팁 호버 시 위치 고정성 향상 보조 */
+      [data-testid="stTooltipHoverTarget"] {
+        display: inline-block !important;
+        cursor: help !important;
       }
 
       /* 모바일 헤더 줄바꿈 */
@@ -66,6 +78,27 @@ def inject_css():
       .sec-title .mb { display: none; }
       @media (max-width: 640px) {
         .sec-title .mb { display: block; }
+      }
+
+      /* 대시보드 메인 레이아웃: 적절한 너비로 조정 */
+      [data-testid="stMainBlockContainer"] {
+        max-width: 1050px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding-right: 2rem !important;
+      }
+      @media (min-width: 1550px) {
+        /* 플로팅 TOC(약 200px)를 충분히 고려한 미세 조정 */
+        [data-testid="stMainBlockContainer"] {
+           margin-right: calc(50% - 525px + 9rem) !important;
+        }
+      }
+      @media (max-width: 1050px) {
+        [data-testid="stMainBlockContainer"] {
+          max-width: 100% !important;
+          padding-right: 1rem !important;
+          padding-left: 1rem !important;
+        }
       }
 
       /* 익스팬더 애니메이션 레이어 */
@@ -616,45 +649,87 @@ def render_floating_toc():
 
 def render_footer():
     st.markdown("""
-    <div style="
+    <style>
+    .footer-section {
+        margin-top: 6rem;
+        padding: 4rem 1rem;
+        border-top: 1px solid var(--outline);
+        background: linear-gradient(to bottom, transparent, rgba(25, 25, 29, 0.4));
         text-align: center;
-        padding: 2rem 1rem;
-        margin-top: 3rem;
-        border-top: 1px solid rgba(72,71,75,0.3);
-        color: #767579;
+    }
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.25rem;
+        max-width: 1000px;
+        margin: 2.5rem auto;
+    }
+    .footer-pill {
+        background: rgba(31, 31, 35, 0.4);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(72, 71, 75, 0.2);
+        border-radius: 999px;
+        padding: 0.6rem 1.25rem;
+        color: var(--on-surface);
+        text-decoration: none !important;
         font-size: 0.82rem;
-        line-height: 1.8;
-    ">
-        <p style="margin: 0 0 0.8rem; font-size: 0.95rem; color: #acaaae;">문정동, 출근해볼까? · <span style="color:#cc97ff;">Job-Stealer</span> 사내 스터디</p>
-        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 0.6rem;">
-            <a href="https://open-meteo.com" target="_blank"
-               style="color: #5af8fb; text-decoration: none;">
-                🌤 Open-Meteo API
-            </a>
-            <a href="https://data.seoul.go.kr" target="_blank"
-               style="color: #5af8fb; text-decoration: none;">
-                🚇 서울 열린데이터광장
-            </a>
-            <a href="https://stitch.withgoogle.com/projects/10551746938995651396" target="_blank"
-               style="color: #5af8fb; text-decoration: none;">
-                🎨 디자인 시스템 (Google Stitch)
-            </a>
-            <a href="https://github.com/jamieqa0/weather-project" target="_blank"
-               style="color: #5af8fb; text-decoration: none;">
-                💻 GitHub
-            </a>
-            <a href="/about" target="_self"
-               style="color: #ffe792; text-decoration: none;">
-                🌌 프로젝트 소개 페이지
-            </a>
-            <a href="/about?scrollTo=timeline" target="_self"
-               style="color: #5af8fb; text-decoration: none;">
-                🤖 Claude 협업 타임라인
-            </a>
+        font-family: 'Space Grotesk', sans-serif;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    .footer-pill:hover {
+        background: rgba(90, 248, 251, 0.1);
+        border-color: var(--secondary);
+        color: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(90, 248, 251, 0.1);
+    }
+    .footer-pill.highlight {
+        border-color: rgba(255, 231, 146, 0.3);
+        color: var(--primary);
+    }
+    .footer-pill.highlight:hover {
+        background: rgba(255, 231, 146, 0.1);
+        border-color: var(--primary);
+        box-shadow: 0 5px 15px rgba(255, 231, 146, 0.1);
+    }
+    .footer-copyright {
+        font-family: 'Manrope', sans-serif;
+        font-size: 0.9rem;
+        color: var(--on-surface);
+        opacity: 0.8;
+        margin-bottom: 0.5rem;
+    }
+    .footer-tagline {
+        font-size: 0.72rem;
+        color: #767579;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    @media (max-width: 640px) {
+        .footer-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .footer-pill { padding: 0.5rem 0.8rem; font-size: 0.75rem; }
+    }
+    </style>
+    <div class="footer-section">
+        <div class="footer-copyright">
+            문정동, 출근해볼까? <span style="opacity:0.4; margin:0 0.5rem;">|</span> <span style="color:var(--tertiary);">Job-Stealer</span>
         </div>
-        <p style="margin: 0; color: #48474b; font-size: 0.75rem;">
-            Built with Python · Streamlit · Plotly · scikit-learn
-        </p>
+        <div class="footer-grid">
+            <a href="https://open-meteo.com" target="_blank" class="footer-pill">🌤 Open-Meteo</a>
+            <a href="https://data.seoul.go.kr" target="_blank" class="footer-pill">🚇 서울데이터광장</a>
+            <a href="https://github.com/jamieqa0/weather-project" target="_blank" class="footer-pill">💻 GitHub</a>
+            <a href="/about" target="_top" class="footer-pill highlight">🌌 프로젝트 소개</a>
+            <a href="/about?scrollTo=timeline" target="_top" class="footer-pill">🤖 개발 타임라인</a>
+            <a href="https://stitch.withgoogle.com/projects/10551746938995651396" target="_blank" class="footer-pill">🎨 디자인시스템</a>
+        </div>
+        <div class="footer-tagline">
+            Built with Python · Streamlit · Plotly · scikit-learn · Claude AI
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
