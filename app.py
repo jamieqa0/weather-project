@@ -249,7 +249,7 @@ html, body {{ background: #0e0e11; font-family: -apple-system, BlinkMacSystemFon
   .label {{ font-size:0.9rem; }}
   .comment {{ font-size:0.78rem; }}
   .stats {{ font-size:0.78rem;line-height:1.6; }}
-  #lottie-anim-0 {{ display:none; }}
+  #lottie-anim-0 {{ width:60px !important; height:60px !important; right:2% !important; top:0 !important; opacity:0.15 !important; }}
   #lottie-anim-1 {{ display:none; }}
 }}
 </style></head>
@@ -453,7 +453,7 @@ h1 {{ font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; color: #ffe792;
 p  {{ color: #acaaae; font-size: 1rem; margin-top: 0.9rem; line-height: 1.6; max-width: 560px; }}
 @media (max-width: 480px) {{
   .hero {{ padding: 2rem 1.2rem; min-height: 180px; }}
-  #lottie-anim-0 {{ display: none; }}
+  #lottie-anim-0 {{ width: 90px !important; height: 90px !important; right: 2% !important; top: 0 !important; opacity: 0.15 !important; }}
   #lottie-anim-1 {{ display: none; }}
 }}
 </style>
