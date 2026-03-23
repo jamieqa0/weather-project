@@ -930,22 +930,10 @@ def main():
             hovertemplate='일평균기온: %{x:.1f}°C<br>이용객 수: %{y:,.0f}명<extra></extra>',
             selector=dict(mode='markers'),
         )
-        # OLS 트렌드라인 이름 지정 — 기온
-        fig_temp.update_traces(selector=dict(mode='lines'), name='Pearson 추세 (선형)', showlegend=True)
-        # Spearman 추세선 (LOWESS) 추가 — 기온
-        _lowess_temp = px.scatter(merged, x='temperature', y='passengers', trendline='lowess')
-        _lt = _lowess_temp.data[1]
-        _lt.line.color = '#cc97ff'
-        _lt.line.width = 2
-        _lt.line.dash = 'dot'
-        _lt.name = '비선형 추세 (LOWESS)'
-        _lt.showlegend = True
-        fig_temp.add_trace(_lt)
         fig_temp.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
             yaxis_title=None,
-            legend=dict(orientation='h', y=-0.2, font=dict(size=11)),
         )
 
         # 강수량 그래프
@@ -967,28 +955,59 @@ def main():
             hovertemplate='강수량: %{x:.1f}mm<br>이용객 수: %{y:,.0f}명<extra></extra>',
             selector=dict(mode='markers'),
         )
-        # OLS 트렌드라인 이름 지정 — 강수량
-        fig_precip.update_traces(selector=dict(mode='lines'), name='Pearson 추세 (선형)', showlegend=True)
-        # Spearman 추세선 (LOWESS) 추가 — 강수량
-        _lowess_precip = px.scatter(merged, x='precipitation', y='passengers', trendline='lowess')
-        _lp = _lowess_precip.data[1]
-        _lp.line.color = '#cc97ff'
-        _lp.line.width = 2
-        _lp.line.dash = 'dot'
-        _lp.name = '비선형 추세 (LOWESS)'
-        _lp.showlegend = True
-        fig_precip.add_trace(_lp)
         fig_precip.update_layout(
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
             yaxis_title=None,
-            legend=dict(orientation='h', y=-0.2, font=dict(size=11)),
         )
 
-        # 좌우 배치
+        # Pearson 차트 — 좌우 배치
         col_left, col_right = st.columns(2)
         col_left.plotly_chart(fig_temp, use_container_width=True)
         col_right.plotly_chart(fig_precip, use_container_width=True)
+
+        # Spearman 차트 — 순위 기반
+        merged['rank_temp'] = merged['temperature'].rank()
+        merged['rank_precip'] = merged['precipitation'].rank()
+        merged['rank_passengers'] = merged['passengers'].rank()
+
+        fig_sp_temp = px.scatter(
+            merged, x='rank_temp', y='rank_passengers',
+            trendline='ols',
+            title='기온 순위 vs 이용객 순위 (Spearman)',
+            labels={'rank_temp': '기온 순위', 'rank_passengers': '이용객 순위'},
+            color_discrete_sequence=['#5af8fb'],
+        )
+        fig_sp_temp.update_traces(
+            hovertemplate='기온 순위: %{x:.0f}<br>이용객 순위: %{y:.0f}<extra></extra>',
+            selector=dict(mode='markers'),
+        )
+        fig_sp_temp.update_layout(
+            paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
+            font_color='#f3f0f4', title_font_color='#ffe792',
+            yaxis_title=None,
+        )
+
+        fig_sp_precip = px.scatter(
+            merged, x='rank_precip', y='rank_passengers',
+            trendline='ols',
+            title='강수량 순위 vs 이용객 순위 (Spearman)',
+            labels={'rank_precip': '강수량 순위', 'rank_passengers': '이용객 순위'},
+            color_discrete_sequence=['#ff7351'],
+        )
+        fig_sp_precip.update_traces(
+            hovertemplate='강수량 순위: %{x:.0f}<br>이용객 순위: %{y:.0f}<extra></extra>',
+            selector=dict(mode='markers'),
+        )
+        fig_sp_precip.update_layout(
+            paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
+            font_color='#f3f0f4', title_font_color='#ffe792',
+            yaxis_title=None,
+        )
+
+        col_left2, col_right2 = st.columns(2)
+        col_left2.plotly_chart(fig_sp_temp, use_container_width=True)
+        col_right2.plotly_chart(fig_sp_precip, use_container_width=True)
 
         _s = datetime.strptime(merged['date'].min(), '%Y-%m-%d')
         _e = datetime.strptime(merged['date'].max(), '%Y-%m-%d')
