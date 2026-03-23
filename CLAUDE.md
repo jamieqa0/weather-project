@@ -58,8 +58,8 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - `commentary/generator.py` — 기온·강수량·날씨 코드 기반 규칙적 감성 멘트 생성
 - `commentary/interpretation.py` — 상관계수 한국어 해석, 시간 포맷(`format_last_updated` KST 기준, `format_montevideo_time` UTC-3 기준), 알고리즘 정보 반환
 - `app.py` — 위 모듈들을 조합해 Streamlit 대시보드 렌더링. 두괄식 UI(결과 → 설명 → 차트 → 상세).
-  - `render_hero()` — 히어로 섹션 전체를 `components.html()`로 렌더링. sunny(code 0) Lottie 4개 인스턴스 배치. 모바일(≤480px)에서 애니메이션 축소
-  - `render_weather_card_component(wcode, mj, comment)` — 날씨 카드를 `components.html()` iframe으로 렌더링. CSS 클래스 기반 레이아웃 (`.card`, `.row`, `.icon`, `.temps`). 모바일에서 아이콘 72px로 축소, `flex-wrap:nowrap` 유지해 165px 높이 안에 고정
+  - `render_hero()` — 히어로 섹션 전체를 `components.html()`로 렌더링. sunny(code 0) Lottie **2개** 인스턴스(우측 엣지, opacity 0.20/0.10). 모바일(≤480px)에서 완전 숨김
+  - `render_weather_card_component(wcode, mj, comment)` — 날씨 카드를 `components.html()` iframe으로 렌더링. CSS 클래스 기반 레이아웃 (`.card`, `.row`, `.icon`, `.temps`). 모바일에서 아이콘 72px, `flex-wrap:nowrap`, 모바일에서 Lottie 완전 숨김. Lottie 배경은 **우측 엣지에만** 배치(right:4%/16%, opacity 0.18/0.10) — stats 텍스트 침범 방지
   - `render_lottie_in_expander(code, line1, line2)` — expander 내부에 Lottie 배경 + 텍스트 오버레이 렌더링
   - `_lottie_lib()` — `static/lottie.min.js` 내용 캐시 후 HTML에 인라인 삽입
   - `_lottie_json(code)` — `static/lottie/{name}.json` 읽어 문자열 반환
@@ -79,7 +79,10 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - **CSS 인코딩**: `assets/style.css` 읽을 때 반드시 `encoding='utf-8'` 명시 (Windows cp949 충돌 방지)
 - **CSS 주입 구조**: 툴바 숨김·툴팁 다크 스타일·모바일 헤더 줄바꿈은 `inject_css()` 내부 `st.markdown` 블록에 직접 주입. 나머지는 `assets/style.css`. `assets/style.css`에는 `@media (max-width: 640px)` 모바일 미디어 쿼리 포함
 - **Lottie 애니메이션**: `st.markdown()`은 `<script>` 제거 → 반드시 `components.html()`로 렌더링. `lottie.min.js` 인라인 삽입 필수 (`<script src=...>` 방식은 iframe 내부 경로 실패). JSON도 Python에서 읽어 `animationData`로 인라인. 날씨 JSON 7종: `sunny`, `cloudy`, `overcast`, `rain`, `snow`, `fog`, `thunder`
-- **Lottie JSON 소스**: `E:/study/refer/`의 고품질 파일을 `static/lottie/`에 복사해서 사용. **`generate.py` 실행 시 파일 덮어쓰이므로 주의**
+- **Lottie JSON 소스**: `E:/study/refer/`의 고품질 파일을 `static/lottie/`에 복사해서 사용. **`generate.py` 실행 시 파일 덮어쓰이므로 주의**. `sunny.json`은 별도 교체 이력 있음 (Happy SUN 적용)
+- **Plotly Y축 한글**: 모바일에서 Y축 레이블이 글자 단위로 분리되는 현상 → 차트 제목에 축 정보 포함 후 `yaxis_title=None` 사용
+- **상관계수 비선형 안내**: Pearson/Spearman 차이 > 0.2이면 자동으로 비선형 힌트 캡션 표시 (`app.py` 상관분석 섹션)
+- **about.html 모달**: `selfScrolling=true` 환경에서 모달 위치 계산 시 `getContainer()` 호출 금지 — `window.scrollY` / `window.innerHeight` 사용. 모달 핸들러 조건 반드시 `!selfScrolling` 분기 포함
 - **Streamlit 테마**: `.streamlit/config.toml` 다크 모드. `primaryColor = "#5af8fb"`, `backgroundColor = "#0e0e11"`, `secondaryBackgroundColor = "#19191d"`
 - **디자인 시스템**: Eridian Horizon — `#ffe792`(골드), `#5af8fb`(시안), `#cc97ff`(보라), `#ff7351`(오렌지-레드), 배경 `#0e0e11`. 새 UI 요소 추가 시 이 팔레트 준수
 - **타임존**: `format_last_updated()` KST(UTC+9), `format_montevideo_time()` UYT(UTC-3)
