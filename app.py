@@ -898,13 +898,13 @@ def main():
     precip_spearman_str = f"{corr['precipitation_spearman']:.2f}" if corr['precipitation_spearman'] is not None else "데이터 없음"
 
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("기온 선형\n(Pearson)", pearson_str,
+    col1.metric("기온 선형 (Pearson)", pearson_str,
                 help="기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n+1에 가까울수록 → 더울수록 지하철이 붐벼요\n-1에 가까울수록 → 추울수록 지하철이 붐벼요\n0에 가까울수록 → 기온이랑 혼잡도는 별 상관 없어요")
-    col2.metric("기온 순위\n(Spearman)", spearman_str,
+    col2.metric("기온 순위 (Spearman)", spearman_str,
                 help="'더운 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n기온 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
-    col3.metric("강수량 선형\n(Pearson)", precip_pearson_str,
+    col3.metric("강수량 선형 (Pearson)", precip_pearson_str,
                 help="비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n-1에 가까울수록 → 비 올수록 지하철이 붐벼요\n+1에 가까울수록 → 비 와도 오히려 한산해요\n0에 가까울수록 → 강수량이랑 혼잡도는 별 상관 없어요")
-    col4.metric("강수량 순위\n(Spearman)", precip_spearman_str,
+    col4.metric("강수량 순위 (Spearman)", precip_spearman_str,
                 help="'비 많은 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n강수량 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
 
     st.caption("📌 **숫자 해석 방법** — 각 수치는 -1 ~ +1 사이예요. **선형**과 **순위** 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
