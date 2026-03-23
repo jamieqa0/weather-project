@@ -908,6 +908,18 @@ def main():
 
     st.caption("📌 **숫자 해석 방법** — 각 수치는 -1 ~ +1 사이예요. **선형**과 **순위** 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
 
+    _temp_gap = (abs(corr['pearson'] - corr['spearman'])
+                 if corr['pearson'] is not None and corr['spearman'] is not None else 0)
+    _precip_gap = (abs(corr['precipitation_pearson'] - corr['precipitation_spearman'])
+                   if corr['precipitation_pearson'] is not None and corr['precipitation_spearman'] is not None else 0)
+    if _temp_gap > 0.2 or _precip_gap > 0.2:
+        _parts = []
+        if _temp_gap > 0.2:
+            _parts.append(f"기온 (차이 {_temp_gap:.2f})")
+        if _precip_gap > 0.2:
+            _parts.append(f"강수량 (차이 {_precip_gap:.2f})")
+        st.caption(f"💡 {' · '.join(_parts)}에서 선형·순위 값 차이가 커요 — 단순 직선 관계가 아닌 비선형 패턴이 있을 수 있어요. 순위(Spearman) 값을 더 참고하세요.")
+
     merged = pd.merge(hist_df, subway_df, on='date')
     if len(merged) >= 2:
         # 기온 그래프
