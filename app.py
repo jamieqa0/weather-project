@@ -290,8 +290,8 @@ var _data = {lottie_json};
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script>{_lottie_lib_js}</script>
 <style>* {{ box-sizing: border-box; margin: 0; padding: 0; }}
-html, body {{ background: #0e0e11; font-family: 'Space Grotesk', 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }}
-.card {{ position:relative;overflow:hidden;background:{_bg};border:1px solid {_border};
+html, body {{ background: #0e0e11; font-family: 'Space Grotesk', 'Manrope', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; padding-bottom: 4px; }}
+.card {{ position:relative;overflow:hidden;background:{_bg};border:1px solid #5af8fb;
     border-radius:0.75rem;padding:1.5rem 1.75rem;margin:2px 0; }}
 .row {{ position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem;flex-wrap:nowrap; }}
 .icon img {{ width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 0 15px rgba(255,255,255,0.2)); }}
@@ -327,9 +327,18 @@ html, body {{ background: #0e0e11; font-family: 'Space Grotesk', 'Manrope', 'App
   </div>
 </div>
 {lottie_script}
+<script>
+function sendHeight() {{
+  var h = document.documentElement.scrollHeight;
+  window.parent.postMessage({{type:'streamlit:setFrameHeight', height: h + 8}}, '*');
+}}
+document.addEventListener('DOMContentLoaded', sendHeight);
+window.addEventListener('load', sendHeight);
+setTimeout(sendHeight, 300);
+</script>
 </body></html>"""
 
-    components.html(html, height=165)
+    components.html(html, height=190)
 
 
 def render_lottie_in_expander(code: int, line1: str = "", line2: str = "") -> None:
@@ -798,15 +807,15 @@ def main():
     # ② 나머지 수치
     st.markdown(f"""
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin:0.5rem 0;">
-      <div style="background:#19191d;border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
+      <div style="background:#19191d;border:1px solid rgba(90,248,251,0.15);border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
         <div style="font-size:0.72rem;color:#767579;margin-bottom:0.2rem;">강수량</div>
         <div style="font-size:1.1rem;font-weight:700;color:#f3f0f4;white-space:nowrap;">{mj['precipitation_sum']} mm</div>
       </div>
-      <div style="background:#19191d;border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
+      <div style="background:#19191d;border:1px solid rgba(90,248,251,0.15);border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
         <div style="font-size:0.72rem;color:#767579;margin-bottom:0.2rem;">습도</div>
         <div style="font-size:1.1rem;font-weight:700;color:#f3f0f4;white-space:nowrap;">{mj['humidity']}%</div>
       </div>
-      <div style="background:#19191d;border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
+      <div style="background:#19191d;border:1px solid rgba(90,248,251,0.15);border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
         <div style="font-size:0.72rem;color:#767579;margin-bottom:0.2rem;">풍속</div>
         <div style="font-size:1.1rem;font-weight:700;color:#f3f0f4;white-space:nowrap;">{mj['wind_speed']} m/s</div>
       </div>
@@ -837,6 +846,15 @@ def main():
             line1=f"몬테비데오 (우루과이) · 🕐 {format_montevideo_time()}",
             line2=f"{mv['temperature']}°C · {weather_label(mv['weather_code'])}",
         )
+        _globe_b64 = get_base64_image(os.path.join("static", "지구 반대편의 두 도시.png"))
+        if _globe_b64:
+            st.markdown(f"""
+            <div style="margin-top:0.75rem;">
+              <img src="data:image/png;base64,{_globe_b64}"
+                   style="width:100%;max-width:100%;border-radius:0.75rem;
+                          display:block;border:1px solid rgba(90,248,251,0.15);">
+            </div>
+            """, unsafe_allow_html=True)
 
     st.divider()
 
@@ -1042,15 +1060,15 @@ def main():
     st.markdown(f"""
     <style>
       .corr-grid {{ display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;margin:0.5rem 0; }}
-      .corr-card {{ position:relative;background:#19191d;border-radius:0.5rem;padding:0.75rem 0.75rem; }}
+      .corr-card {{ position:relative;background:#19191d;border:1px solid rgba(90,248,251,0.15);border-radius:0.5rem;padding:0.75rem 0.75rem; }}
       .corr-label {{ font-size:0.72rem;color:#767579;margin-bottom:0.2rem;display:flex;align-items:center;gap:0.3rem; }}
       .corr-value {{ font-size:1.4rem;font-weight:700;color:#f3f0f4; }}
       .corr-tip {{ position:relative;display:inline-flex;align-items:center;justify-content:center;
-                   width:13px;height:13px;border-radius:50%;background:#3a3a3f;
+                   width:13px;height:13px;border-radius:50%;background:#19191d;
                    color:#acaaae;font-size:9px;cursor:default;flex-shrink:0; }}
       .corr-tip:hover .corr-tip-text {{ display:block; }}
       .corr-tip-text {{ display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
-                        width:220px;background:#2a2a2f;border:1px solid #3a3a3f;border-radius:0.4rem;
+                        width:220px;background:#19191d;border:1px solid rgba(90,248,251,0.15);border-radius:0.5rem;
                         padding:0.5rem 0.6rem;font-size:0.72rem;color:#acaaae;line-height:1.5;
                         white-space:normal;z-index:999;pointer-events:none; }}
       .corr-tip-text p {{ margin:0 0 0.35rem 0; }}
@@ -1060,7 +1078,7 @@ def main():
     <div class="corr-grid">
       <div class="corr-card">
         <div class="corr-label">기온 선형 (Pearson)
-          <span class="corr-tip">?<span class="corr-tip-text"><p>기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.</p><ul><li>+1 → 더울수록 붐벼요</li><li>-1 → 추울수록 붐벼요</li><li>0 → 기온과 무관해요</li></ul></span></span>
+          <span class="corr-tip">?<span class="corr-tip-text"><p>기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.</p><ul><li>+1에 가까울수록 → 더울수록 지하철이 붐벼요</li><li>-1에 가까울수록 → 추울수록 지하철이 붐벼요</li><li>0에 가까울수록 → 기온과 무관해요</li></ul></span></span>
         </div>
         <div class="corr-value">{pearson_str}</div>
       </div>
@@ -1072,7 +1090,7 @@ def main():
       </div>
       <div class="corr-card">
         <div class="corr-label">강수량 선형 (Pearson)
-          <span class="corr-tip">?<span class="corr-tip-text"><p>비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.</p><ul><li>+1 → 비 올수록 붐벼요</li><li>-1 → 비 오면 한산해요</li><li>0 → 강수량과 무관해요</li></ul></span></span>
+          <span class="corr-tip">?<span class="corr-tip-text"><p>비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.</p><ul><li>+1에 가까울수록 → 비 올수록 지하철이 붐벼요</li><li>-1에 가까울수록 → 비 오면 오히려 한산해요</li><li>0에 가까울수록 → 강수량과 무관해요</li></ul></span></span>
         </div>
         <div class="corr-value">{precip_pearson_str}</div>
       </div>
