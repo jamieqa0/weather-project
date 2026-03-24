@@ -103,6 +103,22 @@ def inject_css():
         position: relative;
         overflow: hidden;
       }
+
+      /* expander 레이블 — 보조 정보라 작게 */
+      [data-testid="stExpander"] summary p {
+        font-size: 0.82rem !important;
+        color: #767579 !important;
+      }
+
+      /* 모바일: 차트 컬럼 1열 스택 */
+      @media (max-width: 640px) {
+        [data-testid="stColumns"]:has([data-testid="stPlotlyChart"]) {
+          flex-wrap: wrap !important;
+        }
+        [data-testid="stColumns"]:has([data-testid="stPlotlyChart"]) > [data-testid="stColumn"] {
+          min-width: 100% !important;
+        }
+      }
     </style>
     """, unsafe_allow_html=True)
     css_path = os.path.join(os.path.dirname(__file__), "assets", "style.css")
@@ -509,10 +525,15 @@ p  {{ color: #acaaae; font-size: 1rem; margin-top: 0.9rem; line-height: 1.6; max
   {lottie_bg}
   <div style="position:relative;z-index:1;">
     <h1>문정동, 출근해볼까?</h1>
-    <p>데이터로 분석한 문정동의 실시간 날씨와<br>지하철 혼잡도를 출근 전에 스마트하게 체크하세요</p>
+    <p>데이터로 분석한 문정동의 실시간 날씨와<br>지하철 혼잡도를 출근 전에 체크하세요</p>
   </div>
 </div>
 {lottie_script}
+<script>
+window.addEventListener('load', function() {{
+  window.parent.postMessage({{type: 'streamlit:setFrameHeight', height: document.body.scrollHeight}}, '*');
+}});
+</script>
 </body></html>"""
 
     components.html(html, height=280)
@@ -767,23 +788,35 @@ def main():
     render_weather_card_component(_wcode, mj, generate_comment(mj['temperature'], mj['precipitation'], _wcode))
 
     # ② 나머지 수치
-    col1, col2, col3 = st.columns(3)
-    col1.metric("강수량 (오늘 합계)", f"{mj['precipitation_sum']} mm")
-    col2.metric("습도", f"{mj['humidity']}%")
-    col3.metric("풍속", f"{mj['wind_speed']} m/s")
+    st.markdown(f"""
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin:0.5rem 0;">
+      <div style="background:#19191d;border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
+        <div style="font-size:0.72rem;color:#767579;margin-bottom:0.2rem;">강수량</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#f3f0f4;white-space:nowrap;">{mj['precipitation_sum']} mm</div>
+      </div>
+      <div style="background:#19191d;border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
+        <div style="font-size:0.72rem;color:#767579;margin-bottom:0.2rem;">습도</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#f3f0f4;white-space:nowrap;">{mj['humidity']}%</div>
+      </div>
+      <div style="background:#19191d;border-radius:0.5rem;padding:0.75rem 0.5rem;text-align:center;">
+        <div style="font-size:0.72rem;color:#767579;margin-bottom:0.2rem;">풍속</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#f3f0f4;white-space:nowrap;">{mj['wind_speed']} m/s</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
     temp_diff = mj['temperature_max'] - ly['temperature']
     prec_diff = mj['precipitation_sum'] - ly['precipitation']
     temp_str = f"{abs(temp_diff):.1f}도 {'더 높음' if temp_diff > 0 else '더 낮음'}" if abs(temp_diff) >= 0.1 else "비슷함"
     prec_str = f"{abs(prec_diff):.1f}mm {'더 많음' if prec_diff > 0 else '더 적음'}" if abs(prec_diff) >= 0.1 else "비슷함"
-    _tc = "#ff7351" if temp_diff > 0.1 else "#5af8fb" if temp_diff < -0.1 else "#767579"
-    _pc = "#ff7351" if prec_diff > 0.1 else "#5af8fb" if prec_diff < -0.1 else "#767579"
+    _tc = "#ff7351" if temp_diff > 0.1 else "#5af8fb" if temp_diff < -0.1 else "#5af8fb"
+    _pc = "#ff7351" if prec_diff > 0.1 else "#5af8fb" if prec_diff < -0.1 else "#5af8fb"
     _ta = "▲" if temp_diff > 0.1 else "▼" if temp_diff < -0.1 else "━"
     _pa = "▲" if prec_diff > 0.1 else "▼" if prec_diff < -0.1 else "━"
     st.markdown(f"""
     <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
                 padding:0.65rem 1rem;margin:0.4rem 0;
                 background:rgba(72,71,75,0.15);border-radius:0.5rem;
-                font-size:0.85rem;color:#767579;">
+                font-size:0.78rem;color:#767579;">
       <span>📅 1년 전 오늘 <strong style="color:#acaaae;">({year_ago_date})</strong> 과 비교</span>
       <span>최고기온 &nbsp;<strong style="color:{_tc};">{_ta} {temp_str}</strong></span>
       <span>강수량 &nbsp;<strong style="color:{_pc};">{_pa} {prec_str}</strong></span>
@@ -871,6 +904,7 @@ def main():
         selector=dict(name='이상 기후'),
     )
     fig.update_layout(
+        height=320,
         paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
         font_color='#f3f0f4',
         title='',
@@ -997,15 +1031,51 @@ def main():
     precip_pearson_str = f"{corr['precipitation_pearson']:.2f}" if corr['precipitation_pearson'] is not None else "데이터 없음"
     precip_spearman_str = f"{corr['precipitation_spearman']:.2f}" if corr['precipitation_spearman'] is not None else "데이터 없음"
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("기온 선형 (Pearson)", pearson_str,
-                help="기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n• +1에 가까울수록 → 더울수록 지하철이 붐벼요\n• -1에 가까울수록 → 추울수록 지하철이 붐벼요\n• 0에 가까울수록 → 기온이랑 혼잡도는 별 상관 없어요")
-    col2.metric("기온 순위 (Spearman)", spearman_str,
-                help="'더운 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n• 기온 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n• 방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
-    col3.metric("강수량 선형 (Pearson)", precip_pearson_str,
-                help="비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.\n\n• +1에 가까울수록 → 비 올수록 지하철이 붐벼요\n• -1에 가까울수록 → 비 오면 오히려 한산해요\n• 0에 가까울수록 → 강수량이랑 혼잡도는 별 상관 없어요")
-    col4.metric("강수량 순위 (Spearman)", precip_spearman_str,
-                help="'비 많은 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.\n\n• 강수량 선형이랑 방향이 같을수록 → 패턴을 신뢰할 수 있어요\n• 방향이 다르면 → 예외적인 날이 섞여 있다는 신호예요")
+    st.markdown(f"""
+    <style>
+      .corr-grid {{ display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;margin:0.5rem 0; }}
+      .corr-card {{ position:relative;background:#19191d;border-radius:0.5rem;padding:0.75rem 0.75rem; }}
+      .corr-label {{ font-size:0.72rem;color:#767579;margin-bottom:0.2rem;display:flex;align-items:center;gap:0.3rem; }}
+      .corr-value {{ font-size:1.4rem;font-weight:700;color:#f3f0f4; }}
+      .corr-tip {{ position:relative;display:inline-flex;align-items:center;justify-content:center;
+                   width:13px;height:13px;border-radius:50%;background:#3a3a3f;
+                   color:#acaaae;font-size:9px;cursor:default;flex-shrink:0; }}
+      .corr-tip:hover .corr-tip-text {{ display:block; }}
+      .corr-tip-text {{ display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+                        width:220px;background:#2a2a2f;border:1px solid #3a3a3f;border-radius:0.4rem;
+                        padding:0.5rem 0.6rem;font-size:0.72rem;color:#acaaae;line-height:1.5;
+                        white-space:normal;z-index:999;pointer-events:none; }}
+      .corr-tip-text p {{ margin:0 0 0.35rem 0; }}
+      .corr-tip-text ul {{ margin:0;padding-left:1rem; }}
+      .corr-tip-text li {{ margin:0.1rem 0; }}
+    </style>
+    <div class="corr-grid">
+      <div class="corr-card">
+        <div class="corr-label">기온 선형 (Pearson)
+          <span class="corr-tip">?<span class="corr-tip-text"><p>기온이 오를수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.</p><ul><li>+1 → 더울수록 붐벼요</li><li>-1 → 추울수록 붐벼요</li><li>0 → 기온과 무관해요</li></ul></span></span>
+        </div>
+        <div class="corr-value">{pearson_str}</div>
+      </div>
+      <div class="corr-card">
+        <div class="corr-label">기온 순위 (Spearman)
+          <span class="corr-tip">?<span class="corr-tip-text"><p>'더운 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.</p><ul><li>선형이랑 방향이 같을수록 → 신뢰도 높아요</li><li>방향이 다르면 → 예외적인 날이 섞여 있어요</li></ul></span></span>
+        </div>
+        <div class="corr-value">{spearman_str}</div>
+      </div>
+      <div class="corr-card">
+        <div class="corr-label">강수량 선형 (Pearson)
+          <span class="corr-tip">?<span class="corr-tip-text"><p>비가 많이 올수록 지하철이 얼마나 더 붐비는지 측정한 숫자예요.</p><ul><li>+1 → 비 올수록 붐벼요</li><li>-1 → 비 오면 한산해요</li><li>0 → 강수량과 무관해요</li></ul></span></span>
+        </div>
+        <div class="corr-value">{precip_pearson_str}</div>
+      </div>
+      <div class="corr-card">
+        <div class="corr-label">강수량 순위 (Spearman)
+          <span class="corr-tip">?<span class="corr-tip-text"><p>'비 많은 날 순위'와 '붐비는 날 순위'가 얼마나 일치하는지 봐요.</p><ul><li>선형이랑 방향이 같을수록 → 신뢰도 높아요</li><li>방향이 다르면 → 예외적인 날이 섞여 있어요</li></ul></span></span>
+        </div>
+        <div class="corr-value">{precip_spearman_str}</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.caption("📌 **숫자 해석 방법** — 각 수치는 -1 ~ +1 사이예요. **선형**과 **순위** 두 값이 비슷한 방향을 가리킬수록 신뢰도가 높아요.")
 
@@ -1032,6 +1102,7 @@ def main():
             selector=dict(mode='markers'),
         )
         fig_temp.update_layout(
+            height=320,
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
             yaxis_title='이용객 수 (명)',
@@ -1057,15 +1128,13 @@ def main():
             selector=dict(mode='markers'),
         )
         fig_precip.update_layout(
+            height=320,
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
             yaxis_title='이용객 수 (명)',
         )
 
-        # Pearson 차트 — 좌우 배치
-        col_left, col_right = st.columns(2)
-        col_left.plotly_chart(fig_temp, use_container_width=True, config={'staticPlot': True})
-        col_right.plotly_chart(fig_precip, use_container_width=True, config={'staticPlot': True})
+        # 기온 차트 — 선형 + 순위 한 줄
 
         # Spearman 차트 — 순위 기반
         merged['rank_temp'] = merged['temperature'].rank()
@@ -1099,6 +1168,7 @@ def main():
             annotation_font_color='#ffe792',
         )
         fig_sp_temp.update_layout(
+            height=320,
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
             yaxis_title='이용객 순위',
@@ -1123,14 +1193,19 @@ def main():
             annotation_font_color='#ffe792',
         )
         fig_sp_precip.update_layout(
+            height=320,
             paper_bgcolor='#0e0e11', plot_bgcolor='#19191d',
             font_color='#f3f0f4', title_font_color='#ffe792',
             yaxis_title='이용객 순위',
         )
 
-        col_left2, col_right2 = st.columns(2)
-        col_left2.plotly_chart(fig_sp_temp, use_container_width=True, config={'staticPlot': True})
-        col_right2.plotly_chart(fig_sp_precip, use_container_width=True, config={'staticPlot': True})
+        col_l1, col_r1 = st.columns(2)
+        col_l1.plotly_chart(fig_temp, use_container_width=True, config={'staticPlot': True})
+        col_r1.plotly_chart(fig_sp_temp, use_container_width=True, config={'staticPlot': True})
+
+        col_l2, col_r2 = st.columns(2)
+        col_l2.plotly_chart(fig_precip, use_container_width=True, config={'staticPlot': True})
+        col_r2.plotly_chart(fig_sp_precip, use_container_width=True, config={'staticPlot': True})
 
         _s = datetime.strptime(merged['date'].min(), '%Y-%m-%d')
         _e = datetime.strptime(merged['date'].max(), '%Y-%m-%d')

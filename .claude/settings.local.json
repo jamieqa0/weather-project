@@ -24,7 +24,12 @@
       "WebFetch(domain:assets3.lottiefiles.com)",
       "Bash(python3:*)",
       "Bash(C:\\\\Users\\\\Jamie-I\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python312\\\\python.exe -m pip install -r requirements.txt)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(mkdir -p /c/Users/Jamie-I/Documents/weather-project/scripts)",
+      "Bash(mv \"/c/Users/Jamie-I/Documents/weather-project/Happy SUN.json\" /dev/null)",
+      "Bash(rm \"/c/Users/Jamie-I/Documents/weather-project/Happy SUN.json\")",
+      "Bash(mv /c/Users/Jamie-I/Documents/weather-project/apply_ui.py /c/Users/Jamie-I/Documents/weather-project/scripts/)",
+      "Bash(mv \"/c/Users/Jamie-I/Documents/weather-project/오늘의_정리.txt\" /c/Users/Jamie-I/Documents/weather-project/docs/)"
     ]
   }
 }
