@@ -73,12 +73,9 @@ def inject_css():
         cursor: help !important;
       }
 
-      /* 모바일 헤더 줄바꿈 */
+      /* 모바일 헤더 줄바꿈 비활성화 */
       .sec-title { line-height: 1.35; }
       .sec-title .mb { display: none; }
-      @media (max-width: 640px) {
-        .sec-title .mb { display: block; }
-      }
 
       /* 대시보드 메인 레이아웃: 적절한 너비로 조정 */
       [data-testid="stMainBlockContainer"] {
@@ -896,7 +893,7 @@ def main():
     )
     _range_end = date.today() - timedelta(days=1)
     _range_start = _range_end - timedelta(days=364)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, config={'staticPlot': True})
     st.caption(f"📅 분석 기간: {_range_start.strftime('%Y년 %m월 %d일')} ~ {_range_end.strftime('%Y년 %m월 %d일')} (1년)")
 
     # ③ 상세: 이상 기후 날 목록
@@ -1055,8 +1052,8 @@ def main():
 
         # Pearson 차트 — 좌우 배치
         col_left, col_right = st.columns(2)
-        col_left.plotly_chart(fig_temp, use_container_width=True)
-        col_right.plotly_chart(fig_precip, use_container_width=True)
+        col_left.plotly_chart(fig_temp, use_container_width=True, config={'staticPlot': True})
+        col_right.plotly_chart(fig_precip, use_container_width=True, config={'staticPlot': True})
 
         # Spearman 차트 — 순위 기반
         merged['rank_temp'] = merged['temperature'].rank()
@@ -1120,8 +1117,8 @@ def main():
         )
 
         col_left2, col_right2 = st.columns(2)
-        col_left2.plotly_chart(fig_sp_temp, use_container_width=True)
-        col_right2.plotly_chart(fig_sp_precip, use_container_width=True)
+        col_left2.plotly_chart(fig_sp_temp, use_container_width=True, config={'staticPlot': True})
+        col_right2.plotly_chart(fig_sp_precip, use_container_width=True, config={'staticPlot': True})
 
         _s = datetime.strptime(merged['date'].min(), '%Y-%m-%d')
         _e = datetime.strptime(merged['date'].max(), '%Y-%m-%d')
