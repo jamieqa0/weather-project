@@ -13,6 +13,12 @@ st.markdown("""
   [data-testid="collapsedControl"] { display: none; }
   .block-container { padding: 0 !important; max-width: 100% !important; }
   header { display: none; }
+  @media (max-width: 640px) {
+    [data-testid="stBottom"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"],
+    footer { display: none !important; }
+  }
 </style>
 """, unsafe_allow_html=True)
 
