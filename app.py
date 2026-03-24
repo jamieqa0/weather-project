@@ -923,7 +923,7 @@ def main():
                     reasons.append(neg)
             return ' · '.join(reasons) if reasons else '복합 요인'
 
-        with st.expander(f"🔍 이상 기후로 분류된 {len(anomaly_days)}일의 실제 수치 보기"):
+        with st.expander(f"🔍 이상 기후 {len(anomaly_days)}일 — 수치 보기"):
             display_df = anomaly_days[['date', 'temp_max', 'temp_min', 'temperature', 'precipitation', 'humidity', 'wind_speed']].copy()
             display_df['이상 원인'] = anomaly_days.apply(explain, axis=1)
             display_df.columns = ['날짜', '최고기온 (°C)', '최저기온 (°C)', '일평균기온 (°C)', '강수량 (mm)', '평균습도 (%)', '최대풍속 (m/s)', '이상 원인']
@@ -965,15 +965,27 @@ def main():
     combined_interp = get_combined_correlation_text(corr['pearson'], corr['precipitation_pearson'])
 
     st.markdown(f"""
-    <div style="
-        background:rgba(90,248,251,0.08); border:1px solid #5af8fb;
-        border-radius:0.75rem; padding:1.5rem 1.75rem; margin:0.5rem 0;
-    ">
-      <div style="display:flex;align-items:center;gap:1.25rem;">
-        <span style="font-size:3.5rem;line-height:1;flex-shrink:0;">🚇</span>
+    <style>
+    .subway-card {{ background:rgba(90,248,251,0.08); border:1px solid #5af8fb;
+        border-radius:0.75rem; padding:1.5rem 1.75rem; margin:0.5rem 0; }}
+    .subway-card .inner {{ display:flex; align-items:center; gap:1.25rem; }}
+    .subway-card .icon {{ font-size:3.5rem; line-height:1; flex-shrink:0; }}
+    .subway-card .title {{ font-size:1.2rem; font-weight:700; color:#f3f0f4;
+        margin-bottom:0.3rem; word-break:keep-all; }}
+    .subway-card .body {{ font-size:0.95rem; color:#acaaae; word-break:keep-all; }}
+    @media (max-width: 480px) {{
+        .subway-card {{ padding:1rem 1rem; }}
+        .subway-card .icon {{ font-size:2.2rem; }}
+        .subway-card .title {{ font-size:1rem; }}
+        .subway-card .body {{ font-size:0.85rem; }}
+    }}
+    </style>
+    <div class="subway-card">
+      <div class="inner">
+        <span class="icon">🚇</span>
         <div>
-          <div style="font-size:1.2rem;font-weight:700;color:#f3f0f4;margin-bottom:0.3rem;">오늘 같은 날씨, 지하철은?</div>
-          <div style="font-size:0.95rem;color:#acaaae;">{combined_interp}</div>
+          <div class="title">오늘 같은 날씨, 지하철은?</div>
+          <div class="body">{combined_interp}</div>
         </div>
       </div>
     </div>

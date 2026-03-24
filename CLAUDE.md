@@ -81,7 +81,13 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - **Lottie 애니메이션**: `st.markdown()`은 `<script>` 제거 → 반드시 `components.html()`로 렌더링. `lottie.min.js` 인라인 삽입 필수 (`<script src=...>` 방식은 iframe 내부 경로 실패). JSON도 Python에서 읽어 `animationData`로 인라인. 날씨 JSON 7종: `sunny`, `cloudy`, `overcast`, `rain`, `snow`, `fog`, `thunder`
 - **Lottie JSON 소스**: `E:/study/refer/`의 고품질 파일을 `static/lottie/`에 복사해서 사용. **`generate.py` 실행 시 파일 덮어쓰이므로 주의**. `sunny.json`은 별도 교체 이력 있음 (Happy SUN 적용)
 - **Plotly Y축 한글**: 모바일에서 Y축 레이블이 글자 단위로 분리되는 현상 → 차트 제목에 축 정보 포함 후 `yaxis_title=None` 사용
-- **상관계수 비선형 안내**: Pearson/Spearman 차이 > 0.2이면 자동으로 비선형 힌트 캡션 표시 (`app.py` 상관분석 섹션)
+- **Plotly 차트 고정**: 모바일 터치 시 차트가 움직이는 문제 → 모든 `plotly_chart` 호출에 `config={'staticPlot': True}` 적용
+- **상관분석 차트**: Pearson 차트(실제값 X/Y) + Spearman 차트(순위 X/Y) 두 세트로 구성. 차트용 `merged` 데이터는 반드시 평일 필터링 후 사용 (`dt.dayofweek < 5`). 오늘 값의 순위는 `(merged['col'] <= today_val).sum()`으로 계산
+- **모바일 타이틀 줄바꿈**: `.sec-title .mb { display: none; }` — 모바일 포함 전 구간 숨김 처리. 줄바꿈 필요 시 이 CSS 수정
+- **모바일 한글 줄바꿈**: 카드 내 텍스트에 `word-break: keep-all` 적용 — 조사/어절 단위로 자연스럽게 줄바꿈. Streamlit expander 레이블은 CSS 적용 불가이므로 텍스트 자체를 짧게 유지
+- **상관분석 카드**: `.subway-card` CSS 클래스로 관리. 모바일(≤480px)에서 이모지 2.2rem, 텍스트 축소
+- **git push**: 사용자가 직접 함. Claude는 코드 수정만 하고 push하지 않음
+- **상관계수 비선형 안내**: 제거됨 (사용자 요청으로 삭제)
 - **about.html 모달**: `selfScrolling=true` 환경에서 모달 위치 계산 시 `getContainer()` 호출 금지 — `window.scrollY` / `window.innerHeight` 사용. 모달 핸들러 조건 반드시 `!selfScrolling` 분기 포함
 - **Streamlit 테마**: `.streamlit/config.toml` 다크 모드. `primaryColor = "#5af8fb"`, `backgroundColor = "#0e0e11"`, `secondaryBackgroundColor = "#19191d"`
 - **디자인 시스템**: Eridian Horizon — `#ffe792`(골드), `#5af8fb`(시안), `#cc97ff`(보라), `#ff7351`(오렌지-레드), 배경 `#0e0e11`. 새 UI 요소 추가 시 이 팔레트 준수
