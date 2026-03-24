@@ -29,7 +29,7 @@ python log.py --list
 
 ## 테스트 (Test-Driven Development)
 
-- **현재 커버리지**: 100% (100 테스트)
+- **현재 커버리지**: 100% (113 테스트)
 - **새 코드 추가 시**: 테스트 커버리지 100% 유지해야 함
 - **Pearson 경고**: `test_strong_positive_correlation`에서 강수량 상수 시 경고 발생 — 커버리지에 영향 없음
 - **상세 계획**: `docs/test-improvements.md` 참고
@@ -58,14 +58,13 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - `app.py` — 위 모듈들을 조합해 Streamlit 대시보드 렌더링. 두괄식 UI(결과 → 설명 → 차트 → 상세).
   - `render_hero()` — 히어로 섹션 전체를 `components.html()`로 렌더링. `postMessage({type:'streamlit:setFrameHeight'})` 로 콘텐츠 높이에 맞게 iframe 자동 조정. sunny(code 0) Lottie 2개 인스턴스(우측 엣지). 모바일(≤480px)에서 Lottie 완전 숨김
   - `render_weather_card_component(wcode, mj, comment)` — 날씨 카드를 `components.html()` iframe으로 렌더링. CSS 클래스 기반 레이아웃(`.card`, `.row`, `.icon`, `.temps`). 모바일에서 아이콘 72px, `flex-wrap:nowrap`, Lottie 완전 숨김. Lottie 배경은 우측 엣지에만 배치(right:4%/16%, opacity 0.18/0.10)
-  - `render_lottie_in_expander(code, line1, line2)` — expander 내부에 Lottie 배경 + 텍스트 오버레이 렌더링
+  - `render_lottie_in_expander(code, line1, line2)` — expander 내부에 Lottie 배경 + 텍스트 오버레이 렌더링. "지구 반대편은 어떨까?" expander에서는 `get_base64_image()`로 읽은 지구 이미지를 inline base64로 추가 렌더링
   - `_lottie_lib()` — `static/lottie.min.js` 내용 캐시 후 HTML에 인라인 삽입
   - `_lottie_json(code)` — `static/lottie/{name}.json` 읽어 문자열 반환
   - `weather_animation_html(code)` — CSS 기반 배경 애니메이션 (fallback 용도로 유지)
 - `pages/about.py` — `static/about.html`을 읽어 `components.html(height=9500, scrolling=True)`로 렌더링
 - `static/about.html` — 소개 페이지 전체 HTML. 플로팅 TOC JS는 `scrolling=True` iframe 자체 스크롤 감지(`selfScrolling` 변수) 후 `window.scrollTo` / 부모 컨테이너 스크롤 분기 처리. 아키텍처 다이어그램은 `arch-fork-pipes`(두 개의 `.pipe` div를 flex로 배치) + `arch-row`(flex 노드들) 쌍으로 분기 표현
 - `timeline/builder.py` — `timeline/log.json`을 읽어 Claude 협업 타임라인 HTML 반환
-- `scripts/apply_ui.py` — `static/about.html`에 UI 효과(scroll reveal, holographic hover, animated pipes) 일괄 주입하는 일회성 스크립트
 
 ## 주요 설계 결정
 
@@ -73,23 +72,25 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 - **이상 탐지**: `contamination=0.05`, `random_state=42` — 변경 시 `tests/test_anomaly.py`의 샘플 크기(200개) 기준도 함께 검토
 - **상관분석**: 평일 데이터만 사용 (요일 효과 통제). `weather_df`와 `subway_df`의 `date` 컬럼이 `YYYY-MM-DD` 문자열이어야 merge 동작. Streamlit `@st.cache_data` Arrow 직렬화로 datetime64 변환 가능 — 명시적 `.astype(str)` 변환 필수
 - **상관분석 차트 레이아웃**: 기온 선형(Pearson) + 기온 순위(Spearman) 한 줄, 강수량 선형 + 강수량 순위 한 줄로 카테고리별 2열 배치. 모든 차트 `height=320`. 모바일에서는 CSS로 1열 스택
-- **수치 카드 레이아웃**: 기온 선형·순위 / 강수량 선형·순위를 각각 `st.columns(2)` 2행으로 배치 (4열 → 2행×2열)
+- **수치 카드 레이아웃**: `st.metric` + `st.columns` 대신 모두 HTML grid로 렌더링 (`st.markdown` + `unsafe_allow_html=True`). Streamlit 컬럼 CSS 오버라이드가 불안정해서 이 방식으로 교체
+  - 강수량|습도|풍속: `display:grid;grid-template-columns:repeat(3,1fr)` — PC/모바일 모두 3열 고정
+  - 상관분석 카드: `.corr-grid`(2열 grid) + `.corr-card` CSS 클래스. 커스텀 `?` 툴팁(`.corr-tip`, `.corr-tip-text`)으로 `help=` 대체
 - **지하철 API 범위**: `SEOUL_API_KEY` 있으면 366일(5~370일 전) 병렬 조회 (`max_workers=20`), 없으면 `data/sample/subway.csv` 폴백
 - **날씨 API**: Open-Meteo daily 배열이 비어있거나 키가 없으면 current 값으로 기본값 설정
 - **SSL 인증서**: `data/collector.py`의 모든 `requests.get()`에 `verify=False` + `urllib3.disable_warnings()` 적용 — 회사 네트워크 자체 서명 인증서 대응
 - **CSS 인코딩**: `assets/style.css` 읽을 때 반드시 `encoding='utf-8'` 명시 (Windows cp949 충돌 방지)
 - **CSS 주입 구조**: 툴바 숨김·툴팁 다크 스타일·모바일 반응형은 `inject_css()` 내부 `st.markdown` 블록에 직접 주입. 나머지는 `assets/style.css`
 - **모바일 반응형 CSS 구조** (`inject_css()` 내 `@media (max-width: 640px)`):
-  - 메트릭 카드 컬럼: `:has([data-testid="stMetricContainer"])` → `flex-wrap: nowrap`, 각 컬럼 `flex:1 1 0 / width:33.33%`로 3개 1행 고정
   - 차트 컬럼: `:has([data-testid="stPlotlyChart"])` → `flex-wrap: wrap`, 각 컬럼 `min-width:100%`로 1열 스택
+  - Streamlit 기본 UI 숨김: `stBottom`, `stDecoration`, `stStatusWidget`, `footer` — 모바일 한정 (app.py, pages/about.py 동일 적용)
 - **Lottie 애니메이션**: `st.markdown()`은 `<script>` 제거 → 반드시 `components.html()`로 렌더링. `lottie.min.js` 인라인 삽입 필수. JSON도 Python에서 읽어 `animationData`로 인라인. 날씨 JSON 7종: `sunny`, `cloudy`, `overcast`, `rain`, `snow`, `fog`, `thunder`
 - **Lottie JSON 소스**: `static/lottie/`에 위치. **`generate.py` 실행 시 파일 덮어쓰이므로 주의**. `sunny.json`은 Happy SUN 파일로 교체된 이력 있음
 - **Plotly 차트 고정**: 모바일 터치 시 차트 움직임 방지 → 모든 `plotly_chart` 호출에 `config={'staticPlot': True}` 적용
 - **1년 전 비교 하이라이트**: 기온·강수량 모두 변화 방향(상승 `#ff7351` / 하락 `#5af8fb` / 비슷함 `#5af8fb`)으로 색상 표시 — "비슷함"도 시안으로 표시
 - **모바일 타이틀 줄바꿈**: `.sec-title .mb { display: none; }` — 전 구간 숨김
-- **상관분석 카드**: `.subway-card` CSS 클래스로 관리
+- **상관분석 카드**: `.corr-grid` / `.corr-card` CSS 클래스로 관리 (`.subway-card`는 지하철 결과 요약 카드)
 - **Streamlit 테마**: `.streamlit/config.toml` 다크 모드. `primaryColor = "#5af8fb"`, `backgroundColor = "#0e0e11"`, `secondaryBackgroundColor = "#19191d"`
-- **디자인 시스템**: Eridian Horizon — `#ffe792`(골드), `#5af8fb`(시안), `#cc97ff`(보라), `#ff7351`(오렌지-레드), 배경 `#0e0e11`
+- **디자인 시스템**: Eridian Horizon — `#ffe792`(골드), `#5af8fb`(시안), `#cc97ff`(보라), `#ff7351`(오렌지-레드), 배경 `#0e0e11`, 보조배경 `#19191d`, 텍스트 `#f3f0f4`, 보조텍스트 `#acaaae`, 뮤트 `#767579`. 카드 보더: `1px solid #5af8fb` (주요), `1px solid rgba(90,248,251,0.15)` (보조)
 - **타임존**: `format_last_updated()` KST(UTC+9), `format_montevideo_time()` UYT(UTC-3)
 - **Streamlit 캐싱**: 날씨/지하철 API `ttl=3600`, 1년 전 날씨 `ttl=86400`
 - **about.html 플로팅 TOC**: `selfScrolling` 변수로 iframe 자체 스크롤 감지 후 분기 — 자체 스크롤 시 `window.scrollTo` + `el.offsetTop + iframeOffset` 계산 사용
@@ -146,6 +147,14 @@ data/collector.py  (현재 + 과거 + 지하철 API)
 **Streamlit에서 "KeyError: temperature_max"**
 - **원인**: Open-Meteo daily 배열이 비어있을 때
 - **해결**: `fetch_current_weather`에서 current 값으로 기본값 설정됨
+
+**components.html() iframe에서 외부 페이지 이동 불가**
+- **원인**: Streamlit이 생성하는 iframe sandbox에 `allow-top-navigation` 플래그 없음. `window.top.location.href`, `window.parent.location.href`, `target="_top"` 모두 차단됨
+- **해결**: `window.open(url, '_blank')`로 새 탭 열기 (`allow-popups-to-escape-sandbox`는 허용됨)
+
+**날씨 카드(components.html) 하단 보더 잘림**
+- **원인**: `components.html(height=N)` 고정값이 카드 실제 높이를 딱 맞게 잘라냄
+- **해결**: `sendHeight()` 함수로 `DOMContentLoaded` + `load` + `setTimeout(300ms)` 세 타이밍에 `scrollHeight + 8` postMessage 전송. 초기값 `height=190`으로 여유 확보
 
 ## 문서
 
