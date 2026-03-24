@@ -48,6 +48,14 @@ def inject_css():
       [data-testid="stAppViewContainer"] { padding-top: 0 !important; }
       [data-testid="stMainBlockContainer"] { padding-top: 0 !important; }
 
+      /* 모바일: Streamlit 기본 UI 완전 숨김 */
+      @media (max-width: 640px) {
+        [data-testid="stBottom"],
+        [data-testid="stDecoration"],
+        [data-testid="stStatusWidget"],
+        footer { display: none !important; }
+      }
+
       /* 툴팁 개선: 컴팩트한 크기 & 일관된 스타일 */
       div[role="tooltip"] {
         background-color: rgba(31, 31, 35, 0.95) !important;
